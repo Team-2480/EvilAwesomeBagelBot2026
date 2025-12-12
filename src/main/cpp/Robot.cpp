@@ -4,65 +4,97 @@
 
 #include "Robot.h"
 
-#include <frc/smartdashboard/SmartDashboard.h>
-#include <frc2/command/CommandScheduler.h>
+#include <frc/controller/PIDController.h>
+#include <frc/geometry/Translation2d.h>
+#include <frc/shuffleboard/Shuffleboard.h>
+#include <frc/trajectory/Trajectory.h>
+#include <frc/trajectory/TrajectoryGenerator.h>
+#include <frc2/command/InstantCommand.h>
+#include <frc2/command/SequentialCommandGroup.h>
+#include <frc2/command/SwerveControllerCommand.h>
+#include <frc2/command/button/JoystickButton.h>
+#include <units/angle.h>
+#include <units/velocity.h>
 
-void Robot::RobotInit() {}
+#include <utility>
 
-/**
- * This function is called every 20 ms, no matter the mode. Use
- * this for items like diagnostics that you want to run during disabled,
- * autonomous, teleoperated and test.
- *
- * <p> This runs after the mode specific periodic functions, but before
- * LiveWindow and SmartDashboard integrated updating.
- */
-void Robot::RobotPeriodic() { frc2::CommandScheduler::GetInstance().Run(); }
+#include "Constants.h"
+#include "subsystems/DriveSubsystem.h"
 
-/**
- * This function is called once each time the robot enters Disabled mode. You
- * can use it to reset any subsystem information you want to clear when the
- * robot is disabled.
- */
-void Robot::DisabledInit() {}
+using namespace DriveConstants;
 
-void Robot::DisabledPeriodic() {}
+Robot::Robot() {
+  // Initialize all of your commands and subsystems here
 
-/**
- * This autonomous runs the autonomous command selected by your {@link
- * RobotContainer} class.
- */
-void Robot::AutonomousInit() {
-  m_autonomousCommand = m_container.GetAutonomousCommand();
+  // Configure the button bindings
+  ConfigureButtonBindings();
 
-  if (m_autonomousCommand != nullptr) {
-    m_autonomousCommand->Schedule();
-  }
+  // Set up default drive command
+  // The left stick controls translation of the robot.
+  // Turning is controlled by the X axis of the right stick.
+  m_drive.SetDefaultCommand(frc2::RunCommand(
+      [this] {
+        m_drive.Drive(
+            -units::meters_per_second_t{frc::ApplyDeadband(
+                m_driverController.GetLeftY(), OIConstants::kDriveDeadband)},
+            -units::meters_per_second_t{frc::ApplyDeadband(
+                m_driverController.GetLeftX(), OIConstants::kDriveDeadband)},
+            -units::radians_per_second_t{frc::ApplyDeadband(
+                m_driverController.GetRightX(), OIConstants::kDriveDeadband)},
+            true);
+      },
+      {&m_drive}));
 }
 
-void Robot::AutonomousPeriodic() {}
-
-void Robot::TeleopInit() {
-  // This makes sure that the autonomous stops running when
-  // teleop starts running. If you want the autonomous to
-  // continue until interrupted by another command, remove
-  // this line or comment it out.
-  if (m_autonomousCommand != nullptr) {
-    m_autonomousCommand->Cancel();
-    m_autonomousCommand = nullptr;
-  }
+void Robot::ConfigureButtonBindings() {
+  frc2::JoystickButton(&m_driverController,
+                       frc::XboxController::Button::kRightBumper)
+      .WhileTrue(new frc2::RunCommand([this] { m_drive.SetX(); }, {&m_drive}));
 }
 
-/**
- * This function is called periodically during operator control.
- */
-void Robot::TeleopPeriodic() {}
+frc2::Command* Robot::GetAutonomousCommand() {
+  // Set up config for trajectory
+  frc::TrajectoryConfig config(AutoConstants::kMaxSpeed,
+                               AutoConstants::kMaxAcceleration);
+  // Add kinematics to ensure max speed is actually obeyed
+  config.SetKinematics(m_drive.kDriveKinematics);
 
-/**
- * This function is called periodically during test mode.
- */
-void Robot::TestPeriodic() {}
+  // An example trajectory to follow.  All units in meters.
+  auto exampleTrajectory = frc::TrajectoryGenerator::GenerateTrajectory(
+      // Start at the origin facing the +X direction
+      frc::Pose2d{0_m, 0_m, 0_deg},
+      // Pass through these two interior waypoints, making an 's' curve path
+      {frc::Translation2d{1_m, 1_m}, frc::Translation2d{2_m, -1_m}},
+      // End 3 meters straight ahead of where we started, facing forward
+      frc::Pose2d{3_m, 0_m, 0_deg},
+      // Pass the config
+      config);
 
-#ifndef RUNNING_FRC_TESTS
-int main() { return frc::StartRobot<Robot>(); }
-#endif
+  frc::ProfiledPIDController<units::radians> thetaController{
+      AutoConstants::kPThetaController, 0, 0,
+      AutoConstants::kThetaControllerConstraints};
+
+  thetaController.EnableContinuousInput(units::radian_t{-std::numbers::pi},
+                                        units::radian_t{std::numbers::pi});
+
+  frc2::SwerveControllerCommand<4> swerveControllerCommand(
+      exampleTrajectory, [this]() { return m_drive.GetPose(); },
+
+      m_drive.kDriveKinematics,
+
+      frc::PIDController{AutoConstants::kPXController, 0, 0},
+      frc::PIDController{AutoConstants::kPYController, 0, 0}, thetaController,
+
+      [this](auto moduleStates) { m_drive.SetModuleStates(moduleStates); },
+
+      {&m_drive});
+
+  // Reset odometry to the starting pose of the trajectory.
+  m_drive.ResetOdometry(exampleTrajectory.InitialPose());
+
+  // no auto
+  return new frc2::SequentialCommandGroup(
+      std::move(swerveControllerCommand),
+      frc2::InstantCommand(
+          [this]() { m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, false); }, {}));
+}
