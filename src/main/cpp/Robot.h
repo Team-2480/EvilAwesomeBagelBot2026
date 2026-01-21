@@ -16,6 +16,7 @@
 
 #include "Constants.h"
 #include "subsystems/DriveSubsystem.h"
+#include "subsystems/Intake.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -38,6 +39,7 @@ class Robot {
 
   // The robot's subsystems
   DriveSubsystem m_drive;
+  IntakeSubsystem m_intake;
 
   // The chooser for the autonomous routines
   frc::SendableChooser<frc2::Command*> m_chooser;
