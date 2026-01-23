@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <frc/Joystick.h>
 #include <frc/XboxController.h>
 #include <frc/controller/PIDController.h>
 #include <frc/controller/ProfiledPIDController.h>
@@ -33,12 +34,15 @@ class Robot {
 
  private:
   // The driver's controller
-  frc::XboxController m_driverController{OIConstants::kDriverControllerPort};
+  frc::Joystick m_driveController{0};
+  frc::XboxController m_actionController{1};
 
   // The robot's subsystems and commands are defined here...
 
   // The robot's subsystems
   DriveSubsystem m_drive;
+  bool m_slowMode = false;
+
   IntakeSubsystem m_intake;
 
   // The chooser for the autonomous routines
