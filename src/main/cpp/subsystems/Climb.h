@@ -10,8 +10,10 @@ class ClimbSubsystem : public frc::SubsystemBase {
 
     void SetClimb (bool climb_set);
 
+    bool climb_up = false;
+    bool climb_set = false;
+
     private:
         //motors here 
-bool climb_up = false;
 
 };
