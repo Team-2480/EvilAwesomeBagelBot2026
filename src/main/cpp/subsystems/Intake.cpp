@@ -5,9 +5,9 @@
 void IntakeSubsystem::Periodic() {
   // send motor info to intake motor
   if (intake_on) {
-    // we dont have motors to test the controllers yet so printf will do
-
-    printf("[intake] running motor\n");
+    intake_driver.SetControl(intake_driver_speed);
+  } else {
+    intake_driver.SetControl(stop_speed);
   }
 }
 

@@ -8,8 +8,6 @@
 #include <frc2/command/CommandScheduler.h>
 #include <cstdio>
 
-#include <cstdio>
-
 void Main::RobotInit() {}
 
 /**
