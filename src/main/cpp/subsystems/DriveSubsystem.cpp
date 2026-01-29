@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-#include "subsystems/DriveSubsystem.h"
+#include "DriveSubsystem.h"
 
 #include <frc/geometry/Rotation2d.h>
 #include <hal/FRCUsageReporting.h>
@@ -12,9 +12,8 @@
 
 #include <cstdio>
 
-#include <cstdio>
-
-#include "Constants.h"
+#include "../Constants.h"
+#include "../LimelightHelpers.h"
 
 using namespace DriveConstants;
 
@@ -39,9 +38,26 @@ DriveSubsystem::DriveSubsystem()
 }
 
 void DriveSubsystem::Periodic() {
-  // Implementation of subsystem periodic method goes here.
-  m_odometry.Update(frc::Rotation2d(units::radian_t{
-                        m_gyro.GetAngle(frc::ADIS16470_IMU::IMUAxis::kZ)}),
+  units::degree_t robotYaw = m_gyro.GetAngle(m_gyro.GetYawAxis());
+  m_odometry.SetVisionMeasurementStdDevs({0.5, 0.5, 9999999.0});
+  LimelightHelpers::SetRobotOrientation("", robotYaw.value(), 0.0, 0.0, 0.0,
+                                        0.0, 0.0);
+
+  // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/state-space/state-space-pose-estimators.html
+  // https://docs.limelightvision.io/docs/docs-limelight/apis/limelight-lib
+  LimelightHelpers::PoseEstimate limelightMeasurement =
+      LimelightHelpers::getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+
+  m_odometry.AddVisionMeasurement(limelightMeasurement.pose,
+                                  limelightMeasurement.timestampSeconds);
+
+  LimelightHelpers::PoseEstimate limelightFancyMeasurement =
+      LimelightHelpers::getBotPoseEstimate_wpiBlue_MegaTag2("limelight-fancy");
+
+  m_odometry.AddVisionMeasurement(limelightFancyMeasurement.pose,
+                                  limelightFancyMeasurement.timestampSeconds);
+
+  m_odometry.Update(frc::Rotation2d(robotYaw),
                     {m_frontLeft.GetPosition(), m_rearLeft.GetPosition(),
                      m_frontRight.GetPosition(), m_rearRight.GetPosition()});
 }
@@ -122,7 +138,9 @@ double DriveSubsystem::GetTurnRate() {
   return -m_gyro.GetRate(frc::ADIS16470_IMU::IMUAxis::kZ).value();
 }
 
-frc::Pose2d DriveSubsystem::GetPose() { return m_odometry.GetPose(); }
+frc::Pose2d DriveSubsystem::GetPose() {
+  return m_odometry.GetEstimatedPosition();
+}
 
 void DriveSubsystem::ResetOdometry(frc::Pose2d pose) {
   m_odometry.ResetPosition(

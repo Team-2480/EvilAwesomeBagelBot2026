@@ -1,14 +1,11 @@
 #include "Climb.h"
-#include <iostream>
-
 
 void ClimbSubsystem::Periodic() {
-    if (climb_up) {
-    //start motor, but only run as much as needed
-    std::cout <<"climb motor activated";
+  if (climb_up) {
+    climb_spool.SetControl(up_pos);
+  } else {
+    climb_spool.SetControl(down_pos);
+  }
 }
-}
-void ClimbSubsystem::SetClimb (bool climb_set) { climb_up = climb_set; }
 
-//No clue what is happening on top :p
-
+void ClimbSubsystem::SetClimb(bool climb_set) { climb_up = climb_set; }

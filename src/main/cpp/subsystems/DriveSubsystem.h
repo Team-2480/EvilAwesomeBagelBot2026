@@ -5,6 +5,7 @@
 #pragma once
 
 #include <frc/ADIS16470_IMU.h>
+#include <frc/estimator/SwerveDrivePoseEstimator.h>
 #include <frc/filter/SlewRateLimiter.h>
 #include <frc/geometry/Pose2d.h>
 #include <frc/geometry/Rotation2d.h>
@@ -13,7 +14,7 @@
 #include <frc/kinematics/SwerveDriveOdometry.h>
 #include <frc2/command/SubsystemBase.h>
 
-#include "Constants.h"
+#include "../Constants.h"
 #include "MAXSwerveModule.h"
 
 class DriveSubsystem : public frc2::SubsystemBase {
@@ -114,5 +115,5 @@ class DriveSubsystem : public frc2::SubsystemBase {
 
   // Odometry class for tracking robot pose
   // 4 defines the number of modules
-  frc::SwerveDriveOdometry<4> m_odometry;
+  frc::SwerveDrivePoseEstimator<4> m_odometry;
 };
