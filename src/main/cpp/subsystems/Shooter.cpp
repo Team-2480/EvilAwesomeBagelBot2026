@@ -15,6 +15,8 @@ void ShooterSubsystem::Periodic() {
 
     // JULIA this is the right syntax! just replace this with your new motor
     shooter_turner.SetControl(turn_shooter);
+
+    // JULIA(NEW!): delete this
     shooter_turner.SetShooterRot()
   } else {
     shooter_driver.SetControl(stop_speed);
@@ -27,4 +29,11 @@ void ShooterSubsystem::SetShooter(bool shooter_set) {
 
 void ShooterSubsystem::SetShooterMode(ShooterMode mode_set) { mode = mode_set; }
 
-void ShooterSubsystem::SetShooterRot() {shooter_turner.WithPosition()};
+// JULIA(NEW!): units::turns argument here to this function just like you do in
+// the Shooter.h
+void ShooterSubsystem::SetShooterRot() {
+  // JULIA(NEW!): shooter_turner -> turn_shooter
+  //
+  // JULIA(NEW!): also! pass the turns argument into WithPosition
+  shooter_turner.WithPosition();
+};

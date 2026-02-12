@@ -3,6 +3,7 @@
 
 #include "ctre/phoenix6/TalonFX.hpp"
 #include "frc2/command/SubsystemBase.h"
+#include "units/angle.h"
 
 enum ShooterMode {
   SHOOTER_NONE,
@@ -24,12 +25,15 @@ class ShooterSubsystem : public frc2::SubsystemBase {
 
     shooter_driver.GetConfigurator().Apply(cfg);
 
+    // JULIA (NEW!): config needs to be set here like above just with
+    // shooter_turner
+
     shooter_driver.SetNeutralMode(
         ctre::phoenix6::signals::NeutralModeValue::Brake);
-    
+
     shooter_turner.SetNeutralMode(
-        ctre::pheonix6::signals::NeutralModeValue::Brake);
-    
+        ctre::phoenix6::signals::NeutralModeValue::Brake);
+
     // JULIA: any new motor you add will need to be configurated here
     // this is the constructor so any code here will be run as soon as the
     // object is instanced (ie the robot starts)
@@ -38,6 +42,8 @@ class ShooterSubsystem : public frc2::SubsystemBase {
 
   void SetShooter(bool shooter_set);
   void SetShooterMode(ShooterMode mode);
+
+  // JULIA(NEW!): add a argument with units::turns a argument
   void SetShooterRot();
 
  private:
@@ -69,5 +75,5 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   // intialization (intialization is here) we should have a SetShooterRot() or
   // something function that will update the rot
   ctre::phoenix6::controls::PositionDutyCycle turn_shooter =
-  ctre::phoenix6::controls::PositionDutyCycle{1_tr};
+      ctre::phoenix6::controls::PositionDutyCycle{1_tr};
 };

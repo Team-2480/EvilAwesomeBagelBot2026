@@ -74,12 +74,13 @@ void Robot::ConfigureButtonBindings() {
   frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kA)
       .ToggleOnTrue(new frc2::InstantCommand(
           [this] { m_intake.SetIntake(true); }, {&m_intake}));
+
   frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kA)
       .ToggleOnFalse(new frc2::InstantCommand(
           [this] { m_intake.SetIntake(false); }, {&m_intake}));
 }
 
-frc2::CommandPtr Robot::GetAutonomousCommand(){
-    //had to delete the other method for auto cause it broke
-    return PathPlannerAuto("Example Auto").ToPtr();
+frc2::CommandPtr Robot::GetAutonomousCommand() {
+  // had to delete the other method for auto cause it broke
+  return PathPlannerAuto("Example Auto").ToPtr();
 }
