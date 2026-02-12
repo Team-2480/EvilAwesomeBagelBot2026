@@ -46,8 +46,8 @@ class Robot {
   DriveSubsystem m_drive;
   bool m_slowMode = false;
 
-  IntakeSubsystem m_intake;
-  ClimbSubsystem m_climb;
+  // IntakeSubsystem m_intake;
+  // ClimbSubsystem m_climb;
 
   // The chooser for the autonomous routines
   enum AutoModes {

@@ -63,6 +63,6 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   // WithPosition is a function to update the position later on so not during
   // intialization (intialization is here) we should have a SetShooterRot() or
   // something function that will update the rot
-  ctre::phoenix6::controls::PositionDutyCycle turn_shooter =
-      ctre::phoenix6::controls::PositionDutyCycle{0.2_tps}.WithPosition();
+  // ctre::phoenix6::controls::PositionDutyCycle turn_shooter =
+  //     ctre::phoenix6::controls::PositionDutyCycle{0.2_tps}.WithPosition();
 };
