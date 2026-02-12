@@ -26,7 +26,10 @@ class ShooterSubsystem : public frc2::SubsystemBase {
 
     shooter_driver.SetNeutralMode(
         ctre::phoenix6::signals::NeutralModeValue::Brake);
-
+    
+    shooter_turner.SetNeutralMode(
+        ctre::pheonix6::signals::NeutralModeValue::Brake);
+    
     // JULIA: any new motor you add will need to be configurated here
     // this is the constructor so any code here will be run as soon as the
     // object is instanced (ie the robot starts)
@@ -35,6 +38,7 @@ class ShooterSubsystem : public frc2::SubsystemBase {
 
   void SetShooter(bool shooter_set);
   void SetShooterMode(ShooterMode mode);
+  void SetShooterRot();
 
  private:
   bool shooter_on = false;
@@ -43,6 +47,7 @@ class ShooterSubsystem : public frc2::SubsystemBase {
 
   // falcon 500
   ctre::phoenix6::hardware::TalonFX shooter_driver{20};
+  ctre::phoenix6::hardware::TalonFX shooter_turner{21};
   // JULIA: we will need another motor so make a new
   // ctre::phoenix6::hardware::TalonFX
   //
@@ -64,5 +69,5 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   // intialization (intialization is here) we should have a SetShooterRot() or
   // something function that will update the rot
   ctre::phoenix6::controls::PositionDutyCycle turn_shooter =
-      ctre::phoenix6::controls::PositionDutyCycle{0.2_tps}.WithPosition();
+  ctre::phoenix6::controls::PositionDutyCycle{1_tr};
 };

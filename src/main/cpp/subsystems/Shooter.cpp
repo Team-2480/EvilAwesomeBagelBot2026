@@ -14,7 +14,8 @@ void ShooterSubsystem::Periodic() {
     shooter_driver.SetControl(shooter_driver_speed);
 
     // JULIA this is the right syntax! just replace this with your new motor
-    shooter_driver.SetControl(turn_shooter);
+    shooter_turner.SetControl(turn_shooter);
+    shooter_turner.SetShooterRot()
   } else {
     shooter_driver.SetControl(stop_speed);
   }
@@ -25,3 +26,5 @@ void ShooterSubsystem::SetShooter(bool shooter_set) {
 }
 
 void ShooterSubsystem::SetShooterMode(ShooterMode mode_set) { mode = mode_set; }
+
+void ShooterSubsystem::SetShooterRot() {shooter_turner.WithPosition()};
