@@ -100,5 +100,5 @@ const frc::TrapezoidProfile<units::radians>::Constraints
 
 namespace OIConstants {
 constexpr int kDriverControllerPort = 0;
-constexpr double kDriveDeadband = 0.05;
+constexpr double kDriveDeadband = 0.01;
 }  // namespace OIConstants

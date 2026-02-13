@@ -44,14 +44,16 @@ Robot::Robot() {
   // Turning is controlled by the X axis of the right stick.
   m_drive.SetDefaultCommand(frc2::RunCommand(
       [this] {
-        m_drive.Drive(
-            -units::meters_per_second_t{frc::ApplyDeadband(
-                m_driveController.GetY(), OIConstants::kDriveDeadband)},
-            -units::meters_per_second_t{frc::ApplyDeadband(
-                m_driveController.GetX(), OIConstants::kDriveDeadband)},
-            -units::radians_per_second_t{frc::ApplyDeadband(
-                m_driveController.GetZ(), OIConstants::kDriveDeadband)},
-            true, m_slowMode);
+        m_drive.Drive(-units::meters_per_second_t{frc::ApplyDeadband(
+                          std::pow(m_driveController.GetY(), 9),
+                          OIConstants::kDriveDeadband)},
+                      -units::meters_per_second_t{frc::ApplyDeadband(
+                          std::pow(m_driveController.GetX(), 9),
+                          OIConstants::kDriveDeadband)},
+                      -units::radians_per_second_t{frc::ApplyDeadband(
+                          std::pow(m_driveController.GetZ(), 9),
+                          OIConstants::kDriveDeadband)},
+                      true, m_slowMode);
       },
       {&m_drive}));
 }
@@ -77,6 +79,14 @@ void Robot::ConfigureButtonBindings() {
   // frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kA)
   //     .ToggleOnFalse(new frc2::InstantCommand(
   //         [this] { m_intake.SetIntake(false); }, {&m_intake}));
+
+  // climb
+  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kB)
+      .ToggleOnTrue(new frc2::InstantCommand(
+          [this] { m_climb.SetClimb(false); }, {&m_climb}));
+  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kB)
+      .ToggleOnFalse(new frc2::InstantCommand(
+          [this] { m_climb.SetClimb(true); }, {&m_climb}));
 }
 
 frc2::CommandPtr Robot::GetAutonomousCommand() {
