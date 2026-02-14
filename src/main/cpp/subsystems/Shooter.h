@@ -24,6 +24,7 @@ class ShooterSubsystem : public frc2::SubsystemBase {
         ctre::phoenix6::signals::InvertedValue::CounterClockwise_Positive;
 
     shooter_driver.GetConfigurator().Apply(cfg);
+    shooter_turner.GetConfigurator().Apply(cfg);
 
     // JULIA (NEW!): config needs to be set here like above just with
     // shooter_turner
@@ -44,7 +45,7 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   void SetShooterMode(ShooterMode mode);
 
   // JULIA(NEW!): add a argument with units::turns a argument
-  void SetShooterRot();
+  void SetShooterRot(unit::turns);
 
  private:
   bool shooter_on = false;
@@ -66,14 +67,14 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   ctre::phoenix6::controls::VelocityVoltage stop_speed =
       ctre::phoenix6::controls::VelocityVoltage{0_tps}.WithSlot(0);
 
-  // JULIA: this is the info we give to a ctre::phoenix6::hardware::TalonFX to
-  // set the speed of the motor
-  //
-  // so _tps here is turns per second, to set postion we need _tr ie turns
-  //
-  // WithPosition is a function to update the position later on so not during
-  // intialization (intialization is here) we should have a SetShooterRot() or
-  // something function that will update the rot
-  ctre::phoenix6::controls::PositionDutyCycle turn_shooter =
+  /* JULIA: this is the info we give to a ctre::phoenix6::hardware::TalonFX to
+   set the speed of the motor
+  
+   so _tps here is turns per second, to set postion we need _tr ie turns
+  
+   WithPosition is a function to update the position later on so not during
+   intialization (intialization is here) we should have a SetShooterRot() or
+   something function that will update the rot */
+  ctre::phoenix6::controls::PositionDutyCycle turn_position =
       ctre::phoenix6::controls::PositionDutyCycle{1_tr};
 };
