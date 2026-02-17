@@ -1,5 +1,8 @@
 #pragma once
-#include <rev/SparkMax.h>
+
+#include <frc/smartdashboard/SmartDashboard.h>
+#include <rev/ClosedLoopTypes.h>
+#include <rev/config/SparkMaxConfig.h>
 
 #include <algorithm>
 #include <optional>
@@ -48,7 +51,7 @@ class MotorRegulator {
   }
   void Pause() {
     printf("paused\n");
-    closed_loop->SetReference(
+    closed_loop->SetSetpoint(
         spark_max->GetEncoder().GetPosition(),
         rev::spark::SparkLowLevel::ControlType::kMAXMotionPositionControl);
   }

@@ -21,6 +21,7 @@
 #include "subsystems/Climb.h"
 #include "subsystems/DriveSubsystem.h"
 #include "subsystems/Intake.h"
+#include "subsystems/Shooter.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -48,6 +49,7 @@ class Robot {
 
   // IntakeSubsystem m_intake;
   ClimbSubsystem m_climb;
+  ShooterSubsystem m_shooter;
 
   // The chooser for the autonomous routines
   enum AutoModes {

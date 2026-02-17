@@ -87,6 +87,14 @@ void Robot::ConfigureButtonBindings() {
   frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kB)
       .ToggleOnFalse(new frc2::InstantCommand(
           [this] { m_climb.SetClimb(true); }, {&m_climb}));
+
+  // shooter
+  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kA)
+      .ToggleOnTrue(new frc2::InstantCommand(
+          [this] { m_shooter.SetShooter(true); }, {&m_shooter}));
+  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kA)
+      .ToggleOnFalse(new frc2::InstantCommand(
+          [this] { m_shooter.SetShooter(false); }, {&m_shooter}));
 }
 
 frc2::CommandPtr Robot::GetAutonomousCommand() {

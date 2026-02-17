@@ -62,7 +62,8 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   // https://docs.google.com/document/d/1VkR9zvviwuhPBft1adSYg7TGN60f-zLs2Nebqqzaj-k/edit?usp=sharing
 
   ctre::phoenix6::controls::VelocityVoltage shooter_driver_speed =
-      ctre::phoenix6::controls::VelocityVoltage{92_tps}
+      ctre::phoenix6::controls::VelocityVoltage{92_tps * 1}
+          // TODO: update to match gear ratio
           .WithSlot(0)
           .WithFeedForward(12_V);
 
