@@ -58,5 +58,7 @@ class Robot {
   };
   frc::SendableChooser<AutoModes> m_chooser;
 
+  int a = 0;
+
   void ConfigureButtonBindings();
 };

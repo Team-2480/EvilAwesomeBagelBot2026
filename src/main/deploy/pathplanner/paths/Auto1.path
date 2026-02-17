@@ -6,11 +6,6 @@
         "x": 4.632,
         "y": 4.037128183616783
       },
-      "prevControl": null,
-      "nextControl": {
-        "x": 5.632,
-        "y": 4.037128183616783
-      },
       "isLocked": false,
       "linkedName": null
     },

@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include <frc/ADIS16470_IMU.h>
 #include <frc/estimator/SwerveDrivePoseEstimator.h>
 #include <frc/filter/SlewRateLimiter.h>
 #include <frc/geometry/Pose2d.h>
@@ -14,6 +13,8 @@
 #include <frc/kinematics/SwerveDriveOdometry.h>
 #include <frc/smartdashboard/Field2d.h>
 #include <frc2/command/SubsystemBase.h>
+
+#include <ctre/phoenix6/Pigeon2.hpp>
 
 #include "../Constants.h"
 #include "MAXSwerveModule.h"
@@ -91,13 +92,6 @@ class DriveSubsystem : public frc2::SubsystemBase {
   void ZeroHeading();
 
   /**
-   * Returns the turn rate of the robot.
-   *
-   * @return The turn rate of the robot, in degrees per second
-   */
-  double GetTurnRate();
-
-  /**
    * Returns the currently-estimated pose of the robot.
    *
    * @return The pose.
@@ -131,7 +125,7 @@ class DriveSubsystem : public frc2::SubsystemBase {
   MAXSwerveModule m_rearRight;
 
   // The gyro sensor
-  frc::ADIS16470_IMU m_gyro;
+  ctre::phoenix6::hardware::Pigeon2 m_pigeon{60};
 
   // Odometry class for tracking robot pose
   // 4 defines the number of modules

@@ -55,7 +55,7 @@ model {
             operatingSystem "linux"
         }
     }
-    
+
     toolChains {
         gcc(Gcc) {
             path "/home/foxmoss/.gradle/toolchains/frc/2025/roborio/bin"
