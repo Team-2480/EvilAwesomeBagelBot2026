@@ -131,4 +131,10 @@ class DriveSubsystem : public frc2::SubsystemBase {
   // 4 defines the number of modules
   frc::SwerveDrivePoseEstimator<4> m_odometry;
   frc::Field2d m_field;
+
+  // OLIVER + JULIA: Change this with the ball target positions
+  // frc::Pose2d hi = frc::Pose2d(2_m, 2_m, frc::Rotation2d(0_deg));
+  //
+  // this is the function to get the nearest pose
+  // m_odometry.GetEstimatedPosition().Nearest({this->hi, this->hi});
 };
