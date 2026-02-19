@@ -134,6 +134,14 @@ class DriveSubsystem : public frc2::SubsystemBase {
 
   // OLIVER + JULIA: Change this with the ball target positions
   // frc::Pose2d hi = frc::Pose2d(2_m, 2_m, frc::Rotation2d(0_deg));
+  
+  // dean stop pulling up pathplanner
+  // one side two side red side blue side
+  
+  // the red one is probably wrong and giles said to "worry about it laters" so like good luck giles I aint dealing with that
+  frc::Pose2d redSide = frc::Pose2d(11.908_m, 4.037_m, frc::Rotation2d(0_deg)); // this is wrong but I was told to do it any way
+  frc::Pose2d blueSide = frc::Pose2d(4.632_m, 4.037_m, frc::Rotation2d(0_deg));
+
   //
   // this is the function to get the nearest pose
   // m_odometry.GetEstimatedPosition().Nearest({this->hi, this->hi});
