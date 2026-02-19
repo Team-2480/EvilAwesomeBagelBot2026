@@ -3,12 +3,11 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <rev/ClosedLoopTypes.h>
+#include <rev/SparkMax.h>
 #include <rev/SparkRelativeEncoder.h>
 #include <rev/config/SparkMaxConfig.h>
 
-// #include "../Regulator.h"
-#include <rev/SparkMax.h>
-
+#include "../Regulator.h"
 #include "ctre/phoenix6/TalonFX.hpp"
 #include "ctre/phoenix6/controls/VelocityVoltage.hpp"
 #include "frc2/command/SubsystemBase.h"
@@ -30,13 +29,21 @@ class IntakeSubsystem : public frc2::SubsystemBase {
     intake_driver.Configure(intake_config, rev::ResetMode::kResetSafeParameters,
                             rev::PersistMode::kPersistParameters);
 
-    // intake_up_down_driver.Configure(
-    //     IntakeDriverConfig(),
-    //     rev::spark::SparkBase::ResetMode::kResetSafeParameters,
-    //     rev::spark::SparkBase::PersistMode::kPersistParameters);
+    rev::spark::SparkBaseConfig intake_up_down_config{};
 
-    // up_down_regulator.SetTargets(4.5, -1);
-    // up_down_regulator.SetRatio(60);
+    intake_up_down_config.encoder.PositionConversionFactor(1)
+        .VelocityConversionFactor(1);
+    intake_up_down_config.closedLoop
+        .SetFeedbackSensor(rev::spark::FeedbackSensor::kPrimaryEncoder)
+        .Pid(0.9, 0, 0)
+        .OutputRange(-1, 1);
+
+    intake_up_down_driver.Configure(intake_config,
+                                    rev::ResetMode::kResetSafeParameters,
+                                    rev::PersistMode::kPersistParameters);
+
+    up_down_regulator.SetTargets(4.5, -1);
+    up_down_regulator.SetRatio(60);
   }
   void Periodic() override;
 
@@ -61,33 +68,15 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   ctre::phoenix6::controls::VelocityVoltage stop_speed =
       ctre::phoenix6::controls::VelocityVoltage{0_tps}.WithSlot(0);
 
-  // rev::spark::SparkMax intake_up_down_driver =
-  //     rev::spark::SparkMax(41, rev::spark::SparkMax::MotorType::kBrushless);
+  rev::spark::SparkMax intake_up_down_driver =
+      rev::spark::SparkMax(41, rev::spark::SparkMax::MotorType::kBrushless);
 
-  // rev::spark::SparkClosedLoopController intake_up_down_controller =
-  //     intake_up_down_driver.GetClosedLoopController();
+  rev::spark::SparkClosedLoopController intake_up_down_controller =
+      intake_up_down_driver.GetClosedLoopController();
 
-  // rev::spark::SparkRelativeEncoder intake_up_down_encoder =
-  //     intake_up_down_driver.GetEncoder();
+  rev::spark::SparkRelativeEncoder intake_up_down_encoder =
+      intake_up_down_driver.GetEncoder();
 
-  // MotorRegulator up_down_regulator =
-  //     MotorRegulator(&intake_up_down_driver, &intake_up_down_controller);
-
-  static rev::spark::SparkMaxConfig &IntakeUpDownConfig() {
-    static rev::spark::SparkMaxConfig direct_config{};
-
-    direct_config.encoder.PositionConversionFactor(1).VelocityConversionFactor(
-        1);
-    direct_config.closedLoop
-        .SetFeedbackSensor(rev::spark::FeedbackSensor::kPrimaryEncoder)
-        .Pid(0.9, 0, 0)
-        .OutputRange(-1, 1);
-
-    // direct_config.softLimit.ReverseSoftLimitEnabled(true)
-    //     .ReverseSoftLimit(-1 * 60)
-    //     .ForwardSoftLimitEnabled(true)
-    //     .ForwardSoftLimit(7 * 60);
-
-    return direct_config;
-  }
+  MotorRegulator up_down_regulator =
+      MotorRegulator(&intake_up_down_driver, &intake_up_down_controller);
 };

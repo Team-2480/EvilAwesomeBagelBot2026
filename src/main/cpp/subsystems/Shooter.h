@@ -2,6 +2,7 @@
 #pragma once
 
 #include "ctre/phoenix6/TalonFX.hpp"
+#include "ctre/phoenix6/controls/Follower.hpp"
 #include "frc2/command/SubsystemBase.h"
 #include "units/angle.h"
 
@@ -16,20 +17,37 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   ShooterSubsystem() {
     ctre::phoenix6::configs::TalonFXConfiguration cfg;
 
-    cfg.Slot0.kP = 0.6;
+    cfg.Slot0.kP = 0.1;
     cfg.Slot0.kI = 0.0;
     cfg.Slot0.kD = 0.0;
 
+    ctre::phoenix6::configs::TalonFXConfiguration cfg2;
+
+    cfg2.Slot0.kP = 0.1;
+    cfg2.Slot0.kI = 0.0;
+    cfg2.Slot0.kD = 0.0;
+
     cfg.MotorOutput.Inverted =
-        ctre::phoenix6::signals::InvertedValue::CounterClockwise_Positive;
+        ctre::phoenix6::signals::InvertedValue::Clockwise_Positive;
 
     shooter_driver.GetConfigurator().Apply(cfg);
+
+    shooter_driver_complement.GetConfigurator().Apply(cfg2);
+
+    shooter_driver.SetControl(stop_speed);
+
+    shooter_driver_complement.SetControl(ctre::phoenix6::controls::Follower{
+        shooter_driver.GetDeviceID(),
+        ctre::phoenix6::signals::MotorAlignmentValue::Opposed});
+
     // shooter_turner.GetConfigurator().Apply(cfg);
 
     // JULIA (NEW!): config needs to be set here like above just with
     // shooter_turner
 
     shooter_driver.SetNeutralMode(
+        ctre::phoenix6::signals::NeutralModeValue::Brake);
+    shooter_driver_complement.SetNeutralMode(
         ctre::phoenix6::signals::NeutralModeValue::Brake);
 
     // shooter_turner.SetNeutralMode(
@@ -54,6 +72,7 @@ class ShooterSubsystem : public frc2::SubsystemBase {
 
   // falcon 500
   ctre::phoenix6::hardware::TalonFX shooter_driver{20};
+  ctre::phoenix6::hardware::TalonFX shooter_driver_complement{21};
   // ctre::phoenix6::hardware::TalonFX shooter_turner{21};
   // JULIA: we will need another motor so make a new
   // ctre::phoenix6::hardware::TalonFX
@@ -63,6 +82,7 @@ class ShooterSubsystem : public frc2::SubsystemBase {
 
   ctre::phoenix6::controls::VelocityVoltage shooter_driver_speed =
       ctre::phoenix6::controls::VelocityVoltage{92_tps * 1}
+          // ctre::phoenix6::controls::VelocityVoltage{20_tps}
           // TODO: update to match gear ratio
           .WithSlot(0)
           .WithFeedForward(12_V);

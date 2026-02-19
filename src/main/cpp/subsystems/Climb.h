@@ -11,7 +11,7 @@ class ClimbSubsystem : public frc2::SubsystemBase {
   ClimbSubsystem() {
     ctre::phoenix6::configs::TalonFXConfiguration cfg;
 
-    cfg.Slot0.kP = 10;
+    cfg.Slot0.kP = 0.1;
     cfg.Slot0.kI = 0.0;
     cfg.Slot0.kD = 0.0;
 

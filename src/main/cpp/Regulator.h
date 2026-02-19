@@ -2,6 +2,7 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <rev/ClosedLoopTypes.h>
+#include <rev/SparkMax.h>
 #include <rev/config/SparkMaxConfig.h>
 
 #include <algorithm>
@@ -35,7 +36,7 @@ class MotorRegulator {
   void Up() {
     if (target_up.has_value()) {
       printf("going to %f\n", target_up.value());
-      closed_loop->SetReference(
+      closed_loop->SetSetpoint(
           target_up.value() * position_ratio,
           rev::spark::SparkLowLevel::ControlType::kPosition);
     }
@@ -44,15 +45,14 @@ class MotorRegulator {
     if (target_down.has_value()) {
       printf("going to %f\n", target_down.value());
       printf("curently at %f\n", spark_max->GetEncoder().GetPosition());
-      closed_loop->SetReference(
-          target_down.value() * position_ratio,
+      closed_loop->SetSetpoint(
+          target_down.value(),
           rev::spark::SparkLowLevel::ControlType::kPosition);
     }
   }
   void Pause() {
     printf("paused\n");
-    closed_loop->SetSetpoint(
-        spark_max->GetEncoder().GetPosition(),
-        rev::spark::SparkLowLevel::ControlType::kMAXMotionPositionControl);
+    closed_loop->SetSetpoint(0,
+                             rev::spark::SparkLowLevel::ControlType::kVelocity);
   }
 };
