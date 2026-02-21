@@ -84,7 +84,7 @@ DriveSubsystem::DriveSubsystem()
 }
 
 void DriveSubsystem::Periodic() {
-  m_odometry.GetEstimatedPosition().Nearest({this->hi, this->hi});
+  RedsideBlueside();
 
   units::degree_t robotYaw = GetHeading();
   m_odometry.SetVisionMeasurementStdDevs({0.5, 0.5, 9999999.0});

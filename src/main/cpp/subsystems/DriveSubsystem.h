@@ -105,6 +105,11 @@ class DriveSubsystem : public frc2::SubsystemBase {
    */
   void ResetOdometry(frc::Pose2d pose);
 
+  frc::Pose2d RedsideBlueside() {
+    return m_odometry.GetEstimatedPosition().Nearest(
+        {this->blueSide, this->redSide});
+  };
+
   frc::SwerveDriveKinematics<4> kDriveKinematics{
       frc::Translation2d{DriveConstants::kWheelBase / 2,
                          DriveConstants::kTrackWidth / 2},
@@ -134,12 +139,13 @@ class DriveSubsystem : public frc2::SubsystemBase {
 
   // OLIVER + JULIA: Change this with the ball target positions
   // frc::Pose2d hi = frc::Pose2d(2_m, 2_m, frc::Rotation2d(0_deg));
-  
+
   // dean stop pulling up pathplanner
   // one side two side red side blue side
-  
-  // the red one is probably wrong and giles said to "worry about it laters" so like good luck giles I aint dealing with that
-  frc::Pose2d redSide = frc::Pose2d(11.908_m, 4.037_m, frc::Rotation2d(0_deg)); // this is wrong but I was told to do it any way
+
+  // the red one is probably wrong and giles said to "worry about it laters" so
+  // like good luck giles I aint dealing with that
+  frc::Pose2d redSide = frc::Pose2d(11.908_m, 4.037_m, frc::Rotation2d(0_deg));
   frc::Pose2d blueSide = frc::Pose2d(4.632_m, 4.037_m, frc::Rotation2d(0_deg));
 
   //
