@@ -23,6 +23,7 @@
 #include "Constants.h"
 #include "frc/smartdashboard/SmartDashboard.h"
 #include "subsystems/DriveSubsystem.h"
+#include "subsystems/Intake.h"
 
 using namespace DriveConstants;
 using namespace pathplanner;
@@ -95,6 +96,23 @@ void Robot::ConfigureButtonBindings() {
   frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kA)
       .ToggleOnFalse(new frc2::InstantCommand(
           [this] { m_shooter.SetShooter(false); }, {&m_shooter}));
+
+  // intake
+  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kX)
+      .ToggleOnTrue(new frc2::InstantCommand(
+          [this] { m_intake.SetIntake(true); }, {&m_intake}));
+  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kX)
+      .ToggleOnFalse(new frc2::InstantCommand(
+          [this] { m_intake.SetIntake(false); }, {&m_intake}));
+
+  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kY)
+      .ToggleOnTrue(new frc2::InstantCommand(
+          [this] { m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_UP); },
+          {&m_intake}));
+  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kY)
+      .ToggleOnFalse(new frc2::InstantCommand(
+          [this] { m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_DOWN); },
+          {&m_intake}));
 }
 
 frc2::CommandPtr Robot::GetAutonomousCommand() {

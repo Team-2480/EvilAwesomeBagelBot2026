@@ -50,6 +50,7 @@ class Robot {
   // IntakeSubsystem m_intake;
   ClimbSubsystem m_climb;
   ShooterSubsystem m_shooter;
+  IntakeSubsystem m_intake;
 
   // The chooser for the autonomous routines
   enum AutoModes {

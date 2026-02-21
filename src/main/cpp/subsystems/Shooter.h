@@ -17,17 +17,37 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   ShooterSubsystem() {
     ctre::phoenix6::configs::TalonFXConfiguration cfg;
 
-    cfg.Slot0.kP = 0.1;
+    cfg.Slot0.kS =
+        0.1;  // To account for friction, add 0.1 V of static feedforward
+    cfg.Slot0.kV =
+        0.12;  // Kraken X60 is a 500 kV motor, 500 rpm per V = 8.333 rps per V,
+               // 1/8.33 = 0.12 volts / rotation per second
+    cfg.Slot0.kP =
+        0.11;  // An error of 1 rotation per second results in 0.11 V output
     cfg.Slot0.kI = 0.0;
     cfg.Slot0.kD = 0.0;
 
+    cfg.Voltage.PeakForwardVoltage = 8_V;
+    cfg.Voltage.PeakReverseVoltage = -8_V;
+
     ctre::phoenix6::configs::TalonFXConfiguration cfg2;
 
-    cfg2.Slot0.kP = 0.1;
+    cfg2.Slot0.kS =
+        0.1;  // To account for friction, add 0.1 V of static feedforward
+    cfg2.Slot0.kV =
+        0.4;  // Kraken X60 is a 500 kV motor, 500 rpm per V = 8.333 rps per V,
+              // 1/8.33 = 0.12 volts / rotation per second
+    cfg2.Slot0.kP =
+        0.3;  // An error of 1 rotation per second results in 0.11 V output
     cfg2.Slot0.kI = 0.0;
     cfg2.Slot0.kD = 0.0;
 
+    cfg2.Voltage.PeakForwardVoltage = 12_V;
+    cfg2.Voltage.PeakReverseVoltage = -12_V;
+
     cfg.MotorOutput.Inverted =
+        ctre::phoenix6::signals::InvertedValue::Clockwise_Positive;
+    cfg2.MotorOutput.Inverted =
         ctre::phoenix6::signals::InvertedValue::Clockwise_Positive;
 
     shooter_driver.GetConfigurator().Apply(cfg);
