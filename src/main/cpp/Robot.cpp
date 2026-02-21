@@ -46,15 +46,15 @@ Robot::Robot() {
   m_drive.SetDefaultCommand(frc2::RunCommand(
       [this] {
         m_drive.Drive(-units::meters_per_second_t{frc::ApplyDeadband(
-                          std::pow(m_driveController.GetY(), 9),
+                          std::pow(-m_driveController.GetY(), 9),
                           OIConstants::kDriveDeadband)},
                       -units::meters_per_second_t{frc::ApplyDeadband(
-                          std::pow(m_driveController.GetX(), 9),
+                          std::pow(-m_driveController.GetX(), 9),
                           OIConstants::kDriveDeadband)},
                       -units::radians_per_second_t{frc::ApplyDeadband(
                           std::pow(m_driveController.GetZ(), 9),
                           OIConstants::kDriveDeadband)},
-                      true, m_slowMode);
+                      false, m_slowMode);
       },
       {&m_drive}));
 }
