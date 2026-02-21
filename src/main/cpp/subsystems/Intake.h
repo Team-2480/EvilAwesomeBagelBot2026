@@ -53,11 +53,14 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   void SetIntake(bool intake_set);
 
   enum IntakeUpDown { INTAKE_UP, INTAKE_DOWN };
+  enum IntakeDischarge { INTAKE_SUCK, INTAKE_BLOW };
   void SetIntakeUpDown(IntakeUpDown c_intake_up_down);
+  void SetIntakeDirection(IntakeDischarge intake_set);
 
  private:
   // motors here
   bool intake_on = false;
+  IntakeDischarge intake_dir = INTAKE_SUCK;
   IntakeUpDown intake_up_down = INTAKE_UP;
 
   rev::spark::SparkMax intake_driver =

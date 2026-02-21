@@ -107,11 +107,11 @@ void Robot::ConfigureButtonBindings() {
 
   frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kY)
       .ToggleOnTrue(new frc2::InstantCommand(
-          [this] { m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_UP); },
+          [this] { m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_BLOW); },
           {&m_intake}));
   frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kY)
       .ToggleOnFalse(new frc2::InstantCommand(
-          [this] { m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_DOWN); },
+          [this] { m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_SUCK); },
           {&m_intake}));
 }
 
