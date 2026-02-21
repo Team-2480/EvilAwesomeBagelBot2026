@@ -20,15 +20,15 @@ class ShooterSubsystem : public frc2::SubsystemBase {
     cfg.Slot0.kS =
         0.1;  // To account for friction, add 0.1 V of static feedforward
     cfg.Slot0.kV =
-        0.12;  // Kraken X60 is a 500 kV motor, 500 rpm per V = 8.333 rps per V,
+        0.30;  // Kraken X60 is a 500 kV motor, 500 rpm per V = 8.333 rps per V,
                // 1/8.33 = 0.12 volts / rotation per second
     cfg.Slot0.kP =
         0.11;  // An error of 1 rotation per second results in 0.11 V output
     cfg.Slot0.kI = 0.0;
     cfg.Slot0.kD = 0.0;
 
-    cfg.Voltage.PeakForwardVoltage = 8_V;
-    cfg.Voltage.PeakReverseVoltage = -8_V;
+    cfg.Voltage.PeakForwardVoltage = 12_V;
+    cfg.Voltage.PeakReverseVoltage = -12_V;
 
     ctre::phoenix6::configs::TalonFXConfiguration cfg2;
 
@@ -101,11 +101,10 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   // https://docs.google.com/document/d/1VkR9zvviwuhPBft1adSYg7TGN60f-zLs2Nebqqzaj-k/edit?usp=sharing
 
   ctre::phoenix6::controls::VelocityVoltage shooter_driver_speed =
-      ctre::phoenix6::controls::VelocityVoltage{92_tps * 1}
+      ctre::phoenix6::controls::VelocityVoltage{120_tps * 1}
           // ctre::phoenix6::controls::VelocityVoltage{20_tps}
           // TODO: update to match gear ratio
-          .WithSlot(0)
-          .WithFeedForward(12_V);
+          .WithSlot(0);
 
   ctre::phoenix6::controls::VelocityVoltage stop_speed =
       ctre::phoenix6::controls::VelocityVoltage{0_tps}.WithSlot(0);
