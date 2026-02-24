@@ -27,8 +27,8 @@
 namespace DriveConstants {
 // Driving Parameters - Note that these are not the maximum capable speeds of
 // the robot, rather the allowed maximum speeds
-constexpr units::meters_per_second_t kMaxSpeed = 4.8_mps;
-constexpr float kSlowConstant = 0.05;
+constexpr units::meters_per_second_t kMaxSpeed = 3.8_mps;
+constexpr float kSlowConstant = 0.01;
 constexpr units::meters_per_second_t kSlowModeSpeed = kMaxSpeed * kSlowConstant;
 constexpr units::radians_per_second_t kMaxAngularSpeed{2 * std::numbers::pi};
 constexpr units::radians_per_second_t kSlowModeAngularSpeed{kSlowConstant * 2 *
