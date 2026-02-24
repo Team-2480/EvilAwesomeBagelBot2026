@@ -54,7 +54,7 @@ Robot::Robot() {
                       -units::radians_per_second_t{frc::ApplyDeadband(
                           std::pow(m_driveController.GetZ(), 3),
                           OIConstants::kDriveDeadband)},
-                      false, m_slowMode);
+                      m_globalLocal, m_slowMode);
       },
       {&m_drive}));
 }
@@ -63,7 +63,13 @@ void Robot::ConfigureButtonBindings() {
   // button to stop being pushed
   frc2::JoystickButton(&m_driveController, 6)  // button 6 on joystick?
       .WhileTrue(new frc2::RunCommand([this] { m_drive.SetX(); }, {&m_drive}));
-  //
+
+  frc2::JoystickButton(&m_driveController, 5)  // button 6 on joystick?
+      .ToggleOnTrue(new frc2::RunCommand(
+          [this] { m_globalLocal = !m_globalLocal; }, {&m_drive}));
+
+  frc::SmartDashboard::PutBoolean("Global Local", m_globalLocal);
+
   // slow mode
   frc2::JoystickButton(&m_driveController, 1)  // trigger
       .ToggleOnTrue(

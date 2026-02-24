@@ -46,6 +46,7 @@ class Robot {
   // The robot's subsystems
   DriveSubsystem m_drive;
   bool m_slowMode = false;
+  bool m_globalLocal = false;
 
   // IntakeSubsystem m_intake;
   ClimbSubsystem m_climb;
