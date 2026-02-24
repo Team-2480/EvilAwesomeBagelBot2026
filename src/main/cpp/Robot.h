@@ -46,10 +46,12 @@ class Robot {
   // The robot's subsystems
   DriveSubsystem m_drive;
   bool m_slowMode = false;
+  bool m_globalLocal = false;
 
   // IntakeSubsystem m_intake;
   ClimbSubsystem m_climb;
   ShooterSubsystem m_shooter;
+  IntakeSubsystem m_intake;
 
   // The chooser for the autonomous routines
   enum AutoModes {

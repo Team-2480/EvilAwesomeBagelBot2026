@@ -16,7 +16,7 @@ class ClimbSubsystem : public frc2::SubsystemBase {
     cfg.Slot0.kD = 0.0;
 
     cfg.MotorOutput.Inverted =
-        ctre::phoenix6::signals::InvertedValue::Clockwise_Positive;
+        ctre::phoenix6::signals::InvertedValue::CounterClockwise_Positive;
 
     climb_spool.GetConfigurator().Apply(cfg);
 

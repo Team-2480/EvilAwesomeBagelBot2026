@@ -14,8 +14,6 @@ class MotorRegulator {
   rev::spark::SparkClosedLoopController *closed_loop;
   std::optional<double> target_up, target_down;
 
-  double position_ratio = 1;
-
  public:
   MotorRegulator(rev::spark::SparkMax *spark_max,
                  rev::spark::SparkClosedLoopController *closed_loop)
@@ -23,8 +21,6 @@ class MotorRegulator {
     // WARNING: motor must stay in the same place on boot !!!
   }
   ~MotorRegulator() {}
-
-  void SetRatio(double p_ratio) { position_ratio = p_ratio; }
 
   void SetTargets(double p_target_up, double p_target_down) {
     target_up = p_target_up;
@@ -36,9 +32,10 @@ class MotorRegulator {
   void Up() {
     if (target_up.has_value()) {
       printf("going to %f\n", target_up.value());
+      printf("curently at %f\n", spark_max->GetEncoder().GetPosition());
       closed_loop->SetSetpoint(
-          target_up.value() * position_ratio,
-          rev::spark::SparkLowLevel::ControlType::kPosition);
+          target_up.value(),
+          rev::spark::SparkLowLevel::ControlType::kMAXMotionPositionControl);
     }
   }
   void Down() {
@@ -47,7 +44,7 @@ class MotorRegulator {
       printf("curently at %f\n", spark_max->GetEncoder().GetPosition());
       closed_loop->SetSetpoint(
           target_down.value(),
-          rev::spark::SparkLowLevel::ControlType::kPosition);
+          rev::spark::SparkLowLevel::ControlType::kMAXMotionPositionControl);
     }
   }
   void Pause() {
