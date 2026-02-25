@@ -18,6 +18,7 @@
 #include <string>
 
 #include "Constants.h"
+#include "pid.cpp"
 #include "subsystems/Climb.h"
 #include "subsystems/DriveSubsystem.h"
 #include "subsystems/Intake.h"
@@ -47,6 +48,7 @@ class Robot {
   DriveSubsystem m_drive;
   bool m_slowMode = false;
   bool m_globalLocal = false;
+  bool m_findRot = false;
 
   // IntakeSubsystem m_intake;
   ClimbSubsystem m_climb;
@@ -62,7 +64,7 @@ class Robot {
   };
   frc::SendableChooser<AutoModes> m_chooser;
 
-  int a = 0;
+  PID rot_pid = PID(0.1, 100, -100, 0.1, 0.01, 0.5);
 
   void ConfigureButtonBindings();
 };

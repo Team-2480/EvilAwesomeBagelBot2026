@@ -22,6 +22,7 @@
 
 #include "Constants.h"
 #include "frc/smartdashboard/SmartDashboard.h"
+#include "pid.cpp"
 #include "subsystems/DriveSubsystem.h"
 #include "subsystems/Intake.h"
 
@@ -43,18 +44,24 @@ Robot::Robot() {
   // Set up default drive command
   // The left stick controls translation of the robot.
   // Turning is controlled by the X axis of the right stick.
+  units::radians_per_second_t appliedRot = units::radians_per_second_t{0};
+  if (m_findRot) {
+    appliedRot = units::radians_per_second_t{rot_pid.calculate(
+        0, m_drive.GetHubRelRot() - m_drive.GetHeading().value())};
+  } else {
+    appliedRot = -units::radians_per_second_t{frc::ApplyDeadband(
+        std::pow(m_driveController.GetZ(), 3), OIConstants::kDriveDeadband)};
+  }
+
   m_drive.SetDefaultCommand(frc2::RunCommand(
-      [this] {
+      [this, appliedRot] {
         m_drive.Drive(-units::meters_per_second_t{frc::ApplyDeadband(
                           std::pow(m_driveController.GetY(), 3),
                           OIConstants::kDriveDeadband)},
                       -units::meters_per_second_t{frc::ApplyDeadband(
                           std::pow(m_driveController.GetX(), 3),
                           OIConstants::kDriveDeadband)},
-                      -units::radians_per_second_t{frc::ApplyDeadband(
-                          std::pow(m_driveController.GetZ(), 3),
-                          OIConstants::kDriveDeadband)},
-                      m_globalLocal, m_slowMode);
+                      appliedRot, m_globalLocal, m_slowMode);
       },
       {&m_drive}));
 }
@@ -78,6 +85,15 @@ void Robot::ConfigureButtonBindings() {
   frc2::JoystickButton(&m_driveController, 1)  // trigger
       .ToggleOnFalse(
           new frc2::InstantCommand([this]() { m_slowMode = false; }, {}));
+
+  // find rot
+  frc2::JoystickButton(&m_driveController, 2)  // trigger
+      .ToggleOnTrue(
+          new frc2::InstantCommand([this]() { m_findRot = true; }, {}));
+
+  frc2::JoystickButton(&m_driveController, 2)  // trigger
+      .ToggleOnFalse(
+          new frc2::InstantCommand([this]() { m_findRot = false; }, {}));
 
   // activate intake
   // frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kA)
