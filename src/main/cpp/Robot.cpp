@@ -23,6 +23,7 @@
 #include "Constants.h"
 #include "frc/smartdashboard/SmartDashboard.h"
 #include "subsystems/DriveSubsystem.h"
+#include "subsystems/Intake.h"
 
 using namespace DriveConstants;
 using namespace pathplanner;
@@ -45,15 +46,15 @@ Robot::Robot() {
   m_drive.SetDefaultCommand(frc2::RunCommand(
       [this] {
         m_drive.Drive(-units::meters_per_second_t{frc::ApplyDeadband(
-                          std::pow(m_driveController.GetY(), 9),
+                          std::pow(m_driveController.GetY(), 3),
                           OIConstants::kDriveDeadband)},
                       -units::meters_per_second_t{frc::ApplyDeadband(
-                          std::pow(m_driveController.GetX(), 9),
+                          std::pow(m_driveController.GetX(), 3),
                           OIConstants::kDriveDeadband)},
                       -units::radians_per_second_t{frc::ApplyDeadband(
-                          std::pow(m_driveController.GetZ(), 9),
+                          std::pow(m_driveController.GetZ(), 3),
                           OIConstants::kDriveDeadband)},
-                      true, m_slowMode);
+                      m_globalLocal, m_slowMode);
       },
       {&m_drive}));
 }
@@ -62,7 +63,13 @@ void Robot::ConfigureButtonBindings() {
   // button to stop being pushed
   frc2::JoystickButton(&m_driveController, 6)  // button 6 on joystick?
       .WhileTrue(new frc2::RunCommand([this] { m_drive.SetX(); }, {&m_drive}));
-  //
+
+  frc2::JoystickButton(&m_driveController, 5)  // button 6 on joystick?
+      .ToggleOnTrue(new frc2::RunCommand(
+          [this] { m_globalLocal = !m_globalLocal; }, {&m_drive}));
+
+  frc::SmartDashboard::PutBoolean("Global Local", m_globalLocal);
+
   // slow mode
   frc2::JoystickButton(&m_driveController, 1)  // trigger
       .ToggleOnTrue(
@@ -95,6 +102,23 @@ void Robot::ConfigureButtonBindings() {
   frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kA)
       .ToggleOnFalse(new frc2::InstantCommand(
           [this] { m_shooter.SetShooter(false); }, {&m_shooter}));
+
+  // intake
+  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kX)
+      .ToggleOnTrue(new frc2::InstantCommand(
+          [this] { m_intake.SetIntake(true); }, {&m_intake}));
+  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kX)
+      .ToggleOnFalse(new frc2::InstantCommand(
+          [this] { m_intake.SetIntake(false); }, {&m_intake}));
+
+  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kY)
+      .ToggleOnTrue(new frc2::InstantCommand(
+          [this] { m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_BLOW); },
+          {&m_intake}));
+  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kY)
+      .ToggleOnFalse(new frc2::InstantCommand(
+          [this] { m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_SUCK); },
+          {&m_intake}));
 }
 
 frc2::CommandPtr Robot::GetAutonomousCommand() {

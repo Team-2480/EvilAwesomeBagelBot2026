@@ -23,7 +23,7 @@ class IntakeSubsystem : public frc2::SubsystemBase {
         1);
     intake_config.closedLoop
         .SetFeedbackSensor(rev::spark::FeedbackSensor::kPrimaryEncoder)
-        .Pid(0.9, 0, 0)
+        .Pid(0.1, 0, 0)
         .OutputRange(-1, 1);
 
     intake_driver.Configure(intake_config, rev::ResetMode::kResetSafeParameters,
@@ -35,30 +35,36 @@ class IntakeSubsystem : public frc2::SubsystemBase {
         .VelocityConversionFactor(1);
     intake_up_down_config.closedLoop
         .SetFeedbackSensor(rev::spark::FeedbackSensor::kPrimaryEncoder)
-        .Pid(0.9, 0, 0)
+        .Pid(0.1, 0, 0)
         .OutputRange(-1, 1);
+    intake_up_down_config.closedLoop.feedForward.kV(12.0 / 5657);
+    intake_up_down_config.closedLoop.maxMotion.CruiseVelocity(1000)
+        .MaxAcceleration(10000)
+        .AllowedProfileError(1);
 
-    intake_up_down_driver.Configure(intake_config,
-                                    rev::ResetMode::kResetSafeParameters,
-                                    rev::PersistMode::kPersistParameters);
+    // intake_up_down_driver.Configure(intake_up_down_config,
+    //                                 rev::ResetMode::kResetSafeParameters,
+    //                                 rev::PersistMode::kPersistParameters);
 
-    up_down_regulator.SetTargets(4.5, -1);
-    up_down_regulator.SetRatio(60);
+    // up_down_regulator.SetTargets(-0.6, -14);
   }
   void Periodic() override;
 
   void SetIntake(bool intake_set);
 
   enum IntakeUpDown { INTAKE_UP, INTAKE_DOWN };
-  void SetIntakeUpDown(IntakeUpDown intake_up_down);
+  enum IntakeDischarge { INTAKE_SUCK, INTAKE_BLOW };
+  void SetIntakeUpDown(IntakeUpDown c_intake_up_down);
+  void SetIntakeDirection(IntakeDischarge intake_set);
 
  private:
   // motors here
   bool intake_on = false;
+  IntakeDischarge intake_dir = INTAKE_SUCK;
   IntakeUpDown intake_up_down = INTAKE_UP;
 
   rev::spark::SparkMax intake_driver =
-      rev::spark::SparkMax(40, rev::spark::SparkMax::MotorType::kBrushless);
+      rev::spark::SparkMax(41, rev::spark::SparkMax::MotorType::kBrushless);
   rev::spark::SparkClosedLoopController intake_driver_controller =
       intake_driver.GetClosedLoopController();
 
@@ -68,15 +74,15 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   ctre::phoenix6::controls::VelocityVoltage stop_speed =
       ctre::phoenix6::controls::VelocityVoltage{0_tps}.WithSlot(0);
 
-  rev::spark::SparkMax intake_up_down_driver =
-      rev::spark::SparkMax(41, rev::spark::SparkMax::MotorType::kBrushless);
-
-  rev::spark::SparkClosedLoopController intake_up_down_controller =
-      intake_up_down_driver.GetClosedLoopController();
-
-  rev::spark::SparkRelativeEncoder intake_up_down_encoder =
-      intake_up_down_driver.GetEncoder();
-
-  MotorRegulator up_down_regulator =
-      MotorRegulator(&intake_up_down_driver, &intake_up_down_controller);
+  // rev::spark::SparkMax intake_up_down_driver =
+  //     rev::spark::SparkMax(40, rev::spark::SparkMax::MotorType::kBrushless);
+  //
+  // rev::spark::SparkClosedLoopController intake_up_down_controller =
+  //     intake_up_down_driver.GetClosedLoopController();
+  //
+  // rev::spark::SparkRelativeEncoder intake_up_down_encoder =
+  //     intake_up_down_driver.GetEncoder();
+  //
+  // MotorRegulator up_down_regulator =
+  //     MotorRegulator(&intake_up_down_driver, &intake_up_down_controller);
 };
