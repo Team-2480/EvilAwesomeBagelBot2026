@@ -14,6 +14,7 @@
 #include <frc/smartdashboard/Field2d.h>
 #include <frc2/command/SubsystemBase.h>
 
+#include <cmath>
 #include <ctre/phoenix6/Pigeon2.hpp>
 
 #include "../Constants.h"
@@ -105,10 +106,14 @@ class DriveSubsystem : public frc2::SubsystemBase {
    */
   void ResetOdometry(frc::Pose2d pose);
 
-  frc::Pose2d RedsideBlueside() {
+  frc::Pose2d GetHubDistance() {
     return m_odometry.GetEstimatedPosition().Nearest(
-        {this->blueSide, this->redSide});
+        {this->blueSideHub, this->redSideHub});
   };
+
+  double GetHubRelRot() {
+    return std::atan2(GetHubDistance().X().value() - m_odometry.GetEstimatedPosition().X().value(), GetHubDistance().Y().value() - m_odometry.GetEstimatedPosition().Y().value());
+  }
 
   frc::SwerveDriveKinematics<4> kDriveKinematics{
       frc::Translation2d{DriveConstants::kWheelBase / 2,
@@ -143,12 +148,9 @@ class DriveSubsystem : public frc2::SubsystemBase {
   // dean stop pulling up pathplanner
   // one side two side red side blue side
 
-  // the red one is probably wrong and giles said to "worry about it laters" so
-  // like good luck giles I aint dealing with that
-  frc::Pose2d redSide = frc::Pose2d(11.908_m, 4.037_m, frc::Rotation2d(0_deg));
-  frc::Pose2d blueSide = frc::Pose2d(4.632_m, 4.037_m, frc::Rotation2d(0_deg));
+  frc::Pose2d redSideHub = frc::Pose2d(11.908_m, 4.037_m, frc::Rotation2d(0_deg));
+  frc::Pose2d blueSideHub = frc::Pose2d(4.632_m, 4.037_m, frc::Rotation2d(0_deg));
 
-  //
   // this is the function to get the nearest pose
   // m_odometry.GetEstimatedPosition().Nearest({this->hi, this->hi});
 };
