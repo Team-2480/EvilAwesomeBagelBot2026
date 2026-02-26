@@ -53,7 +53,7 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   void SetIntake(bool intake_set);
 
   enum IntakeUpDown { INTAKE_UP, INTAKE_DOWN };
-  enum IntakeDischarge { INTAKE_SUCK, INTAKE_BLOW };
+  enum IntakeDischarge { INTAKE_SUCK, INTAKE_REPEL };
   void SetIntakeUpDown(IntakeUpDown c_intake_up_down);
   void SetIntakeDirection(IntakeDischarge intake_set);
 
