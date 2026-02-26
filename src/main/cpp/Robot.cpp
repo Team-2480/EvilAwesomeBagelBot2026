@@ -13,11 +13,13 @@
 #include <frc2/command/SequentialCommandGroup.h>
 #include <frc2/command/SwerveControllerCommand.h>
 #include <frc2/command/button/JoystickButton.h>
+#include <pathplanner/lib/auto/NamedCommands.h>
 #include <pathplanner/lib/commands/PathPlannerAuto.h>
 #include <units/angle.h>
 #include <units/velocity.h>
 
 #include <cstdio>
+#include <memory>
 #include <utility>
 
 #include "Constants.h"
@@ -33,9 +35,9 @@ Robot::Robot() {
   // Initialize all of your commands and subsystems here
 
   m_chooser.AddOption("No Auto", AUTO_NOTHING);
-  m_chooser.AddOption("Blue Default", AUTO_BLUE_DEFAULT);
-  m_chooser.AddOption("Red Default", AUTO_RED_DEFAULT);
-
+  // m_chooser.AddOption("Blue Default", AUTO_BLUE_DEFAULT);
+  // m_chooser.AddOption("Red Default", AUTO_RED_DEFAULT);
+  //
   frc::SmartDashboard::PutData("Auto Selection", &m_chooser);
 
   // Configure the button bindings
@@ -77,9 +79,11 @@ void Robot::ConfigureButtonBindings() {
 
   frc2::JoystickButton(&m_driveController, 5)  // button 6 on joystick?
       .ToggleOnTrue(new frc2::RunCommand(
-          [this] { m_globalLocal = !m_globalLocal; }, {&m_drive}));
-
-  frc::SmartDashboard::PutBoolean("Global Local", m_globalLocal);
+          [this] {
+            m_globalLocal = !m_globalLocal;
+            frc::SmartDashboard::PutBoolean("Global Local", m_globalLocal);
+          },
+          {&m_drive}));
 
   // slow mode
   frc2::JoystickButton(&m_driveController, 1)  // trigger
@@ -115,6 +119,13 @@ void Robot::ConfigureButtonBindings() {
       .ToggleOnFalse(new frc2::InstantCommand(
           [this] { m_climb.SetClimb(true); }, {&m_climb}));
 
+  // OLIVER: see this:
+  auto climb_true =
+      new frc2::InstantCommand([this] { m_climb.SetClimb(true); }, {&m_climb});
+  auto shared_climb_true = std::shared_ptr<frc2::Command>(climb_true);
+  pathplanner::NamedCommands::registerCommand("climbTrue",
+                                              std::move(shared_climb_true));
+
   // shooter
   frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kA)
       .ToggleOnTrue(new frc2::InstantCommand(
@@ -143,5 +154,7 @@ void Robot::ConfigureButtonBindings() {
 
 frc2::CommandPtr Robot::GetAutonomousCommand() {
   // had to delete the other method for auto cause it broke
-  return PathPlannerAuto("Auto").ToPtr();
+
+  switch (m_chooser.GetSelected()) {}
+  return PathPlannerAuto("Yo").ToPtr();
 }
