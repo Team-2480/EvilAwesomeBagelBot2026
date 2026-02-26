@@ -155,6 +155,9 @@ void Robot::ConfigureButtonBindings() {
 frc2::CommandPtr Robot::GetAutonomousCommand() {
   // had to delete the other method for auto cause it broke
 
-  switch (m_chooser.GetSelected()) {}
-  return PathPlannerAuto("Yo").ToPtr();
+  std::string auto_command_name = auto_names[AUTO_NOTHING];
+  if (auto_names.contains(m_chooser.GetSelected())) {
+    auto_command_name = auto_names[m_chooser.GetSelected()];
+  }
+  return PathPlannerAuto(auto_command_name).ToPtr();
 }
