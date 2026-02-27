@@ -135,25 +135,25 @@ void Robot::ConfigureButtonBindings() {
   auto shooter_on = new frc2::InstantCommand(
       [this] { m_shooter.SetShooter(true); }, {&m_shooter});
   auto shared_shooter_on = std::shared_ptr<frc2::Command>(shooter_on);
-  pathplanner::NamedCommands::registerCommand("climbFalse",
+  pathplanner::NamedCommands::registerCommand("shooterOn",
                                               std::move(shared_shooter_on));
 
   auto shooter_off = new frc2::InstantCommand(
       [this] { m_shooter.SetShooter(false); }, {&m_shooter});
   auto shared_shooter_off = std::shared_ptr<frc2::Command>(shooter_off);
-  pathplanner::NamedCommands::registerCommand("climbFalse",
+  pathplanner::NamedCommands::registerCommand("shooterOff",
                                               std::move(shared_shooter_off));
 
   auto intake_suck = new frc2::InstantCommand(
       [this] { m_intake.SetIntake(true); }, {&m_intake});
   auto shared_intake_suck = std::shared_ptr<frc2::Command>(intake_suck);
-  pathplanner::NamedCommands::registerCommand("climbFalse",
+  pathplanner::NamedCommands::registerCommand("intakeSuck",
                                               std::move(shared_intake_suck));
 
   auto intake_repel = new frc2::InstantCommand(
       [this] { m_intake.SetIntake(false); }, {&m_intake});
   auto shared_intake_repel = std::shared_ptr<frc2::Command>(intake_repel);
-  pathplanner::NamedCommands::registerCommand("climbFalse",
+  pathplanner::NamedCommands::registerCommand("intakeRepel",
                                               std::move(shared_intake_repel));
 
   // shooter
