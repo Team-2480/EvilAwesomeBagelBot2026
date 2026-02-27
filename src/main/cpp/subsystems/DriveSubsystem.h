@@ -112,7 +112,10 @@ class DriveSubsystem : public frc2::SubsystemBase {
   };
 
   double GetHubRelRot() {
-    return std::atan2(GetHubDistance().X().value() - m_odometry.GetEstimatedPosition().X().value(), GetHubDistance().Y().value() - m_odometry.GetEstimatedPosition().Y().value());
+    return std::atan2(GetHubDistance().X().value() -
+                          m_odometry.GetEstimatedPosition().X().value(),
+                      GetHubDistance().Y().value() -
+                          m_odometry.GetEstimatedPosition().Y().value());
   }
 
   frc::SwerveDriveKinematics<4> kDriveKinematics{
@@ -148,8 +151,10 @@ class DriveSubsystem : public frc2::SubsystemBase {
   // dean stop pulling up pathplanner
   // one side two side red side blue side
 
-  frc::Pose2d redSideHub = frc::Pose2d(11.908_m, 4.037_m, frc::Rotation2d(0_deg));
-  frc::Pose2d blueSideHub = frc::Pose2d(4.632_m, 4.037_m, frc::Rotation2d(0_deg));
+  frc::Pose2d redSideHub =
+      frc::Pose2d(11.908_m, 4.037_m, frc::Rotation2d(0_deg));
+  frc::Pose2d blueSideHub =
+      frc::Pose2d(4.632_m, 4.037_m, frc::Rotation2d(0_deg));
 
   // this is the function to get the nearest pose
   // m_odometry.GetEstimatedPosition().Nearest({this->hi, this->hi});

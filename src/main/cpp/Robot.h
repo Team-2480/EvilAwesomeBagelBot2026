@@ -18,7 +18,7 @@
 #include <string>
 
 #include "Constants.h"
-#include "pid.cpp"
+#include "pid.h"
 #include "subsystems/Climb.h"
 #include "subsystems/DriveSubsystem.h"
 #include "subsystems/Intake.h"

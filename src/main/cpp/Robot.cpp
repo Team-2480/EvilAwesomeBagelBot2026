@@ -24,7 +24,7 @@
 
 #include "Constants.h"
 #include "frc/smartdashboard/SmartDashboard.h"
-#include "pid.cpp"
+#include "pid.h"
 #include "subsystems/DriveSubsystem.h"
 #include "subsystems/Intake.h"
 
@@ -145,13 +145,15 @@ void Robot::ConfigureButtonBindings() {
                                               std::move(shared_shooter_off));
 
   auto intake_suck = new frc2::InstantCommand(
-      [this] { m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_SUCK); }, {&m_intake});
+      [this] { m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_SUCK); },
+      {&m_intake});
   auto shared_intake_suck = std::shared_ptr<frc2::Command>(intake_suck);
   pathplanner::NamedCommands::registerCommand("intakeSuck",
                                               std::move(shared_intake_suck));
 
   auto intake_repel = new frc2::InstantCommand(
-      [this] { m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_REPEL); }, {&m_intake});
+      [this] { m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_REPEL); },
+      {&m_intake});
   auto shared_intake_repel = std::shared_ptr<frc2::Command>(intake_repel);
   pathplanner::NamedCommands::registerCommand("intakeRepel",
                                               std::move(shared_intake_repel));
@@ -174,7 +176,9 @@ void Robot::ConfigureButtonBindings() {
 
   frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kY)
       .ToggleOnTrue(new frc2::InstantCommand(
-          [this] { m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_REPEL); },
+          [this] {
+            m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_REPEL);
+          },
           {&m_intake}));
   frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kY)
       .ToggleOnFalse(new frc2::InstantCommand(
