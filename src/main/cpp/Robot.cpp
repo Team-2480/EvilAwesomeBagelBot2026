@@ -145,13 +145,13 @@ void Robot::ConfigureButtonBindings() {
                                               std::move(shared_shooter_off));
 
   auto intake_suck = new frc2::InstantCommand(
-      [this] { m_intake.SetIntake(true); }, {&m_intake});
+      [this] { m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_SUCK); }, {&m_intake});
   auto shared_intake_suck = std::shared_ptr<frc2::Command>(intake_suck);
   pathplanner::NamedCommands::registerCommand("intakeSuck",
                                               std::move(shared_intake_suck));
 
   auto intake_repel = new frc2::InstantCommand(
-      [this] { m_intake.SetIntake(false); }, {&m_intake});
+      [this] { m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_REPEL); }, {&m_intake});
   auto shared_intake_repel = std::shared_ptr<frc2::Command>(intake_repel);
   pathplanner::NamedCommands::registerCommand("intakeRepel",
                                               std::move(shared_intake_repel));
