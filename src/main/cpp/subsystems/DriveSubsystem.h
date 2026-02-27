@@ -111,6 +111,12 @@ class DriveSubsystem : public frc2::SubsystemBase {
         {this->blueSideHub, this->redSideHub});
   };
 
+  double MyHomiePythagoras(){
+    double AValTriangle = GetHubDistance().X().value() - m_odometry.GetEstimatedPosition().X().value();
+    double BvalTriangle = GetHubDistance().Y().value() - m_odometry.GetEstimatedPosition().Y().value();
+    return std::sqrt(std::pow (AValTriangle, 2) + std::pow(BvalTriangle, 2));
+  }
+
   double GetHubRelRot() {
     return std::atan2(GetHubDistance().X().value() -
                           m_odometry.GetEstimatedPosition().X().value(),
