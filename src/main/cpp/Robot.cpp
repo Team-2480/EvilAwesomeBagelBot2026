@@ -27,6 +27,7 @@
 #include "pid.h"
 #include "subsystems/DriveSubsystem.h"
 #include "subsystems/Intake.h"
+#include "units/length.h"
 
 using namespace DriveConstants;
 using namespace pathplanner;
@@ -49,6 +50,7 @@ Robot::Robot() {
   units::radians_per_second_t appliedRot = units::radians_per_second_t{0};
   auto autoRot = units::radians_per_second_t{rot_pid.calculate(
       0, m_drive.GetHubRelRot() - m_drive.GetHeading().value())};
+  m_shooter.SetHubDistance(units::length::meter_t{m_drive.MyHomiePythagoras()});
 
   frc::SmartDashboard::PutNumber("Auto Rotation", autoRot.value());
 

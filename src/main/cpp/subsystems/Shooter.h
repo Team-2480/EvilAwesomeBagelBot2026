@@ -5,6 +5,9 @@
 #include "ctre/phoenix6/controls/Follower.hpp"
 #include "frc2/command/SubsystemBase.h"
 #include "units/angle.h"
+#include "units/angular_velocity.h"
+#include "units/length.h"
+#include "TrajectoryCalculator.h"
 
 enum ShooterMode {
   SHOOTER_NONE,
@@ -62,7 +65,7 @@ class ShooterSubsystem : public frc2::SubsystemBase {
 
     // shooter_turner.GetConfigurator().Apply(cfg);
 
-    // JULIA (NEW!): config needs to be set here like above just with
+    // JULIA: config needs to be set here like above just with
     // shooter_turner
 
     shooter_driver.SetNeutralMode(
@@ -76,16 +79,24 @@ class ShooterSubsystem : public frc2::SubsystemBase {
     // JULIA: any new motor you add will need to be configurated here
     // this is the constructor so any code here will be run as soon as the
     // object is instanced (ie the robot starts)
+    
+    traj.set_fixed(units::angle::degree_t{65}.convert<units::angle::radian>().value());
+
   }
   void Periodic() override;
 
   void SetShooter(bool shooter_set);
   void SetShooterMode(ShooterMode mode);
 
-  // JULIA(NEW!): add a argument with units::turns a argument
+  // JULIA: add a argument with units::turns a argument
   void SetShooterRot(units::angle::turn_t turns);
 
+  void SetHubDistance(units::meter_t distance);
+
  private:
+
+
+
   bool shooter_on = false;
 
   ShooterMode mode = SHOOTER_NONE;
@@ -100,8 +111,9 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   // refer to the bible when picking IDs
   // https://docs.google.com/document/d/1VkR9zvviwuhPBft1adSYg7TGN60f-zLs2Nebqqzaj-k/edit?usp=sharing
 
+  const float wheel_radius = 2;
   ctre::phoenix6::controls::VelocityVoltage shooter_driver_speed =
-      ctre::phoenix6::controls::VelocityVoltage{120_tps * 1}
+      ctre::phoenix6::controls::VelocityVoltage{0_rad_per_s * wheel_radius}
           // ctre::phoenix6::controls::VelocityVoltage{20_tps}
           // TODO: update to match gear ratio
           .WithSlot(0);
@@ -129,5 +141,7 @@ class ShooterSubsystem : public frc2::SubsystemBase {
    intialization (intialization is here) we should have a SetShooterRot() or
    something function that will update the rot */
   ctre::phoenix6::controls::PositionDutyCycle turn_position =
-      ctre::phoenix6::controls::PositionDutyCycle{1_tr};
+      ctre::phoenix6::controls::PositionDutyCycle{1_rad};
+
+  TrajectoryCalculator traj;
 };

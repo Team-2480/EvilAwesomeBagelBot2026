@@ -20,11 +20,20 @@ class TrajectoryCalculator {
     pitch = c_pitch;
     fixed = true;
   }
+  double get_pitch() {
+    return pitch; 
+  }
+  double get_velocity() {
+    return velocity; 
+  }
+
 
   double calculate_loss(double targ_x, double targ_y) {
     if (!fixed) {
       pitch = std::atan(targ_y / (targ_x / 4));
     }
+
+    pitch  = std::clamp(pitch, std::numbers::pi/4, std::numbers::pi*13/30);
 
     double loss =
         std::tan(pitch) * targ_x -
