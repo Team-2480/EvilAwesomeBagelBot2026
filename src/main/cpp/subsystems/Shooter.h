@@ -1,13 +1,14 @@
 
 #pragma once
 
+#include "TrajectoryCalculator.h"
 #include "ctre/phoenix6/TalonFX.hpp"
 #include "ctre/phoenix6/controls/Follower.hpp"
 #include "frc2/command/SubsystemBase.h"
+#include "rev/SparkMax.h"
 #include "units/angle.h"
 #include "units/angular_velocity.h"
 #include "units/length.h"
-#include "TrajectoryCalculator.h"
 
 enum ShooterMode {
   SHOOTER_NONE,
@@ -79,13 +80,28 @@ class ShooterSubsystem : public frc2::SubsystemBase {
     // JULIA: any new motor you add will need to be configurated here
     // this is the constructor so any code here will be run as soon as the
     // object is instanced (ie the robot starts)
-    
-    traj.set_fixed(units::angle::degree_t{65}.convert<units::angle::radian>().value());
+    //
 
+    rev::spark::SparkBaseConfig shooter_intake_config{};
+
+    shooter_intake_config.encoder.PositionConversionFactor(1)
+        .VelocityConversionFactor(1);
+    shooter_intake_config.closedLoop
+        .SetFeedbackSensor(rev::spark::FeedbackSensor::kPrimaryEncoder)
+        .Pid(0.1, 0, 0)
+        .OutputRange(-1, 1);
+
+    shooter_intake_driver.Configure(shooter_intake_config,
+                                    rev::ResetMode::kResetSafeParameters,
+                                    rev::PersistMode::kPersistParameters);
+
+    traj.set_fixed(
+        units::angle::degree_t{65}.convert<units::angle::radian>().value());
   }
   void Periodic() override;
 
   void SetShooter(bool shooter_set);
+  void SetShooterIntake(bool shooter_set);
   void SetShooterMode(ShooterMode mode);
 
   // JULIA: add a argument with units::turns a argument
@@ -94,10 +110,8 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   void SetHubDistance(units::meter_t distance);
 
  private:
-
-
-
   bool shooter_on = false;
+  bool shooter_intake_on = false;
 
   ShooterMode mode = SHOOTER_NONE;
 
@@ -142,6 +156,11 @@ class ShooterSubsystem : public frc2::SubsystemBase {
    something function that will update the rot */
   ctre::phoenix6::controls::PositionDutyCycle turn_position =
       ctre::phoenix6::controls::PositionDutyCycle{1_rad};
+
+  rev::spark::SparkMax shooter_intake_driver =
+      rev::spark::SparkMax(22, rev::spark::SparkMax::MotorType::kBrushless);
+  rev::spark::SparkClosedLoopController shooter_intake_driver_controller =
+      shooter_intake_driver.GetClosedLoopController();
 
   TrajectoryCalculator traj;
 };

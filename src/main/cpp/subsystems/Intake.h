@@ -68,12 +68,6 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   rev::spark::SparkClosedLoopController intake_driver_controller =
       intake_driver.GetClosedLoopController();
 
-  ctre::phoenix6::controls::VelocityVoltage intake_driver_speed =
-      ctre::phoenix6::controls::VelocityVoltage{5_tps}.WithSlot(0);
-
-  ctre::phoenix6::controls::VelocityVoltage stop_speed =
-      ctre::phoenix6::controls::VelocityVoltage{0_tps}.WithSlot(0);
-
   // rev::spark::SparkMax intake_up_down_driver =
   //     rev::spark::SparkMax(40, rev::spark::SparkMax::MotorType::kBrushless);
   //

@@ -35,10 +35,21 @@ void ShooterSubsystem::Periodic() {
   } else {
     shooter_driver.SetControl(stop_speed);
   }
+
+  if (shooter_intake_on) {
+    shooter_intake_driver_controller.SetSetpoint(
+        0.4, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
+  } else {
+    shooter_intake_driver_controller.SetSetpoint(
+        0, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
+  }
 }
 
 void ShooterSubsystem::SetShooter(bool shooter_set) {
   shooter_on = shooter_set;
+}
+void ShooterSubsystem::SetShooterIntake(bool shooter_set) {
+  shooter_intake_on = shooter_set;
 }
 
 void ShooterSubsystem::SetShooterMode(ShooterMode mode_set) { mode = mode_set; }

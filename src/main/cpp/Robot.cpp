@@ -134,6 +134,14 @@ void Robot::ConfigureButtonBindings() {
   pathplanner::NamedCommands::registerCommand("climbFalse",
                                               std::move(shared_climb_false));
 
+  // shooter
+  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kA)
+      .ToggleOnTrue(new frc2::InstantCommand(
+          [this] { m_shooter.SetShooterIntake(true); }, {&m_shooter}));
+  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kA)
+      .ToggleOnFalse(new frc2::InstantCommand(
+          [this] { m_shooter.SetShooterIntake(false); }, {&m_shooter}));
+
   auto shooter_on = new frc2::InstantCommand(
       [this] { m_shooter.SetShooter(true); }, {&m_shooter});
   auto shared_shooter_on = std::shared_ptr<frc2::Command>(shooter_on);
@@ -145,6 +153,48 @@ void Robot::ConfigureButtonBindings() {
   auto shared_shooter_off = std::shared_ptr<frc2::Command>(shooter_off);
   pathplanner::NamedCommands::registerCommand("shooterOff",
                                               std::move(shared_shooter_off));
+
+  frc2::JoystickButton(&m_actionController,
+                       frc::XboxController::Button::kRightBumper)
+      .ToggleOnTrue(new frc2::InstantCommand(
+          [this] { m_shooter.SetShooter(true); }, {&m_shooter}));
+  frc2::JoystickButton(&m_actionController,
+                       frc::XboxController::Button::kRightBumper)
+      .ToggleOnFalse(new frc2::InstantCommand(
+          [this] { m_shooter.SetShooter(false); }, {&m_shooter}));
+
+  auto shooter_intake_on = new frc2::InstantCommand(
+      [this] { m_shooter.SetShooterIntake(true); }, {&m_shooter});
+  auto shared_shooter_intake_on = std::shared_ptr<frc2::Command>(shooter_on);
+  pathplanner::NamedCommands::registerCommand("shooterIntakeOn",
+                                              std::move(shared_shooter_on));
+
+  auto shooter_intake_off = new frc2::InstantCommand(
+      [this] { m_shooter.SetShooterIntake(false); }, {&m_shooter});
+  auto shared_shooter_intake_off = std::shared_ptr<frc2::Command>(shooter_off);
+  pathplanner::NamedCommands::registerCommand("shooterIntakeOff",
+                                              std::move(shared_shooter_off));
+
+  // intake
+  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kX)
+      .ToggleOnTrue(new frc2::InstantCommand(
+          [this] { m_intake.SetIntake(true); }, {&m_intake}));
+  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kX)
+      .ToggleOnFalse(new frc2::InstantCommand(
+          [this] { m_intake.SetIntake(false); }, {&m_intake}));
+
+  frc2::JoystickButton(&m_actionController,
+                       frc::XboxController::Button::kLeftBumper)
+      .ToggleOnTrue(new frc2::InstantCommand(
+          [this] {
+            m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_REPEL);
+          },
+          {&m_intake}));
+  frc2::JoystickButton(&m_actionController,
+                       frc::XboxController::Button::kLeftBumper)
+      .ToggleOnFalse(new frc2::InstantCommand(
+          [this] { m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_SUCK); },
+          {&m_intake}));
 
   auto intake_suck = new frc2::InstantCommand(
       [this] { m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_SUCK); },
@@ -159,33 +209,6 @@ void Robot::ConfigureButtonBindings() {
   auto shared_intake_repel = std::shared_ptr<frc2::Command>(intake_repel);
   pathplanner::NamedCommands::registerCommand("intakeRepel",
                                               std::move(shared_intake_repel));
-
-  // shooter
-  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kA)
-      .ToggleOnTrue(new frc2::InstantCommand(
-          [this] { m_shooter.SetShooter(true); }, {&m_shooter}));
-  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kA)
-      .ToggleOnFalse(new frc2::InstantCommand(
-          [this] { m_shooter.SetShooter(false); }, {&m_shooter}));
-
-  // intake
-  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kX)
-      .ToggleOnTrue(new frc2::InstantCommand(
-          [this] { m_intake.SetIntake(true); }, {&m_intake}));
-  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kX)
-      .ToggleOnFalse(new frc2::InstantCommand(
-          [this] { m_intake.SetIntake(false); }, {&m_intake}));
-
-  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kY)
-      .ToggleOnTrue(new frc2::InstantCommand(
-          [this] {
-            m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_REPEL);
-          },
-          {&m_intake}));
-  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kY)
-      .ToggleOnFalse(new frc2::InstantCommand(
-          [this] { m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_SUCK); },
-          {&m_intake}));
 }
 
 frc2::CommandPtr Robot::GetAutonomousCommand() {
