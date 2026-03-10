@@ -39,7 +39,7 @@ void ShooterSubsystem::Periodic() {
 
   if (shooter_intake_on) {
     shooter_intake_driver_controller.SetSetpoint(
-        0.4, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
+        -0.4, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
   } else {
     shooter_intake_driver_controller.SetSetpoint(
         0, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
@@ -64,9 +64,9 @@ void ShooterSubsystem::SetShooterRot(units::angle::turn_t turns) {
   turn_position.WithPosition(turns);
 };
 
-void ShooterSubsystem::SetHubDistance(units::meter_t distance) {
+void ShooterSubsystem::SetHubDistance(units::meter_t distance, double height) {
   for (size_t i = 0; i < 10; i++) {
     // ME: adjust values here too for accuracy
-    traj.calculate_loss(distance.convert<units::length::feet>().value(), 5);
+    traj.calculate_loss(distance.convert<units::length::feet>().value(), height);
   }
 }

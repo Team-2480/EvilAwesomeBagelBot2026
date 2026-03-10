@@ -106,7 +106,7 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   // JULIA: add a argument with units::turns a argument
   void SetShooterRot(units::angle::turn_t turns);
 
-  void SetHubDistance(units::meter_t distance);
+  void SetHubDistance(units::meter_t distance, double height);
 
  private:
   bool shooter_on = false;
