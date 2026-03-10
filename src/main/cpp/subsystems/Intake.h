@@ -64,12 +64,12 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   IntakeUpDown intake_up_down = INTAKE_UP;
 
   rev::spark::SparkMax intake_driver =
-      rev::spark::SparkMax(41, rev::spark::SparkMax::MotorType::kBrushless);
+      rev::spark::SparkMax(40, rev::spark::SparkMax::MotorType::kBrushless);
   rev::spark::SparkClosedLoopController intake_driver_controller =
       intake_driver.GetClosedLoopController();
 
-  // rev::spark::SparkMax intake_up_down_driver =
-  //     rev::spark::SparkMax(40, rev::spark::SparkMax::MotorType::kBrushless);
+  rev::spark::SparkMax intake_up_down_driver =
+      rev::spark::SparkMax(41, rev::spark::SparkMax::MotorType::kBrushless);
   //
   // rev::spark::SparkClosedLoopController intake_up_down_controller =
   //     intake_up_down_driver.GetClosedLoopController();

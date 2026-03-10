@@ -47,22 +47,24 @@ Robot::Robot() {
   // Set up default drive command
   // The left stick controls translation of the robot.
   // Turning is controlled by the X axis of the right stick.
-  units::radians_per_second_t appliedRot = units::radians_per_second_t{0};
-  auto autoRot = units::radians_per_second_t{rot_pid.calculate(
-      0, m_drive.GetHubRelRot() - m_drive.GetHeading().value())};
-  m_shooter.SetHubDistance(units::length::meter_t{m_drive.MyHomiePythagoras()});
-
-  frc::SmartDashboard::PutNumber("Auto Rotation", autoRot.value());
-
-  if (m_findRot) {
-    appliedRot = autoRot;
-  } else {
-    appliedRot = -units::radians_per_second_t{frc::ApplyDeadband(
-        std::pow(m_driveController.GetZ(), 3), OIConstants::kDriveDeadband)};
-  }
-
   m_drive.SetDefaultCommand(frc2::RunCommand(
-      [this, appliedRot] {
+      [this] {
+        units::radians_per_second_t appliedRot = units::radians_per_second_t{0};
+        auto autoRot = units::radians_per_second_t{rot_pid.calculate(
+            0, m_drive.GetHubRelRot() - m_drive.GetHeading().value())};
+        m_shooter.SetHubDistance(
+            units::length::meter_t{m_drive.MyHomiePythagoras()});
+
+        frc::SmartDashboard::PutNumber("Auto Rotation", autoRot.value());
+
+        if (m_findRot) {
+          appliedRot = autoRot;
+        } else {
+          appliedRot = -units::radians_per_second_t{
+              frc::ApplyDeadband(std::pow(m_driveController.GetZ(), 3),
+                                 OIConstants::kDriveDeadband)};
+        }
+
         m_drive.Drive(-units::meters_per_second_t{frc::ApplyDeadband(
                           std::pow(m_driveController.GetY(), 3),
                           OIConstants::kDriveDeadband)},
