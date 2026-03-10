@@ -50,9 +50,9 @@ class ShooterSubsystem : public frc2::SubsystemBase {
     cfg2.Voltage.PeakReverseVoltage = -12_V;
 
     cfg.MotorOutput.Inverted =
-        ctre::phoenix6::signals::InvertedValue::Clockwise_Positive;
+        ctre::phoenix6::signals::InvertedValue::CounterClockwise_Positive;
     cfg2.MotorOutput.Inverted =
-        ctre::phoenix6::signals::InvertedValue::Clockwise_Positive;
+        ctre::phoenix6::signals::InvertedValue::CounterClockwise_Positive;
 
     shooter_driver.GetConfigurator().Apply(cfg);
 
@@ -87,7 +87,6 @@ class ShooterSubsystem : public frc2::SubsystemBase {
     shooter_intake_config.encoder.PositionConversionFactor(1)
         .VelocityConversionFactor(1);
     shooter_intake_config.closedLoop
-        .SetFeedbackSensor(rev::spark::FeedbackSensor::kPrimaryEncoder)
         .Pid(0.1, 0, 0)
         .OutputRange(-1, 1);
 

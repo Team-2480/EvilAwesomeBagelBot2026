@@ -20,11 +20,12 @@ void ShooterSubsystem::Periodic() {
 
   frc::SmartDashboard::PutNumber("Shooter Pitch", traj.get_pitch());
   frc::SmartDashboard::PutBoolean("Shooter On", shooter_on);
+  frc::SmartDashboard::PutBoolean("Shooter Index On", shooter_intake_on);
 
   // ME: so this will get the wheel spinning at the target velocity off the ball
   // there will be a conversion loss so this needs to be tweaked
   shooter_driver_speed.WithVelocity(1_rad_per_s * wheel_radius *
-                                    traj.get_velocity());
+                                    traj.get_velocity() * 10);
 
   if (shooter_on) {
     shooter_driver.SetControl(shooter_driver_speed);
