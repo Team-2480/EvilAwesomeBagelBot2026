@@ -64,9 +64,9 @@ void ShooterSubsystem::SetShooterRot(units::angle::turn_t turns) {
   turn_position.WithPosition(turns);
 };
 
-void ShooterSubsystem::SetHubDistance(units::meter_t distance) {
+void ShooterSubsystem::SetHubDistance(units::meter_t distance, double height) {
   for (size_t i = 0; i < 10; i++) {
     // ME: adjust values here too for accuracy
-    traj.calculate_loss(distance.convert<units::length::feet>().value(), 5);
+    traj.calculate_loss(distance.convert<units::length::feet>().value(), height);
   }
 }
