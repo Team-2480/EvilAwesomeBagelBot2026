@@ -33,6 +33,7 @@ class TrajectoryCalculator {
       pitch = std::atan(targ_y / (targ_x / 4));
     }
 
+    targ_x = std::max(targ_x, 0.0);
     pitch  = std::clamp(pitch, std::numbers::pi/4, std::numbers::pi*13/30);
 
     double loss =
