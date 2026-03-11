@@ -81,6 +81,7 @@ DriveSubsystem::DriveSubsystem()
              HALUsageReporting::kRobotDriveSwerve_MaxSwerve);
 
   frc::SmartDashboard::PutData("Field", &m_field);
+  frc::SmartDashboard::PutData("Hub Field", &m_hub_field);
 }
 
 void DriveSubsystem::Periodic() {
@@ -109,6 +110,7 @@ void DriveSubsystem::Periodic() {
                     {m_frontLeft.GetPosition(), m_rearLeft.GetPosition(),
                      m_frontRight.GetPosition(), m_rearRight.GetPosition()});
   m_field.SetRobotPose(m_odometry.GetEstimatedPosition());
+  m_hub_field.SetRobotPose(GetHubDistance().first);
 }
 
 void DriveSubsystem::Drive(units::meters_per_second_t xSpeed,

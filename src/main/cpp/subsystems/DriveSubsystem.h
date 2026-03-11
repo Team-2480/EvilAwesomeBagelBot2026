@@ -106,21 +106,31 @@ class DriveSubsystem : public frc2::SubsystemBase {
    */
   void ResetOdometry(frc::Pose2d pose);
 
-  frc::Pose2d GetHubDistance() {
-    return m_odometry.GetEstimatedPosition().Nearest(
-        {this->blueSideHub, this->redSideHub});
+  std::pair<frc::Pose2d, double> GetHubDistance() {
+    if (m_odometry.GetEstimatedPosition().X().value() > 4.5 &&
+        m_odometry.GetEstimatedPosition().X().value() < 12.1) {
+
+      return {m_odometry.GetEstimatedPosition().Nearest(
+          {this->blueSideBlow1, this->blueSideBlow2, 
+          this->redSideBlow1, this->redSideBlow2}), 0};
+    } else {
+      return {m_odometry.GetEstimatedPosition().Nearest(
+          {this->blueSideHub, this->redSideHub}), 5};
+    }
   };
 
-  double MyHomiePythagoras(){
-    double AValTriangle = GetHubDistance().X().value() - m_odometry.GetEstimatedPosition().X().value();
-    double BvalTriangle = GetHubDistance().Y().value() - m_odometry.GetEstimatedPosition().Y().value();
-    return std::sqrt(std::pow (AValTriangle, 2) + std::pow(BvalTriangle, 2));
+  double MyHomiePythagoras() {
+    double AValTriangle = GetHubDistance().first.X().value() -
+                          m_odometry.GetEstimatedPosition().X().value();
+    double BvalTriangle = GetHubDistance().first.Y().value() -
+                          m_odometry.GetEstimatedPosition().Y().value();
+    return std::sqrt(std::pow(AValTriangle, 2) + std::pow(BvalTriangle, 2));
   }
 
   double GetHubRelRot() {
-    return std::atan2(GetHubDistance().X().value() -
+    return std::atan2(GetHubDistance().first.X().value() -
                           m_odometry.GetEstimatedPosition().X().value(),
-                      GetHubDistance().Y().value() -
+                      GetHubDistance().first.Y().value() -
                           m_odometry.GetEstimatedPosition().Y().value());
   }
 
@@ -150,6 +160,8 @@ class DriveSubsystem : public frc2::SubsystemBase {
   // 4 defines the number of modules
   frc::SwerveDrivePoseEstimator<4> m_odometry;
   frc::Field2d m_field;
+  frc::Field2d m_hub_field;
+
 
   // OLIVER + JULIA: Change this with the ball target positions
   // frc::Pose2d hi = frc::Pose2d(2_m, 2_m, frc::Rotation2d(0_deg));
@@ -161,6 +173,17 @@ class DriveSubsystem : public frc2::SubsystemBase {
       frc::Pose2d(11.908_m, 4.037_m, frc::Rotation2d(0_deg));
   frc::Pose2d blueSideHub =
       frc::Pose2d(4.632_m, 4.037_m, frc::Rotation2d(0_deg));
+
+  frc::Pose2d redSideBlow1 =
+      frc::Pose2d(14.400_m, 6.400_m, frc::Rotation2d(0_deg));
+  frc::Pose2d redSideBlow2 =
+      frc::Pose2d(14.400_m, 2_m, frc::Rotation2d(0_deg));
+
+  frc::Pose2d blueSideBlow1 =
+      frc::Pose2d(2_m, 6.400_m, frc::Rotation2d(0_deg));
+  frc::Pose2d blueSideBlow2 =
+      frc::Pose2d(2_m, 2_m, frc::Rotation2d(0_deg));
+
 
   // this is the function to get the nearest pose
   // m_odometry.GetEstimatedPosition().Nearest({this->hi, this->hi});
