@@ -1,5 +1,13 @@
-#include "Agitator.h"
+#include "Agitate.h"
 
+void AgitateSubsystem::Periodic() {
+  // JULIA: Perodic function
 
-// JULIA: Perodic function
-agitate_driver_controller.SetSetpoint(1, rev::spark::SparkLowLwvwl::ControlType::kDutyCycle);
+  if (agitate_on) {
+    agitate_driver_controller.SetSetpoint(
+        1, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
+  } else {
+    agitate_driver_controller.SetSetpoint(
+        0, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
+  }
+}

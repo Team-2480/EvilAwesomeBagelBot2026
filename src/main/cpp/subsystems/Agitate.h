@@ -1,6 +1,10 @@
 #pragma once
 
 #include "frc2/command/SubsystemBase.h"
+#include <rev/config/SparkMaxConfig.h>
+#include <rev/SparkMax.h>
+
+
 // JULIA (NEW!): Header files!
 
 class AgitateSubsystem : public frc2::SubsystemBase{
@@ -15,7 +19,7 @@ class AgitateSubsystem : public frc2::SubsystemBase{
         agitate_config.closedLoop
             .SetFeedbackSensor(
             // Header issue!
-                rev::spark::FeedbackSendor::kPrimaryEncoder)
+                rev::spark::FeedbackSensor::kPrimaryEncoder)
             .Pid(0.1, 0, 0)
             .OutputRange(-1, 1);
 
@@ -23,8 +27,11 @@ class AgitateSubsystem : public frc2::SubsystemBase{
                                     rev::PersistMode::kPersistParameters);
 
        // JULIA (NEW!): Missing closing curly brace here
-       
-       
+    }   
+
+    void Periodic() override;
+    void AgitateActivity(bool agitate_on);
+
        // JULIA (NEW!) functions to change turn speed on off
 
     private:
@@ -36,7 +43,7 @@ class AgitateSubsystem : public frc2::SubsystemBase{
         agitate_driver.GetClosedLoopController();
 
     // JULIA(NEW!): Erroneous squirely brace
-    }
+    
 
 
 
