@@ -13,6 +13,7 @@
 #include <frc2/command/SequentialCommandGroup.h>
 #include <frc2/command/SwerveControllerCommand.h>
 #include <frc2/command/button/JoystickButton.h>
+#include <frc2/command/button/POVButton.h>
 #include <pathplanner/lib/auto/NamedCommands.h>
 #include <pathplanner/lib/commands/PathPlannerAuto.h>
 #include <units/angle.h>
@@ -24,9 +25,11 @@
 
 #include "Constants.h"
 #include "frc/smartdashboard/SmartDashboard.h"
+#include "frc2/command/RunCommand.h"
 #include "pid.h"
 #include "subsystems/DriveSubsystem.h"
 #include "subsystems/Intake.h"
+#include "subsystems/Shooter.h"
 #include "units/base.h"
 #include "units/length.h"
 
@@ -54,10 +57,15 @@ Robot::Robot() {
         auto autoRot = units::radians_per_second_t{rot_pid.calculate(
             0, m_drive.GetHubRelRot() - m_drive.GetHeading().value())};
         m_shooter.SetHubDistance(
-            units::length::meter_t{m_drive.MyHomiePythagoras()}, m_drive.GetHubDistance().second);
+            units::length::meter_t{m_drive.MyHomiePythagoras()},
+            m_drive.GetHubDistance().second);
 
         frc::SmartDashboard::PutNumber("Auto Rotation", autoRot.value());
-        frc::SmartDashboard::PutNumber("Distance to Hub", units::convert<units::length::meters, units::length::feet>(units::length::meter_t{m_drive.MyHomiePythagoras()}).value()); // i have NO idea if this will work
+        frc::SmartDashboard::PutNumber(
+            "Distance to Hub",
+            units::convert<units::length::meters, units::length::feet>(
+                units::length::meter_t{m_drive.MyHomiePythagoras()})
+                .value());  // i have NO idea if this will work
         if (m_findRot) {
           appliedRot = autoRot;
         } else {
@@ -178,6 +186,27 @@ void Robot::ConfigureButtonBindings() {
   pathplanner::NamedCommands::registerCommand("shooterIntakeOff",
                                               std::move(shared_shooter_off));
 
+  // shooter manual
+  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kY)
+      .ToggleOnTrue(new frc2::RunCommand([this] {
+        m_shooter.shooter_automatic_on = !m_shooter.shooter_automatic_on;
+      }));
+
+  if (m_shooter.shooter_automatic_on) {
+    frc2::POVButton(&m_actionController, 0, 0)
+        .ToggleOnTrue(new frc2::RunCommand([this] {
+          if (m_shooter.shooter_manual_speed < 150) {
+            m_shooter.shooter_manual_speed += 10;
+          }
+        }));
+
+    frc2::POVButton(&m_actionController, 180, 0)
+        .ToggleOnTrue(new frc2::RunCommand([this] {
+          if (m_shooter.shooter_manual_speed > 50) {
+            m_shooter.shooter_manual_speed -= 10;
+          }
+        }));
+  }
   // intake
   frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kX)
       .ToggleOnTrue(new frc2::InstantCommand(
