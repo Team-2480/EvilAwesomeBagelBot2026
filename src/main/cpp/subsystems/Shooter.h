@@ -5,6 +5,7 @@
 #include "ctre/phoenix6/TalonFX.hpp"
 #include "ctre/phoenix6/controls/Follower.hpp"
 #include "frc2/command/SubsystemBase.h"
+#include "frc/Servo.h"
 #include "rev/SparkMax.h"
 #include "units/angle.h"
 #include "units/angular_velocity.h"
@@ -160,6 +161,9 @@ class ShooterSubsystem : public frc2::SubsystemBase {
       rev::spark::SparkMax(22, rev::spark::SparkMax::MotorType::kBrushless);
   rev::spark::SparkClosedLoopController shooter_intake_driver_controller =
       shooter_intake_driver.GetClosedLoopController();
+
+  frc::Servo servo_left{0};
+  frc::Servo servo_right{1};
 
   TrajectoryCalculator traj;
 };
