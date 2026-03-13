@@ -31,20 +31,16 @@ class MotorRegulator {
 
   void Up() {
     if (target_up.has_value()) {
-      printf("going to %f\n", target_up.value());
-      printf("curently at %f\n", spark_max->GetEncoder().GetPosition());
       closed_loop->SetSetpoint(
           target_up.value(),
-          rev::spark::SparkLowLevel::ControlType::kMAXMotionPositionControl);
+          rev::spark::SparkLowLevel::ControlType::kPosition);
     }
   }
   void Down() {
     if (target_down.has_value()) {
-      printf("going to %f\n", target_down.value());
-      printf("curently at %f\n", spark_max->GetEncoder().GetPosition());
       closed_loop->SetSetpoint(
           target_down.value(),
-          rev::spark::SparkLowLevel::ControlType::kMAXMotionPositionControl);
+          rev::spark::SparkLowLevel::ControlType::kPosition);
     }
   }
   void Pause() {

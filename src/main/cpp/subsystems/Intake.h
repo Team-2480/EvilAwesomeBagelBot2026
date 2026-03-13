@@ -35,12 +35,9 @@ class IntakeSubsystem : public frc2::SubsystemBase {
         .VelocityConversionFactor(1);
     intake_up_down_config.closedLoop
         .SetFeedbackSensor(rev::spark::FeedbackSensor::kPrimaryEncoder)
-        .Pid(0.1, 0, 0)
+        .Pid(0.001, 0, 0)
         .OutputRange(-1, 1);
-    intake_up_down_config.closedLoop.feedForward.kV(12.0 / 5657);
-    intake_up_down_config.closedLoop.maxMotion.CruiseVelocity(1000)
-        .MaxAcceleration(10000)
-        .AllowedProfileError(1);
+  
 
     // intake_up_down_driver.Configure(intake_up_down_config,
     //                                 rev::ResetMode::kResetSafeParameters,
