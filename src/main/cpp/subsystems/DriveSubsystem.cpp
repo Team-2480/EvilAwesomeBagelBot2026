@@ -94,11 +94,11 @@ void DriveSubsystem::Periodic() {
 
   // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/state-space/state-space-pose-estimators.html
   // https://docs.limelightvision.io/docs/docs-limelight/apis/limelight-lib
-  LimelightHelpers::PoseEstimate limelightMeasurement =
-      LimelightHelpers::getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
-
-  m_odometry.AddVisionMeasurement(limelightMeasurement.pose,
-                                  limelightMeasurement.timestampSeconds);
+  // LimelightHelpers::PoseEstimate limelightMeasurement =
+  //     LimelightHelpers::getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+  //
+  // m_odometry.AddVisionMeasurement(limelightMeasurement.pose,
+  //                                 limelightMeasurement.timestampSeconds);
 
   LimelightHelpers::PoseEstimate limelightFancyMeasurement =
       LimelightHelpers::getBotPoseEstimate_wpiBlue_MegaTag2("limelight-fancy");
