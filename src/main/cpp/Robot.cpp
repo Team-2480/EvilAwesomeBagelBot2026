@@ -215,6 +215,18 @@ void Robot::ConfigureButtonBindings() {
       .ToggleOnFalse(new frc2::InstantCommand(
           [this] { m_intake.SetIntake(false); }, {&m_intake}));
 
+  auto intake_enable = new frc2::InstantCommand(
+      [this] { m_intake.SetIntake(true); }, {&m_intake});
+  auto shared_intake_enable = std::shared_ptr<frc2::Command>(intake_enable);
+  pathplanner::NamedCommands::registerCommand("intakeOn",
+                                              std::move(shared_intake_enable));
+
+  auto intake_disable = new frc2::InstantCommand(
+      [this] { m_intake.SetIntake(false); }, {&m_intake});
+  auto shared_intake_disable = std::shared_ptr<frc2::Command>(intake_disable);
+  pathplanner::NamedCommands::registerCommand("intakeOff",
+                                              std::move(shared_intake_disable));
+
   frc2::JoystickButton(&m_actionController,
                        frc::XboxController::Button::kLeftBumper)
       .ToggleOnTrue(new frc2::InstantCommand(
