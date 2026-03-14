@@ -24,6 +24,7 @@
 
 #include "Constants.h"
 #include "frc/smartdashboard/SmartDashboard.h"
+#include "frc2/command/button/POVButton.h"
 #include "pid.h"
 #include "subsystems/DriveSubsystem.h"
 #include "subsystems/Intake.h"
@@ -47,15 +48,27 @@ Robot::Robot() {
   // Set up default drive command
   // The left stick controls translation of the robot.
   // Turning is controlled by the X axis of the right stick.
+
+
+
+
   m_drive.SetDefaultCommand(frc2::RunCommand(
       [this] {
         units::radians_per_second_t appliedRot = units::radians_per_second_t{0};
         auto autoRot = units::radians_per_second_t{rot_pid.calculate(
             0, m_drive.GetHubRelRot() - m_drive.GetHeading().value())};
-        m_shooter.SetHubDistance(
-            units::length::meter_t{m_drive.MyHomiePythagoras()}, m_drive.GetHubDistance().second);
+
+        if (m_setDist) {
+          m_shooter.SetHubDistance(dist * 1_ft, 6);
+        } else {
+          m_shooter.SetHubDistance(
+              units::length::meter_t{m_drive.MyHomiePythagoras()},
+              m_drive.GetHubDistance().second);
+        }
 
         frc::SmartDashboard::PutNumber("Auto Rotation", autoRot.value());
+        frc::SmartDashboard::PutNumber("Manual Distance", dist);
+        frc::SmartDashboard::PutBoolean("Is Manual Distance", m_setDist);
 
         if (m_findRot) {
           appliedRot = autoRot;
@@ -156,6 +169,25 @@ void Robot::ConfigureButtonBindings() {
   pathplanner::NamedCommands::registerCommand("shooterOff",
                                               std::move(shared_shooter_off));
 
+  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kY)
+      .ToggleOnTrue(
+          new frc2::InstantCommand([this] { m_setDist = !m_setDist; }));
+
+  frc2::POVButton(&m_actionController, 0, 0)
+      .ToggleOnTrue(new frc2::InstantCommand([this] {
+        if (dist < 10) {
+          dist += 0.25;
+        }
+      }));
+
+  frc2::POVButton(&m_actionController, 180, 0)
+      .ToggleOnTrue(new frc2::InstantCommand([this] {
+        if (dist > 1) {
+          dist -= 0.25;
+        }
+      }));
+
+
   frc2::JoystickButton(&m_actionController,
                        frc::XboxController::Button::kRightBumper)
       .ToggleOnTrue(new frc2::InstantCommand(
@@ -176,6 +208,17 @@ void Robot::ConfigureButtonBindings() {
   auto shared_shooter_intake_off = std::shared_ptr<frc2::Command>(shooter_off);
   pathplanner::NamedCommands::registerCommand("shooterIntakeOff",
                                               std::move(shared_shooter_off));
+
+  frc2::POVButton(&m_actionController, 270, 0)
+      .ToggleOnTrue(new frc2::InstantCommand([this] {
+        m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_UP);
+      }));
+
+  frc2::POVButton(&m_actionController, 90, 0)
+      .ToggleOnTrue(new frc2::InstantCommand([this] {
+        m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_DOWN);
+      }));
+
 
   // intake
   frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kX)

@@ -49,6 +49,8 @@ class Robot {
   bool m_slowMode = false;
   bool m_globalLocal = false;
   bool m_findRot = false;
+  bool m_setDist = false;
+  float dist = 5.0;
 
   // IntakeSubsystem m_intake;
   ClimbSubsystem m_climb;

@@ -35,7 +35,7 @@ class IntakeSubsystem : public frc2::SubsystemBase {
         .VelocityConversionFactor(1);
     intake_up_down_config.closedLoop
         .SetFeedbackSensor(rev::spark::FeedbackSensor::kPrimaryEncoder)
-        .Pid(0.001, 0, 0)
+        .Pid(0.1, 0, 0)
         .OutputRange(-1, 1);
   
 
@@ -43,13 +43,14 @@ class IntakeSubsystem : public frc2::SubsystemBase {
                                     rev::ResetMode::kResetSafeParameters,
                                     rev::PersistMode::kPersistParameters);
 
-    up_down_regulator.SetTargets(-7.571444511413574, -20.5);
+    up_down_regulator.Zero();
+    up_down_regulator.SetTargets(16.35712432861328, 0);
   }
   void Periodic() override;
 
   void SetIntake(bool intake_set);
 
-  enum IntakeUpDown { INTAKE_UP, INTAKE_DOWN };
+  enum IntakeUpDown { INTAKE_UP, INTAKE_DOWN, INTAKE_NONE};
   enum IntakeDischarge { INTAKE_SUCK, INTAKE_REPEL };
   void SetIntakeUpDown(IntakeUpDown c_intake_up_down);
   void SetIntakeDirection(IntakeDischarge intake_set);

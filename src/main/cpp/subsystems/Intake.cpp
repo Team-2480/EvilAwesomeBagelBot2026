@@ -19,14 +19,17 @@ void IntakeSubsystem::Periodic() {
       "Intake Up Down Position",
       intake_up_down_driver.GetEncoder().GetPosition());
 
-  // switch (intake_up_down) {
-  //   case INTAKE_UP:
-  //     up_down_regulator.Up();
-  //     break;
-  //   case INTAKE_DOWN:
-  //     up_down_regulator.Down();
-  //     break;
-  // }
+  switch (intake_up_down) {
+    case INTAKE_UP:
+      up_down_regulator.Up();
+      break;
+    case INTAKE_DOWN:
+      up_down_regulator.Down();
+      break;
+    default:
+      break;
+  }
+
 }
 
 void IntakeSubsystem::SetIntake(bool intake_set) { intake_on = intake_set; }
