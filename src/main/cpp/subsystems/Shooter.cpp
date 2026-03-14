@@ -1,6 +1,7 @@
 #include "Shooter.h"
 
 #include <cstddef>
+#include <string>
 
 #include "frc/smartdashboard/SmartDashboard.h"
 #include "units/angle.h"
@@ -21,11 +22,16 @@ void ShooterSubsystem::Periodic() {
   frc::SmartDashboard::PutNumber("Shooter Pitch", traj.get_pitch());
   frc::SmartDashboard::PutBoolean("Shooter On", shooter_on);
   frc::SmartDashboard::PutBoolean("Shooter Index On", shooter_intake_on);
+  frc::SmartDashboard::PutString("Manual Shooter Speed", std::to_string(shooter_manual_speed) + " tps");
 
   // ME: so this will get the wheel spinning at the target velocity off the ball
   // there will be a conversion loss so this needs to be tweaked
-  shooter_driver_speed.WithVelocity(1_rad_per_s * wheel_radius *
-                                    traj.get_velocity() * 10);
+  if (shooter_automatic_on) {
+    shooter_driver_speed.WithVelocity(1_rad_per_s * wheel_radius *
+                                      traj.get_velocity() * 10);
+  } else {
+    shooter_driver_speed.WithVelocity(shooter_manual_speed * 1_tps);
+  }
 
   if (shooter_on) {
     shooter_driver.SetControl(shooter_driver_speed);
@@ -67,6 +73,7 @@ void ShooterSubsystem::SetShooterRot(units::angle::turn_t turns) {
 void ShooterSubsystem::SetHubDistance(units::meter_t distance, double height) {
   for (size_t i = 0; i < 10; i++) {
     // ME: adjust values here too for accuracy
-    traj.calculate_loss(distance.convert<units::length::feet>().value(), height);
+    traj.calculate_loss(distance.convert<units::length::feet>().value(),
+                        height);
   }
 }

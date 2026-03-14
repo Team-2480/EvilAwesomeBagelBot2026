@@ -87,6 +87,8 @@ DriveSubsystem::DriveSubsystem()
 void DriveSubsystem::Periodic() {
   frc::SmartDashboard::PutNumber("Hub Relative Rotation Away", GetHubRelRot());
 
+  // please add a live spedometer asap cause this super importante
+
   units::degree_t robotYaw = GetHeading();
   m_odometry.SetVisionMeasurementStdDevs({0.5, 0.5, 9999999.0});
   LimelightHelpers::SetRobotOrientation("", robotYaw.value(), 0.0, 0.0, 0.0,

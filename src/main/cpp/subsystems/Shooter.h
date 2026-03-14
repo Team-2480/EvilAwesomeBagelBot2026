@@ -86,9 +86,7 @@ class ShooterSubsystem : public frc2::SubsystemBase {
 
     shooter_intake_config.encoder.PositionConversionFactor(1)
         .VelocityConversionFactor(1);
-    shooter_intake_config.closedLoop
-        .Pid(0.1, 0, 0)
-        .OutputRange(-1, 1);
+    shooter_intake_config.closedLoop.Pid(0.1, 0, 0).OutputRange(-1, 1);
 
     shooter_intake_driver.Configure(shooter_intake_config,
                                     rev::ResetMode::kResetSafeParameters,
@@ -107,6 +105,9 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   void SetShooterRot(units::angle::turn_t turns);
 
   void SetHubDistance(units::meter_t distance, double height);
+  
+  bool shooter_automatic_on = true;
+  float shooter_manual_speed = 80;
 
  private:
   bool shooter_on = false;
