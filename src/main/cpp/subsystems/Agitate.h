@@ -1,50 +1,49 @@
 #pragma once
 
-#include "frc2/command/SubsystemBase.h"
-#include <rev/config/SparkMaxConfig.h>
 #include <rev/SparkMax.h>
+#include <rev/config/SparkMaxConfig.h>
 
+#include "frc2/command/SubsystemBase.h"
 
 // JULIA (NEW!): Header files!
 
-class AgitateSubsystem : public frc2::SubsystemBase{
-    public:
-    AgitateSubsystem(){
-        // Header issue!
+class AgitateSubsystem : public frc2::SubsystemBase {
+ public:
+  AgitateSubsystem() {
+    // Header issue!
 
-        rev::spark::SparkBaseConfig agitate_config{};
+    rev::spark::SparkBaseConfig agitate_config{};
 
-        agitate_config.encoder.PositionConversionFactor(1).VelocityConversionFactor(1);
-        
-        agitate_config.closedLoop
-            .SetFeedbackSensor(
+    agitate_config.encoder.PositionConversionFactor(1).VelocityConversionFactor(
+        1);
+
+    agitate_config.closedLoop
+        .SetFeedbackSensor(
             // Header issue!
-                rev::spark::FeedbackSensor::kPrimaryEncoder)
-            .Pid(0.1, 0, 0)
-            .OutputRange(-1, 1);
+            rev::spark::FeedbackSensor::kPrimaryEncoder)
+        .Pid(0.1, 0, 0)
+        .OutputRange(-1, 1);
 
-         agitate_driver.Configure(agitate_config, rev::ResetMode::kResetSafeParameter,
-                                    rev::PersistMode::kPersistParameters);
+    agitate_driver.Configure(agitate_config,
+                             rev::ResetMode::kResetSafeParameters,
+                             rev::PersistMode::kPersistParameters);
 
-       // JULIA (NEW!): Missing closing curly brace here
-    }   
+    // JULIA (NEW!): Missing closing curly brace here
+  }
 
-    void Periodic() override;
-    void AgitateActivity(bool agitate_on);
+  void Periodic() override;
 
-       // JULIA (NEW!) functions to change turn speed on off
+  void SetAgitate(bool agitate_set);
 
-    private:
-    bool agitate_on = false;
-    rev::spark::SparkMax agitate_driver = 
-        rev::spark::SparkMax(42, rev::spark::SparkMax::MotorType::kBrushed);
-            // Header issue!
-    rev::spark::SparkClosedLoopController agitate_driver_controller =
-        agitate_driver.GetClosedLoopController();
+  // JULIA (NEW!) functions to change turn speed on off
 
-    // JULIA(NEW!): Erroneous squirely brace
-    
+ private:
+  bool agitate_on = false;
+  rev::spark::SparkMax agitate_driver =
+      rev::spark::SparkMax(50, rev::spark::SparkMax::MotorType::kBrushed);
+  // Header issue!
+  rev::spark::SparkClosedLoopController agitate_driver_controller =
+      agitate_driver.GetClosedLoopController();
 
-
-
+  // JULIA(NEW!): Erroneous squirely brace
 };
