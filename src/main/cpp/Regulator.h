@@ -44,7 +44,6 @@ class MotorRegulator {
     }
   }
   void Pause() {
-    printf("paused\n");
     closed_loop->SetSetpoint(0,
                              rev::spark::SparkLowLevel::ControlType::kVelocity);
   }

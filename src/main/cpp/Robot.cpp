@@ -65,10 +65,10 @@ Robot::Robot() {
                                  OIConstants::kDriveDeadband)};
         }
 
-        m_drive.Drive(-units::meters_per_second_t{frc::ApplyDeadband(
+        m_drive.Drive(units::meters_per_second_t{frc::ApplyDeadband(
                           std::pow(m_driveController.GetY(), 3),
                           OIConstants::kDriveDeadband)},
-                      -units::meters_per_second_t{frc::ApplyDeadband(
+                      units::meters_per_second_t{frc::ApplyDeadband(
                           std::pow(m_driveController.GetX(), 3),
                           OIConstants::kDriveDeadband)},
                       appliedRot, m_globalLocal, m_slowMode);

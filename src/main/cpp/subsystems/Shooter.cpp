@@ -45,7 +45,7 @@ void ShooterSubsystem::Periodic() {
         0, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
   }
 
-  double servo_location = (units::radian_t(traj.get_pitch()).convert<units::degree>().value() - 45.0)/(78.0-45.0);
+  double servo_location = std::clamp((units::radian_t(traj.get_pitch()).convert<units::degree>().value() - 45.0)/(78.0-45.0), 0.0, 1.0);
   
   frc::SmartDashboard::PutNumber("Shooter Servo Pitch", servo_location);
   servo_left.Set(servo_location);

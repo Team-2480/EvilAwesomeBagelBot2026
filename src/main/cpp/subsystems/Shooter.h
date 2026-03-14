@@ -90,13 +90,14 @@ class ShooterSubsystem : public frc2::SubsystemBase {
     shooter_intake_config.closedLoop
         .Pid(0.1, 0, 0)
         .OutputRange(-1, 1);
+    shooter_intake_config.Inverted(true);
 
     shooter_intake_driver.Configure(shooter_intake_config,
                                     rev::ResetMode::kResetSafeParameters,
                                     rev::PersistMode::kPersistParameters);
 
-    traj.set_fixed(
-        units::angle::degree_t{65}.convert<units::angle::radian>().value());
+    // traj.set_fixed(
+    //     units::angle::degree_t{65}.convert<units::angle::radian>().value());
   }
   void Periodic() override;
 

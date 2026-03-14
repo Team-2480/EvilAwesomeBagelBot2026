@@ -18,9 +18,7 @@ void IntakeSubsystem::Periodic() {
   frc::SmartDashboard::PutNumber(
       "Intake Up Down Position",
       intake_up_down_driver.GetEncoder().GetPosition());
-  // printf("curently at %f\n",
-  // intake_up_down_driver.GetEncoder().GetPosition());
-  //
+
   // switch (intake_up_down) {
   //   case INTAKE_UP:
   //     up_down_regulator.Up();

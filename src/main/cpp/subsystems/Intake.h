@@ -39,11 +39,11 @@ class IntakeSubsystem : public frc2::SubsystemBase {
         .OutputRange(-1, 1);
   
 
-    // intake_up_down_driver.Configure(intake_up_down_config,
-    //                                 rev::ResetMode::kResetSafeParameters,
-    //                                 rev::PersistMode::kPersistParameters);
+    intake_up_down_driver.Configure(intake_up_down_config,
+                                    rev::ResetMode::kResetSafeParameters,
+                                    rev::PersistMode::kPersistParameters);
 
-    // up_down_regulator.SetTargets(-0.6, -14);
+    up_down_regulator.SetTargets(-7.571444511413574, -20.5);
   }
   void Periodic() override;
 
@@ -68,12 +68,12 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   rev::spark::SparkMax intake_up_down_driver =
       rev::spark::SparkMax(41, rev::spark::SparkMax::MotorType::kBrushless);
   //
-  // rev::spark::SparkClosedLoopController intake_up_down_controller =
-  //     intake_up_down_driver.GetClosedLoopController();
+  rev::spark::SparkClosedLoopController intake_up_down_controller =
+      intake_up_down_driver.GetClosedLoopController();
   //
-  // rev::spark::SparkRelativeEncoder intake_up_down_encoder =
-  //     intake_up_down_driver.GetEncoder();
+  rev::spark::SparkRelativeEncoder intake_up_down_encoder =
+      intake_up_down_driver.GetEncoder();
   //
-  // MotorRegulator up_down_regulator =
-  //     MotorRegulator(&intake_up_down_driver, &intake_up_down_controller);
+  MotorRegulator up_down_regulator =
+      MotorRegulator(&intake_up_down_driver, &intake_up_down_controller);
 };
