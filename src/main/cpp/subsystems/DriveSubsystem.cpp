@@ -86,6 +86,7 @@ DriveSubsystem::DriveSubsystem()
 
 void DriveSubsystem::Periodic() {
   frc::SmartDashboard::PutNumber("Hub Relative Rotation Away", GetHubRelRot());
+  frc::SmartDashboard::PutNumber("Hub Relative Dist Away", MyHomiePythagoras());
 
   units::degree_t robotYaw = GetHeading();
   m_odometry.SetVisionMeasurementStdDevs({0.5, 0.5, 9999999.0});
