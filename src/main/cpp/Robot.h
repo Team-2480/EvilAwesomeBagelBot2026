@@ -58,14 +58,8 @@ class Robot {
   IntakeSubsystem m_intake;
 
   // The chooser for the autonomous routines
-  enum AutoModes {
-    AUTO_NOTHING,
-
-  };
-  std::unordered_map<AutoModes, std::string> auto_names{
-      {AUTO_NOTHING, "Auto Nothing"}};
-
-  frc::SendableChooser<AutoModes> m_chooser;
+  std::vector<std::string> auto_names{"Nothing", "MidShootClimb"};
+  frc::SendableChooser<std::string> m_chooser;
 
   PID rot_pid = PID(0.1, 100, -100, 0.1, 0.01, 0.5);
 

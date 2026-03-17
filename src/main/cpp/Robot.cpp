@@ -38,12 +38,10 @@ using namespace DriveConstants;
 using namespace pathplanner;
 
 Robot::Robot() {
-  // Initialize all of your commands and subsystems here
+  for(auto auto_name : auto_names){
+    m_chooser.AddOption(auto_name , auto_name );
+  }
 
-  m_chooser.AddOption("No Auto", AUTO_NOTHING);
-  // m_chooser.AddOption("Blue Default", AUTO_BLUE_DEFAULT);
-  // m_chooser.AddOption("Red Default", AUTO_RED_DEFAULT);
-  //
   frc::SmartDashboard::PutData("Auto Selection", &m_chooser);
 
   // Configure the button bindings
@@ -52,10 +50,6 @@ Robot::Robot() {
   // Set up default drive command
   // The left stick controls translation of the robot.
   // Turning is controlled by the X axis of the right stick.
-
-
-
-
   m_drive.SetDefaultCommand(frc2::RunCommand(
       [this] {
         units::radians_per_second_t appliedRot = units::radians_per_second_t{0};
@@ -315,10 +309,5 @@ void Robot::ConfigureButtonBindings() {
 
 frc2::CommandPtr Robot::GetAutonomousCommand() {
   // had to delete the other method for auto cause it broke
-
-  std::string auto_command_name = auto_names[AUTO_NOTHING];
-  if (auto_names.contains(m_chooser.GetSelected())) {
-    auto_command_name = auto_names[m_chooser.GetSelected()];
-  }
-  return PathPlannerAuto(auto_command_name).ToPtr();
+  return PathPlannerAuto(m_chooser.GetSelected()).ToPtr();
 }
