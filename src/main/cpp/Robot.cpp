@@ -26,6 +26,7 @@
 #include "Constants.h"
 #include "frc/smartdashboard/SmartDashboard.h"
 #include "frc2/command/RunCommand.h"
+#include "frc2/command/button/POVButton.h"
 #include "pid.h"
 #include "subsystems/DriveSubsystem.h"
 #include "subsystems/Intake.h"
@@ -51,21 +52,28 @@ Robot::Robot() {
   // Set up default drive command
   // The left stick controls translation of the robot.
   // Turning is controlled by the X axis of the right stick.
+
+
+
+
   m_drive.SetDefaultCommand(frc2::RunCommand(
       [this] {
         units::radians_per_second_t appliedRot = units::radians_per_second_t{0};
         auto autoRot = units::radians_per_second_t{rot_pid.calculate(
             0, m_drive.GetHubRelRot() - m_drive.GetHeading().value())};
-        m_shooter.SetHubDistance(
-            units::length::meter_t{m_drive.MyHomiePythagoras()},
-            m_drive.GetHubDistance().second);
+
+        if (m_setDist) {
+          m_shooter.SetHubDistance(dist * 1_ft, 6);
+        } else {
+          m_shooter.SetHubDistance(
+              units::length::meter_t{m_drive.MyHomiePythagoras()},
+              m_drive.GetHubDistance().second);
+        }
 
         frc::SmartDashboard::PutNumber("Auto Rotation", autoRot.value());
-        frc::SmartDashboard::PutNumber(
-            "Distance to Hub",
-            units::convert<units::length::meters, units::length::feet>(
-                units::length::meter_t{m_drive.MyHomiePythagoras()})
-                .value());  // i have NO idea if this will work
+        frc::SmartDashboard::PutNumber("Manual Distance", dist);
+        frc::SmartDashboard::PutBoolean("Is Manual Distance", m_setDist);
+
         if (m_findRot) {
           appliedRot = autoRot;
         } else {
@@ -74,10 +82,10 @@ Robot::Robot() {
                                  OIConstants::kDriveDeadband)};
         }
 
-        m_drive.Drive(-units::meters_per_second_t{frc::ApplyDeadband(
+        m_drive.Drive(units::meters_per_second_t{frc::ApplyDeadband(
                           std::pow(m_driveController.GetY(), 3),
                           OIConstants::kDriveDeadband)},
-                      -units::meters_per_second_t{frc::ApplyDeadband(
+                      units::meters_per_second_t{frc::ApplyDeadband(
                           std::pow(m_driveController.GetX(), 3),
                           OIConstants::kDriveDeadband)},
                       appliedRot, m_globalLocal, m_slowMode);
@@ -91,7 +99,7 @@ void Robot::ConfigureButtonBindings() {
       .WhileTrue(new frc2::RunCommand([this] { m_drive.SetX(); }, {&m_drive}));
 
   frc2::JoystickButton(&m_driveController, 5)  // button 6 on joystick?
-      .ToggleOnTrue(new frc2::RunCommand(
+      .ToggleOnTrue(new frc2::InstantCommand(
           [this] {
             m_globalLocal = !m_globalLocal;
             frc::SmartDashboard::PutBoolean("Global Local", m_globalLocal);
@@ -165,6 +173,25 @@ void Robot::ConfigureButtonBindings() {
   pathplanner::NamedCommands::registerCommand("shooterOff",
                                               std::move(shared_shooter_off));
 
+  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kY)
+      .ToggleOnTrue(
+          new frc2::InstantCommand([this] { m_setDist = !m_setDist; }));
+
+  frc2::POVButton(&m_actionController, 0, 0)
+      .ToggleOnTrue(new frc2::InstantCommand([this] {
+        if (dist < 10) {
+          dist += 0.25;
+        }
+      }));
+
+  frc2::POVButton(&m_actionController, 180, 0)
+      .ToggleOnTrue(new frc2::InstantCommand([this] {
+        if (dist > 1) {
+          dist -= 0.25;
+        }
+      }));
+
+
   frc2::JoystickButton(&m_actionController,
                        frc::XboxController::Button::kRightBumper)
       .ToggleOnTrue(new frc2::InstantCommand(
@@ -207,6 +234,37 @@ void Robot::ConfigureButtonBindings() {
           }
         }));
   }
+
+  frc2::POVButton(&m_actionController, 270, 0)
+      .ToggleOnTrue(new frc2::InstantCommand([this] {
+        m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_UP);
+      }));
+
+  frc2::POVButton(&m_actionController, 90, 0)
+      .ToggleOnTrue(new frc2::InstantCommand([this] {
+        m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_DOWN);
+      }));
+
+  auto intake_up = new frc2::InstantCommand(
+      [this] { 
+        m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_UP);
+ },
+      {&m_intake});
+  auto shared_intake_up = std::shared_ptr<frc2::Command>(intake_up);
+  pathplanner::NamedCommands::registerCommand("intakeUp",
+                                              std::move(shared_intake_up));
+
+  auto intake_down = new frc2::InstantCommand(
+      [this] {
+        m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_DOWN);
+},
+      {&m_intake});
+  auto shared_intake_down = std::shared_ptr<frc2::Command>(intake_down);
+  pathplanner::NamedCommands::registerCommand("intakeDown",
+                                              std::move(shared_intake_down));
+
+
+
   // intake
   frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kX)
       .ToggleOnTrue(new frc2::InstantCommand(

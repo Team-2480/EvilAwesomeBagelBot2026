@@ -2,6 +2,8 @@
 
 #include <cstdio>
 
+#include "frc/smartdashboard/SmartDashboard.h"
+
 void IntakeSubsystem::Periodic() {
   // send motor info to intake motor
   if (intake_on) {
@@ -12,19 +14,22 @@ void IntakeSubsystem::Periodic() {
     intake_driver_controller.SetSetpoint(
         0, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
   }
-  frc::SmartDashboard::PutNumber("Intake Up Down", intake_up_down);
-  frc::SmartDashboard::PutBoolean("Intake On", intake_on);
-  // printf("curently at %f\n",
-  // intake_up_down_driver.GetEncoder().GetPosition());
-  //
-  // switch (intake_up_down) {
-  //   case INTAKE_UP:
-  //     up_down_regulator.Up();
-  //     break;
-  //   case INTAKE_DOWN:
-  //     up_down_regulator.Down();
-  //     break;
-  // }
+
+  frc::SmartDashboard::PutNumber(
+      "Intake Up Down Position",
+      intake_up_down_driver.GetEncoder().GetPosition());
+
+  switch (intake_up_down) {
+    case INTAKE_UP:
+      up_down_regulator.Up();
+      break;
+    case INTAKE_DOWN:
+      up_down_regulator.Down();
+      break;
+    default:
+      break;
+  }
+
 }
 
 void IntakeSubsystem::SetIntake(bool intake_set) { intake_on = intake_set; }

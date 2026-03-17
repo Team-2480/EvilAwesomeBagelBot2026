@@ -80,12 +80,14 @@ DriveSubsystem::DriveSubsystem()
   HAL_Report(HALUsageReporting::kResourceType_RobotDrive,
              HALUsageReporting::kRobotDriveSwerve_MaxSwerve);
 
+  
   frc::SmartDashboard::PutData("Field", &m_field);
   frc::SmartDashboard::PutData("Hub Field", &m_hub_field);
 }
 
 void DriveSubsystem::Periodic() {
   frc::SmartDashboard::PutNumber("Hub Relative Rotation Away", GetHubRelRot());
+  frc::SmartDashboard::PutNumber("Hub Relative Dist Away", MyHomiePythagoras());
 
   // please add a live spedometer asap cause this super importante
 
@@ -96,11 +98,11 @@ void DriveSubsystem::Periodic() {
 
   // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/state-space/state-space-pose-estimators.html
   // https://docs.limelightvision.io/docs/docs-limelight/apis/limelight-lib
-  LimelightHelpers::PoseEstimate limelightMeasurement =
-      LimelightHelpers::getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
-
-  m_odometry.AddVisionMeasurement(limelightMeasurement.pose,
-                                  limelightMeasurement.timestampSeconds);
+  // LimelightHelpers::PoseEstimate limelightMeasurement =
+  //     LimelightHelpers::getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+  //
+  // m_odometry.AddVisionMeasurement(limelightMeasurement.pose,
+  //                                 limelightMeasurement.timestampSeconds);
 
   LimelightHelpers::PoseEstimate limelightFancyMeasurement =
       LimelightHelpers::getBotPoseEstimate_wpiBlue_MegaTag2("limelight-fancy");
