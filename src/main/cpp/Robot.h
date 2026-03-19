@@ -22,6 +22,7 @@
 #include "subsystems/Climb.h"
 #include "subsystems/DriveSubsystem.h"
 #include "subsystems/Intake.h"
+#include "subsystems/Agitate.h"
 #include "subsystems/Shooter.h"
 
 /**
@@ -56,6 +57,7 @@ class Robot {
   ClimbSubsystem m_climb;
   ShooterSubsystem m_shooter;
   IntakeSubsystem m_intake;
+  AgitateSubsystem m_agitate;
 
   // The chooser for the autonomous routines
   std::vector<std::string> auto_names{"Nothing", "MidShootClimb"};

@@ -305,6 +305,11 @@ void Robot::ConfigureButtonBindings() {
   auto shared_intake_repel = std::shared_ptr<frc2::Command>(intake_repel);
   pathplanner::NamedCommands::registerCommand("intakeRepel",
                                               std::move(shared_intake_repel));
+
+  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kLeftStick)
+      .ToggleOnTrue(new frc2::InstantCommand(
+          [this] { m_agitate.SetAgitate(!m_agitate.agitate_on); }, {&m_agitate}));
+
 }
 
 frc2::CommandPtr Robot::GetAutonomousCommand() {

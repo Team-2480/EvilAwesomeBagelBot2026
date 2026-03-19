@@ -34,11 +34,11 @@ class AgitateSubsystem : public frc2::SubsystemBase {
   void Periodic() override;
 
   void SetAgitate(bool agitate_set);
+  bool agitate_on = false;
 
   // JULIA (NEW!) functions to change turn speed on off
 
  private:
-  bool agitate_on = false;
   rev::spark::SparkMax agitate_driver =
       rev::spark::SparkMax(50, rev::spark::SparkMax::MotorType::kBrushed);
   // Header issue!
