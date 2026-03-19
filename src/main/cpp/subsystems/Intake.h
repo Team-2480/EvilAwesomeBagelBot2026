@@ -38,7 +38,7 @@ class IntakeSubsystem : public frc2::SubsystemBase {
         .Pid(0.1, 0, 0)
         .OutputRange(-1, 1);
 
-    intake_up_down_config.closedLoop.maxMotion.CruiseVelocity(0.001);
+    intake_up_down_config.closedLoop.maxMotion.CruiseVelocity(0.01);
   
     intake_up_down_config.SetIdleMode(rev::spark::SparkBaseConfig::kCoast);
 

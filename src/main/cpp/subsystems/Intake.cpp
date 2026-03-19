@@ -37,13 +37,8 @@ void IntakeSubsystem::SetIntakeDirection(IntakeDischarge intake_set) {
 void IntakeSubsystem::SetIntakeUpDown(IntakeUpDown c_intake_up_down) {
   intake_up_down = c_intake_up_down;
   if (c_intake_up_down == INTAKE_UP) {
-    intake_up_down_config.SetIdleMode(rev::spark::SparkBaseConfig::kBrake);
     up_down_regulator.Up();
   } else if (c_intake_up_down == INTAKE_DOWN) {
-    intake_up_down_config.SetIdleMode(rev::spark::SparkBaseConfig::kCoast);
     up_down_regulator.Down();
   }
-  intake_up_down_driver.Configure(intake_up_down_config,
-                                  rev::ResetMode::kResetSafeParameters,
-                                  rev::PersistMode::kPersistParameters);
 }
