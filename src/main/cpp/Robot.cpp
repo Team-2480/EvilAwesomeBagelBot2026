@@ -38,8 +38,8 @@ using namespace DriveConstants;
 using namespace pathplanner;
 
 Robot::Robot() {
-  for(auto auto_name : auto_names){
-    m_chooser.AddOption(auto_name , auto_name );
+  for (auto auto_name : auto_names) {
+    m_chooser.AddOption(auto_name, auto_name);
   }
 
   frc::SmartDashboard::PutData("Auto Selection", &m_chooser);
@@ -185,7 +185,6 @@ void Robot::ConfigureButtonBindings() {
         }
       }));
 
-
   frc2::JoystickButton(&m_actionController,
                        frc::XboxController::Button::kRightBumper)
       .ToggleOnTrue(new frc2::InstantCommand(
@@ -230,34 +229,26 @@ void Robot::ConfigureButtonBindings() {
   }
 
   frc2::POVButton(&m_actionController, 270, 0)
-      .ToggleOnTrue(new frc2::InstantCommand([this] {
-        m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_UP);
-      }));
+      .ToggleOnTrue(new frc2::InstantCommand(
+          [this] { m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_UP); }));
 
   frc2::POVButton(&m_actionController, 90, 0)
-      .ToggleOnTrue(new frc2::InstantCommand([this] {
-        m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_DOWN);
-      }));
+      .ToggleOnTrue(new frc2::InstantCommand(
+          [this] { m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_DOWN); }));
 
   auto intake_up = new frc2::InstantCommand(
-      [this] { 
-        m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_UP);
- },
+      [this] { m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_UP); },
       {&m_intake});
   auto shared_intake_up = std::shared_ptr<frc2::Command>(intake_up);
   pathplanner::NamedCommands::registerCommand("intakeUp",
                                               std::move(shared_intake_up));
 
   auto intake_down = new frc2::InstantCommand(
-      [this] {
-        m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_DOWN);
-},
+      [this] { m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_DOWN); },
       {&m_intake});
   auto shared_intake_down = std::shared_ptr<frc2::Command>(intake_down);
   pathplanner::NamedCommands::registerCommand("intakeDown",
                                               std::move(shared_intake_down));
-
-
 
   // intake
   frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kX)

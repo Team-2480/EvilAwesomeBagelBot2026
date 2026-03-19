@@ -98,17 +98,21 @@ void DriveSubsystem::Periodic() {
 
   // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/state-space/state-space-pose-estimators.html
   // https://docs.limelightvision.io/docs/docs-limelight/apis/limelight-lib
-  // LimelightHelpers::PoseEstimate limelightMeasurement =
-  //     LimelightHelpers::getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
-  //
-  // m_odometry.AddVisionMeasurement(limelightMeasurement.pose,
-  //                                 limelightMeasurement.timestampSeconds);
+  LimelightHelpers::PoseEstimate limelightMeasurement =
+      LimelightHelpers::getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+
+  if (limelightMeasurement.tagCount != 0) {
+    m_odometry.AddVisionMeasurement(limelightMeasurement.pose,
+                                    limelightMeasurement.timestampSeconds);
+  }
 
   LimelightHelpers::PoseEstimate limelightFancyMeasurement =
       LimelightHelpers::getBotPoseEstimate_wpiBlue_MegaTag2("limelight-fancy");
 
-  m_odometry.AddVisionMeasurement(limelightFancyMeasurement.pose,
-                                  limelightFancyMeasurement.timestampSeconds);
+  if (limelightFancyMeasurement.tagCount != 0) {
+    m_odometry.AddVisionMeasurement(limelightFancyMeasurement.pose,
+                                    limelightFancyMeasurement.timestampSeconds);
+  }
 
   m_odometry.Update(frc::Rotation2d(robotYaw),
                     {m_frontLeft.GetPosition(), m_rearLeft.GetPosition(),

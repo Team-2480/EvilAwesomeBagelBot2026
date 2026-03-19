@@ -41,7 +41,7 @@ void ShooterSubsystem::Periodic() {
 
   if (shooter_intake_on) {
     shooter_intake_driver_controller.SetSetpoint(
-        -0.4, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
+        0.4, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
   } else {
     shooter_intake_driver_controller.SetSetpoint(
         0, rev::spark::SparkLowLevel::ControlType::kDutyCycle);

@@ -12,6 +12,7 @@
 #include "ctre/phoenix6/controls/VelocityVoltage.hpp"
 #include "frc2/command/SubsystemBase.h"
 #include "rev/config/ClosedLoopConfig.h"
+#include "rev/config/SparkBaseConfig.h"
 #include "rev/config/SparkMaxConfigAccessor.h"
 
 class IntakeSubsystem : public frc2::SubsystemBase {
@@ -29,7 +30,6 @@ class IntakeSubsystem : public frc2::SubsystemBase {
     intake_driver.Configure(intake_config, rev::ResetMode::kResetSafeParameters,
                             rev::PersistMode::kPersistParameters);
 
-    rev::spark::SparkBaseConfig intake_up_down_config{};
 
     intake_up_down_config.encoder.PositionConversionFactor(1)
         .VelocityConversionFactor(1);
@@ -37,14 +37,17 @@ class IntakeSubsystem : public frc2::SubsystemBase {
         .SetFeedbackSensor(rev::spark::FeedbackSensor::kPrimaryEncoder)
         .Pid(0.1, 0, 0)
         .OutputRange(-1, 1);
+
+    intake_up_down_config.closedLoop.maxMotion.CruiseVelocity(0.001);
   
+    intake_up_down_config.SetIdleMode(rev::spark::SparkBaseConfig::kCoast);
 
     intake_up_down_driver.Configure(intake_up_down_config,
                                     rev::ResetMode::kResetSafeParameters,
                                     rev::PersistMode::kPersistParameters);
 
     up_down_regulator.Zero();
-    up_down_regulator.SetTargets(16.35712432861328, 0);
+    up_down_regulator.SetTargets(0, -6);
   }
   void Periodic() override;
 
@@ -56,10 +59,11 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   void SetIntakeDirection(IntakeDischarge intake_set);
 
  private:
+    rev::spark::SparkBaseConfig intake_up_down_config{};
   // motors here
   bool intake_on = false;
   IntakeDischarge intake_dir = INTAKE_SUCK;
-  IntakeUpDown intake_up_down = INTAKE_UP;
+  IntakeUpDown intake_up_down = INTAKE_NONE;
 
   rev::spark::SparkMax intake_driver =
       rev::spark::SparkMax(40, rev::spark::SparkMax::MotorType::kBrushed);

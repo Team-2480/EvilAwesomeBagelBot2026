@@ -33,14 +33,14 @@ class MotorRegulator {
     if (target_up.has_value()) {
       closed_loop->SetSetpoint(
           target_up.value(),
-          rev::spark::SparkLowLevel::ControlType::kPosition);
+          rev::spark::SparkLowLevel::ControlType::kMAXMotionPositionControl);
     }
   }
   void Down() {
     if (target_down.has_value()) {
       closed_loop->SetSetpoint(
           target_down.value(),
-          rev::spark::SparkLowLevel::ControlType::kPosition);
+          rev::spark::SparkLowLevel::ControlType::kMAXMotionPositionControl);
     }
   }
   void Pause() {
