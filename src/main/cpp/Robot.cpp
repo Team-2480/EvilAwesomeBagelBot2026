@@ -20,6 +20,7 @@
 #include <units/angle.h>
 #include <units/velocity.h>
 
+#include <cmath>
 #include <cstdio>
 #include <memory>
 #include <utility>
@@ -32,6 +33,7 @@
 #include "subsystems/DriveSubsystem.h"
 #include "subsystems/Intake.h"
 #include "subsystems/Shooter.h"
+#include "units/angular_velocity.h"
 #include "units/base.h"
 #include "units/length.h"
 #include "units/time.h"
@@ -55,8 +57,12 @@ Robot::Robot() {
   m_drive.SetDefaultCommand(frc2::RunCommand(
       [this] {
         units::radians_per_second_t appliedRot = units::radians_per_second_t{0};
-        auto autoRot = units::radians_per_second_t{rot_pid.calculate(
-            0, m_drive.GetHubRelRot() - m_drive.GetHeading().value())};
+        auto rawAutoRot = units::radian_t(m_drive.GetHubRelRot())
+                              .convert<units::degrees>()
+                              .value() -
+                          std::remainder(m_drive.GetHeading().value(), 360);
+
+        frc::SmartDashboard::PutNumber("Raw Auto Rot", rawAutoRot);
 
         if (m_setDist) {
           m_shooter.SetHubDistance(dist * 1_ft, 6);
@@ -66,12 +72,15 @@ Robot::Robot() {
               m_drive.GetHubDistance().second);
         }
 
-        frc::SmartDashboard::PutNumber("Auto Rotation", autoRot.value());
         frc::SmartDashboard::PutNumber("Manual Distance", dist);
         frc::SmartDashboard::PutBoolean("Is Manual Distance", m_setDist);
 
+        frc::SmartDashboard::PutBoolean("Auto find rot", m_findRot);
+        frc::SmartDashboard::PutNumber("Applied Rot", appliedRot.value());
+
         if (m_findRot) {
-          appliedRot = autoRot;
+          appliedRot  = -units::degrees_per_second_t{
+              rot_pid.calculate(0, rawAutoRot / 360)}.convert<units::radians_per_second>();
         } else {
           appliedRot = -units::radians_per_second_t{
               frc::ApplyDeadband(std::pow(m_driveController.GetZ(), 3),
