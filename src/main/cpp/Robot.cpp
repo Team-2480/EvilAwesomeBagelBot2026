@@ -12,6 +12,7 @@
 #include <frc2/command/InstantCommand.h>
 #include <frc2/command/SequentialCommandGroup.h>
 #include <frc2/command/SwerveControllerCommand.h>
+#include <frc2/command/WaitCommand.h>
 #include <frc2/command/button/JoystickButton.h>
 #include <frc2/command/button/POVButton.h>
 #include <pathplanner/lib/auto/NamedCommands.h>
@@ -33,6 +34,7 @@
 #include "subsystems/Shooter.h"
 #include "units/base.h"
 #include "units/length.h"
+#include "units/time.h"
 
 using namespace DriveConstants;
 using namespace pathplanner;
@@ -148,12 +150,26 @@ void Robot::ConfigureButtonBindings() {
                                               std::move(shared_climb_false));
 
   // shooter
+  auto shoot_sequence = new frc2::SequentialCommandGroup();
+  shoot_sequence->AddCommands(
+      frc2::InstantCommand([this] { m_shooter.SetShooter(true); },
+                           {&m_shooter}),
+      frc2::WaitCommand(units::second_t(0.5)),
+      frc2::InstantCommand([this] { m_shooter.SetShooterIntake(true); },
+                           {&m_shooter}));
+
   frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kA)
-      .ToggleOnTrue(new frc2::InstantCommand(
-          [this] { m_shooter.SetShooterIntake(true); }, {&m_shooter}));
+      .ToggleOnTrue(shoot_sequence);
+
+  auto off_sequence = new frc2::SequentialCommandGroup();
+  off_sequence->AddCommands(
+      frc2::InstantCommand([this] { m_shooter.SetShooter(false); },
+                           {&m_shooter}),
+      frc2::InstantCommand([this] { m_shooter.SetShooterIntake(false); },
+                           {&m_shooter}));
+
   frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kA)
-      .ToggleOnFalse(new frc2::InstantCommand(
-          [this] { m_shooter.SetShooterIntake(false); }, {&m_shooter}));
+      .ToggleOnFalse(off_sequence);
 
   auto shooter_on = new frc2::InstantCommand(
       [this] { m_shooter.SetShooter(true); }, {&m_shooter});
@@ -184,15 +200,6 @@ void Robot::ConfigureButtonBindings() {
           dist -= 0.25;
         }
       }));
-
-  frc2::JoystickButton(&m_actionController,
-                       frc::XboxController::Button::kRightBumper)
-      .ToggleOnTrue(new frc2::InstantCommand(
-          [this] { m_shooter.SetShooter(true); }, {&m_shooter}));
-  frc2::JoystickButton(&m_actionController,
-                       frc::XboxController::Button::kRightBumper)
-      .ToggleOnFalse(new frc2::InstantCommand(
-          [this] { m_shooter.SetShooter(false); }, {&m_shooter}));
 
   auto shooter_intake_on = new frc2::InstantCommand(
       [this] { m_shooter.SetShooterIntake(true); }, {&m_shooter});
@@ -297,10 +304,18 @@ void Robot::ConfigureButtonBindings() {
   pathplanner::NamedCommands::registerCommand("intakeRepel",
                                               std::move(shared_intake_repel));
 
-  frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kLeftStick)
+  frc2::JoystickButton(&m_actionController,
+                       frc::XboxController::Button::kLeftStick)
       .ToggleOnTrue(new frc2::InstantCommand(
-          [this] { m_agitate.SetAgitate(!m_agitate.agitate_on); }, {&m_agitate}));
+          [this] { m_agitate.SetAgitate(!m_agitate.agitate_on); },
+          {&m_agitate}));
 
+  auto agitate_toggle = new frc2::InstantCommand(
+      [this] { m_agitate.SetAgitate(!m_agitate.agitate_on); }, {&m_agitate});
+  auto shared_agitate_toggle =
+      std::shared_ptr<frc2::Command>(shared_intake_repel);
+  pathplanner::NamedCommands::registerCommand("agitateToggle",
+                                              std::move(shared_agitate_toggle));
 }
 
 frc2::CommandPtr Robot::GetAutonomousCommand() {

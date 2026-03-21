@@ -36,7 +36,7 @@ class IntakeSubsystem : public frc2::SubsystemBase {
     intake_up_down_config.closedLoop
         .SetFeedbackSensor(rev::spark::FeedbackSensor::kPrimaryEncoder)
         .Pid(0.1, 0, 0)
-        .OutputRange(-1, 1);
+        .OutputRange(-0.3, 0.3);
 
     intake_up_down_config.closedLoop.maxMotion.CruiseVelocity(1).MaxAcceleration(0.1);
   
