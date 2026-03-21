@@ -81,6 +81,12 @@
           "data": {
             "pathName": "TopClimb2Intake"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeDown"
+          }
         }
       ]
     }
