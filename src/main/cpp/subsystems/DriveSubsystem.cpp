@@ -83,6 +83,27 @@ DriveSubsystem::DriveSubsystem()
   
   frc::SmartDashboard::PutData("Field", &m_field);
   frc::SmartDashboard::PutData("Hub Field", &m_hub_field);
+
+  wpi::PortForwarder::GetInstance().Add(5800,"172.29.0.1",5800); 
+  wpi::PortForwarder::GetInstance().Add(5801,"172.29.0.1",5801); 
+  wpi::PortForwarder::GetInstance().Add(5802,"172.29.0.1",5802);
+  wpi::PortForwarder::GetInstance().Add(5803,"172.29.0.1",5803); 
+  wpi::PortForwarder::GetInstance().Add(5804,"172.29.0.1",5804);
+  wpi::PortForwarder::GetInstance().Add(5805,"172.29.0.1",5805); 
+  wpi::PortForwarder::GetInstance().Add(5806,"172.29.0.1",5806);
+  wpi::PortForwarder::GetInstance().Add(5807,"172.29.0.1",5807);
+  wpi::PortForwarder::GetInstance().Add(5808,"172.29.0.1",5808);
+  wpi::PortForwarder::GetInstance().Add(5809,"172.29.0.1",5809);
+  wpi::PortForwarder::GetInstance().Add(5810,"172.29.1.1",5800); 
+  wpi::PortForwarder::GetInstance().Add(5811,"172.29.1.1",5801); 
+  wpi::PortForwarder::GetInstance().Add(5812,"172.29.1.1",5802);
+  wpi::PortForwarder::GetInstance().Add(5813,"172.29.1.1",5803); 
+  wpi::PortForwarder::GetInstance().Add(5814,"172.29.1.1",5804);
+  wpi::PortForwarder::GetInstance().Add(5815,"172.29.1.1",5805); 
+  wpi::PortForwarder::GetInstance().Add(5816,"172.29.1.1",5806);
+  wpi::PortForwarder::GetInstance().Add(5817,"172.29.1.1",5807);
+  wpi::PortForwarder::GetInstance().Add(5818,"172.29.1.1",5808);
+  wpi::PortForwarder::GetInstance().Add(5819,"172.29.1.1",5809);
 }
 
 void DriveSubsystem::Periodic() {
@@ -93,13 +114,15 @@ void DriveSubsystem::Periodic() {
 
   units::degree_t robotYaw = GetHeading();
   m_odometry.SetVisionMeasurementStdDevs({0.5, 0.5, 9999999.0});
-  LimelightHelpers::SetRobotOrientation("", robotYaw.value(), 0.0, 0.0, 0.0,
+  LimelightHelpers::SetRobotOrientation("limelight", robotYaw.value(), 0.0, 0.0, 0.0,
+                                        0.0, 0.0);
+  LimelightHelpers::SetRobotOrientation("limelight-fancy", robotYaw.value(), m_pigeon.GetAngularVelocityYWorld().GetValue().value(), 0.0, 0.0,
                                         0.0, 0.0);
 
   // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/state-space/state-space-pose-estimators.html
   // https://docs.limelightvision.io/docs/docs-limelight/apis/limelight-lib
   LimelightHelpers::PoseEstimate limelightMeasurement =
-      LimelightHelpers::getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+      LimelightHelpers::getBotPoseEstimate_wpiBlue("limelight");
 
   if (limelightMeasurement.tagCount != 0) {
     m_odometry.AddVisionMeasurement(limelightMeasurement.pose,
@@ -107,7 +130,7 @@ void DriveSubsystem::Periodic() {
   }
 
   LimelightHelpers::PoseEstimate limelightFancyMeasurement =
-      LimelightHelpers::getBotPoseEstimate_wpiBlue_MegaTag2("limelight-fancy");
+      LimelightHelpers::getBotPoseEstimate_wpiBlue("limelight-fancy");
 
   if (limelightFancyMeasurement.tagCount != 0) {
     m_odometry.AddVisionMeasurement(limelightFancyMeasurement.pose,

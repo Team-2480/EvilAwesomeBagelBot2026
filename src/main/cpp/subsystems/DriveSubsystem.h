@@ -50,7 +50,7 @@ class DriveSubsystem : public frc2::SubsystemBase {
   frc::ChassisSpeeds m_chassisSpeeds;
 
   void driveRobotRelative(frc::ChassisSpeeds speeds) {
-    m_chassisSpeeds = speeds;
+    m_chassisSpeeds = {.vx = -speeds.vx, .vy = -speeds.vy};
     auto states = kDriveKinematics.ToSwerveModuleStates(speeds);
 
     kDriveKinematics.DesaturateWheelSpeeds(&states, DriveConstants::kMaxSpeed);

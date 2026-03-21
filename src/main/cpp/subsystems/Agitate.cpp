@@ -4,7 +4,7 @@ void AgitateSubsystem::Periodic() {
   // JULIA: Perodic function
   if (agitate_on) {
     agitate_driver_controller.SetSetpoint(
-        1, 
+        0.4, 
         rev::spark::SparkLowLevel::ControlType::kDutyCycle);
   } else {
     agitate_driver_controller.SetSetpoint(
