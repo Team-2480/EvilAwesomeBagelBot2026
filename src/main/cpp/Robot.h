@@ -18,6 +18,7 @@
 #include <string>
 
 #include "Constants.h"
+#include "pathplanner/lib/commands/PathPlannerAuto.h"
 #include "pid.h"
 #include "subsystems/Climb.h"
 #include "subsystems/DriveSubsystem.h"
@@ -36,7 +37,7 @@ class Robot {
  public:
   Robot();
 
-  frc2::CommandPtr GetAutonomousCommand();
+  pathplanner::PathPlannerAuto * GetAutonomousCommand();
 
  private:
   // The driver's controller
@@ -60,7 +61,7 @@ class Robot {
   AgitateSubsystem m_agitate;
 
   // The chooser for the autonomous routines
-  std::vector<std::string> auto_names{"Nothing", "MidShootClimb", "TopShootClimb"};
+  std::vector<std::string> auto_names{"Nothing", "MidShootClimb", "TopShootClimb", "Something"};
   frc::SendableChooser<std::string> m_chooser;
 
   PID rot_pid = PID(0.1, 100, -100, 0.1, 0.01, 0.5);

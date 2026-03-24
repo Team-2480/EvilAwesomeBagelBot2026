@@ -21,6 +21,8 @@
 
 #include "../Constants.h"
 #include "../LimelightHelpers.h"
+#include "ctre/phoenix6/configs/MountPoseConfigs.hpp"
+#include "ctre/phoenix6/core/CorePigeon2.hpp"
 
 using namespace DriveConstants;
 using namespace pathplanner;
@@ -46,10 +48,10 @@ DriveSubsystem::DriveSubsystem()
         ResetOdometry(pose);
       },  // Method to reset odometry (will be called if your auto has a
           // starting pose)
-      [this]() {
+      [this]() -> frc::ChassisSpeeds{
         return getChassisSpeeds();
       },  // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-      [this](auto speeds, auto feedforwards) {
+      [this](frc::ChassisSpeeds speeds, auto feedforwards) {
         driveRobotRelative(speeds);
       },  // Method that will drive the robot given ROBOT RELATIVE
           // ChassisSpeeds. Also optionally outputs individual module
@@ -59,8 +61,8 @@ DriveSubsystem::DriveSubsystem()
                                                      // following controller
                                                      // for holonomic drive
                                                      // trains
-          PIDConstants(5.0, 0.0, 0.0),  // Translation PID constants
-          PIDConstants(5.0, 0.0, 0.0)   // Rotation PID constants
+          PIDConstants(0.1, 0.0, 0.2),  // Translation PID constants
+          PIDConstants(0.1, 0.0, 0.2)   // Rotation PID constants
           ),
       config,  // The robot configuration
       []() {
@@ -68,10 +70,10 @@ DriveSubsystem::DriveSubsystem()
         // the red alliance This will flip the path being followed to the
         // red side of the field. THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-        auto alliance = frc::DriverStation::GetAlliance();
-        if (alliance) {
-          return alliance.value() == frc::DriverStation::Alliance::kRed;
-        }
+        // auto alliance = frc::DriverStation::GetAlliance();
+        // if (alliance) {
+        //   return alliance.value() == frc::DriverStation::Alliance::kRed;
+        // }
         return false;
       },
       this  // Reference to this subsystem to set requirements
@@ -104,6 +106,10 @@ DriveSubsystem::DriveSubsystem()
   wpi::PortForwarder::GetInstance().Add(5817,"172.29.1.1",5807);
   wpi::PortForwarder::GetInstance().Add(5818,"172.29.1.1",5808);
   wpi::PortForwarder::GetInstance().Add(5819,"172.29.1.1",5809);
+
+  ctre::phoenix6::configs::Pigeon2Configuration pigeon_config;
+  pigeon_config.WithMountPose(ctre::phoenix6::configs::MountPoseConfigs().WithMountPoseYaw(180_deg));
+  m_pigeon.GetConfigurator().Apply(pigeon_config);
 }
 
 void DriveSubsystem::Periodic() {
@@ -114,9 +120,9 @@ void DriveSubsystem::Periodic() {
 
   units::degree_t robotYaw = GetHeading();
   m_odometry.SetVisionMeasurementStdDevs({0.5, 0.5, 9999999.0});
-  LimelightHelpers::SetRobotOrientation("limelight", robotYaw.value(), 0.0, 0.0, 0.0,
+  LimelightHelpers::SetRobotOrientation("limelight-fancy", robotYaw.value(), m_pigeon.GetAngularVelocityZWorld().GetValue().value(), 0.0, 0.0,
                                         0.0, 0.0);
-  LimelightHelpers::SetRobotOrientation("limelight-fancy", robotYaw.value(), m_pigeon.GetAngularVelocityYWorld().GetValue().value(), 0.0, 0.0,
+  LimelightHelpers::SetRobotOrientation("limelight", robotYaw.value(), m_pigeon.GetAngularVelocityZWorld().GetValue().value(), 0.0, 0.0,
                                         0.0, 0.0);
 
   // https://docs.wpilib.org/en/stable/docs/software/advanced-controls/state-space/state-space-pose-estimators.html
