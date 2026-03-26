@@ -133,6 +133,12 @@ class DriveSubsystem : public frc2::SubsystemBase {
                       GetHubDistance().first.Y().value() -
                           m_odometry.GetEstimatedPosition().Y().value());
   }
+  std::pair<double, double> GetHubRelDist() {
+    return {GetHubDistance().first.X().value() -
+                          m_odometry.GetEstimatedPosition().X().value(),
+                      GetHubDistance().first.Y().value() -
+                          m_odometry.GetEstimatedPosition().Y().value()};
+  }
 
   frc::SwerveDriveKinematics<4> kDriveKinematics{
       frc::Translation2d{DriveConstants::kWheelBase / 2,
@@ -144,6 +150,8 @@ class DriveSubsystem : public frc2::SubsystemBase {
       frc::Translation2d{-DriveConstants::kWheelBase / 2,
                          -DriveConstants::kTrackWidth / 2}};
 
+  ctre::phoenix6::hardware::Pigeon2 m_pigeon{60};
+
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
@@ -154,7 +162,6 @@ class DriveSubsystem : public frc2::SubsystemBase {
   MAXSwerveModule m_rearRight;
 
   // The gyro sensor
-  ctre::phoenix6::hardware::Pigeon2 m_pigeon{60};
 
   // Odometry class for tracking robot pose
   // 4 defines the number of modules

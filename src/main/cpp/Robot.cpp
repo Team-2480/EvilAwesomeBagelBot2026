@@ -26,6 +26,7 @@
 #include <utility>
 
 #include "Constants.h"
+#include "frc/geometry/Rotation2d.h"
 #include "frc/smartdashboard/SmartDashboard.h"
 #include "frc2/command/RunCommand.h"
 #include "frc2/command/button/POVButton.h"
@@ -57,12 +58,17 @@ Robot::Robot() {
   m_drive.SetDefaultCommand(frc2::RunCommand(
       [this] {
         units::radians_per_second_t appliedRot = units::radians_per_second_t{0};
-        auto rawAutoRot = units::radian_t(m_drive.GetHubRelRot())
-                              .convert<units::degrees>()
-                              .value() -
-                          std::remainder(m_drive.GetHeading().value(), 360);
+        auto relDist = m_drive.GetHubRelDist();
+        auto hubRot = frc::Rotation2d{relDist.first, relDist.second};
+        auto myRot =m_drive.m_pigeon.GetRotation2d();
+        auto relRot = hubRot - myRot;
+        auto relRotWrapped = std::remainder((hubRot - myRot).Degrees().value(), 360.0);
 
-        frc::SmartDashboard::PutNumber("Raw Auto Rot", rawAutoRot);
+
+        frc::SmartDashboard::PutNumber("Raw Auto Rot", hubRot.Degrees().value());
+        frc::SmartDashboard::PutNumber("My rot", myRot.Degrees().value());
+        frc::SmartDashboard::PutNumber("Rel rot", relRot.Degrees().value());
+        frc::SmartDashboard::PutNumber("Rel rot wrapped", relRotWrapped);
 
         if (m_setDist) {
           m_shooter.SetHubDistance(dist * 1_ft, 6);
@@ -76,16 +82,17 @@ Robot::Robot() {
         frc::SmartDashboard::PutBoolean("Is Manual Distance", m_setDist);
 
         frc::SmartDashboard::PutBoolean("Auto find rot", m_findRot);
-        frc::SmartDashboard::PutNumber("Applied Rot", appliedRot.value());
 
         if (m_findRot) {
-          appliedRot  = -units::degrees_per_second_t{
-              rot_pid.calculate(0, rawAutoRot / 360)}.convert<units::radians_per_second>();
+          appliedRot  = units::degrees_per_second_t{
+              rot_pid.calculate(0, relRotWrapped)}.convert<units::radians_per_second>();
         } else {
           appliedRot = -units::radians_per_second_t{
               frc::ApplyDeadband(std::pow(m_driveController.GetZ(), 3)/2,
                                  OIConstants::kDriveDeadband)};
         }
+
+        frc::SmartDashboard::PutNumber("Applied Rot", appliedRot.value());
 
         m_drive.Drive(units::meters_per_second_t{frc::ApplyDeadband(
                           std::pow(m_driveController.GetY(), 3),
