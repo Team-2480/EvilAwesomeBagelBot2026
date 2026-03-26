@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BlueL2Shoot"
+            "pathName": "RedL2Shoot"
           }
         },
         {
@@ -33,35 +33,11 @@
           "data": {
             "name": "shooterOff"
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "BlueLShoot2Climb"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "BlueMidLClimb2End"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.25
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "climbFalse"
-          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Red",
   "choreoAuto": false
 }
