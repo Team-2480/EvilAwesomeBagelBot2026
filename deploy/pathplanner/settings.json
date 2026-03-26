@@ -1,18 +1,17 @@
 {
-  "robotWidth": 0.8128,
-  "robotLength": 0.9398,
+  "robotWidth": 0.9,
+  "robotLength": 0.9,
   "holonomicMode": true,
-<<<<<<< HEAD
   "pathFolders": [
     "BlueL",
-    "RedR",
-    "Mid"
+    "BlueMid",
+    "BlueR",
+    "RedL",
+    "RedMid",
+    "RedR"
   ],
-=======
-  "pathFolders": [],
->>>>>>> 6ee26ed737b5b0b719b458584952d3a504fe7883
   "autoFolders": [],
-  "defaultMaxVel": 1.0,
+  "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
@@ -22,8 +21,8 @@
   "robotTrackwidth": 0.546,
   "driveWheelRadius": 0.048,
   "driveGearing": 5.143,
-  "maxDriveSpeed": 5.5,
-  "driveMotorType": "NEO",
+  "maxDriveSpeed": 5.45,
+  "driveMotorType": "krakenX60",
   "driveCurrentLimit": 60.0,
   "wheelCOF": 1.2,
   "flModuleX": 0.273,

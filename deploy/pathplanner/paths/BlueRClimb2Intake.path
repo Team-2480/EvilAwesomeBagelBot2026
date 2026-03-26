@@ -3,32 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 14.614372049670173,
-        "y": 3.9785876292694846
+        "x": 1.5277503290637808,
+        "y": 3.9233057366195085
       },
       "prevControl": null,
       "nextControl": {
-        "x": 15.235171268560268,
-        "y": 3.9758299983733005
+        "x": 2.527750329063781,
+        "y": 3.9233057366195085
       },
       "isLocked": false,
-      "linkedName": "RedMidClimb"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 15.010536326073407,
-        "y": 3.996715598804654
+        "x": 8.261437825520835,
+        "y": 1.164809112548828
       },
       "prevControl": {
-        "x": 14.573409780524187,
-        "y": 3.9958135313427743
+        "x": 0.3538111891569917,
+        "y": -1.2418518518518522
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.6367637232730262,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 0.9625472219366776,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -42,13 +51,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -180.0
   },
   "reversed": false,
-  "folder": "RedMid",
+  "folder": "BlueR",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -180.0
   },
   "useDefaultConstraints": true
 }

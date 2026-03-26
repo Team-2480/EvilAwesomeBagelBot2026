@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BlueMid2Shoot"
+            "pathName": "BlueR2Shoot"
           }
         },
         {
@@ -37,13 +37,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BlueMidShoot2Climb"
+            "pathName": "BlueRShoot2Climb"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "BlueMidLClimb2End"
+            "pathName": "BlueMidRClimb2End"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
           }
         },
         {
