@@ -27,7 +27,7 @@ void ShooterSubsystem::Periodic() {
   // ME: so this will get the wheel spinning at the target velocity off the ball
   // there will be a conversion loss so this needs to be tweaked
   shooter_driver_speed.WithVelocity(1_rad_per_s * wheel_radius *
-                                    traj.get_velocity() * 3.7);
+                                    traj.get_velocity() * 4.2);
 
   if (shooter_on) {
     shooter_driver.SetControl(shooter_driver_speed);

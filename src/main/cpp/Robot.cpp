@@ -316,9 +316,7 @@ pathplanner::PathPlannerAuto *Robot::GetAutonomousCommand() {
   pathplanner::NamedCommands::registerCommand("intakeDown",
                                               std::move(shared_intake_down));
 
-  pathplanner::PathPlannerAuto *path = new PathPlannerAuto(m_chooser.GetSelected());
-
-    auto climb_true =
+  auto climb_true =
       new frc2::InstantCommand([this] { m_climb.SetClimb(true); }, {&m_climb});
   auto shared_climb_true = std::shared_ptr<frc2::Command>(climb_true);
   pathplanner::NamedCommands::registerCommand("climbTrue",
@@ -342,9 +340,10 @@ pathplanner::PathPlannerAuto *Robot::GetAutonomousCommand() {
   pathplanner::NamedCommands::registerCommand("shooterIntakeOff",
                                               std::move(shared_shooter_intake_off ));
 
+  pathplanner::PathPlannerAuto *path = new PathPlannerAuto(m_chooser.GetSelected());
 
 
-m_drive.ResetOdometry(path->getStartingPose());
-return path;
+  m_drive.ResetOdometry(path->getStartingPose());
+  return path;
 
 }
