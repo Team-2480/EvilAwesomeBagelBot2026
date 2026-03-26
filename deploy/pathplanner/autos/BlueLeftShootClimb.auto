@@ -5,9 +5,15 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "climbTrue"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "Mid2Shoot"
+            "pathName": "BlueL2Shoot"
           }
         },
         {
@@ -19,7 +25,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
+            "waitTime": 9.0
           }
         },
         {
@@ -31,25 +37,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "MidShoot2Climb"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "climbTrue"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 4.25
+            "pathName": "BlueLShoot2Climb"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "MidClimb2End"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
           }
         },
         {

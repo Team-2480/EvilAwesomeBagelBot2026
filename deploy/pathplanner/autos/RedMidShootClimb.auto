@@ -1,0 +1,61 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "climbTrue"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RedMid2Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shooterOn"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 9.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shooterOff"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RedMidShoot2Climb"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RedMidClimb2End"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "climbFalse"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
