@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 12.967013151781794,
+        "y": 7.211921936078467
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 13.366099093967014,
+        "y": 7.364090716326679
+      },
+      "isLocked": false,
+      "linkedName": "BlueRShoot"
+    },
+    {
+      "anchor": {
+        "x": 14.614372049670173,
+        "y": 3.9785876292694846
+      },
+      "prevControl": {
+        "x": 14.794651000056852,
+        "y": 3.8053839917572274
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "RedMidClimb"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3,
+    "maxAcceleration": 3,
+    "maxAngularVelocity": 540,
+    "maxAngularAcceleration": 720,
+    "nominalVoltage": 12,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": "RedR",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -108.32738546336931
+  },
+  "useDefaultConstraints": true
+}

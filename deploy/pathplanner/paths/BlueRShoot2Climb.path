@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.8675413598351156,
-        "y": 4.0766942633804915
+        "x": 3.532986848218205,
+        "y": 0.7880780639215326
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.2467421409450208,
-        "y": 4.073936632484307
+        "x": 3.133900906032986,
+        "y": 0.635909283673321
       },
       "isLocked": false,
-      "linkedName": "MidClimb"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.5277503290637808,
-        "y": 4.0766942633804915
+        "x": 1.8802606706311504,
+        "y": 3.425900058888889
       },
       "prevControl": {
-        "x": 1.9648768746130016,
-        "y": 4.075792195918612
+        "x": 1.6999817202444716,
+        "y": 3.599103696401146
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "MidEnd"
+      "linkedName": "BlueRMidClimb"
     }
   ],
   "rotationTargets": [],
@@ -33,11 +33,11 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
-    "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 720.0,
-    "nominalVoltage": 12.0,
+    "maxVelocity": 3,
+    "maxAcceleration": 3,
+    "maxAngularVelocity": 540,
+    "maxAngularAcceleration": 720,
+    "nominalVoltage": 12,
     "unlimited": false
   },
   "goalEndState": {
@@ -45,10 +45,10 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Mid",
+  "folder": "BlueR",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 71.22836617317027
   },
   "useDefaultConstraints": true
 }

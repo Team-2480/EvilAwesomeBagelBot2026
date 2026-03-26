@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 12.967013151781794,
+        "y": 7.211921936078467
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 12.717146824013396,
+        "y": 7.2037476931449875
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 12.967013151781794,
+        "y": 7.211921936078467
+      },
+      "prevControl": {
+        "x": 13.216835592504356,
+        "y": 7.20250131447361
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "BlueRShoot"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3,
+    "maxAcceleration": 3,
+    "maxAngularVelocity": 540,
+    "maxAngularAcceleration": 720,
+    "nominalVoltage": 12,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -108.32738546336931
+  },
+  "reversed": false,
+  "folder": "RedR",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": true
+}

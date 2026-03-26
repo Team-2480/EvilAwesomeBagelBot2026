@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Top2Shoot"
+            "pathName": "RedMid2Shoot"
           }
         },
         {
@@ -25,7 +25,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 2.0
+            "waitTime": 9.0
           }
         },
         {
@@ -37,19 +37,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "TopShoot2Climb"
+            "pathName": "RedMidShoot2Climb"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "MidClimb2End"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.25
+            "pathName": "RedMidClimb2End"
           }
         },
         {
@@ -57,41 +51,11 @@
           "data": {
             "name": "climbFalse"
           }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 4.25
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "climbTrue"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 4.3
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "TopClimb2Intake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "intakeDown"
-          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Red",
   "choreoAuto": false
 }

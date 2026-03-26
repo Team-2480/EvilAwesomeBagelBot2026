@@ -3,41 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.5277503290637808,
-        "y": 4.0766942633804915
+        "x": 3.532986848218205,
+        "y": 7.211921936078467
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.527750329063781,
-        "y": 4.0766942633804915
+        "x": 3.133900906032986,
+        "y": 7.364090716326679
       },
       "isLocked": false,
-      "linkedName": "MidEnd"
+      "linkedName": "TopShoot"
     },
     {
       "anchor": {
-        "x": 8.261437825520835,
-        "y": 6.835190887451172
+        "x": 1.8675413598351156,
+        "y": 4.0766942633804915
       },
       "prevControl": {
-        "x": 0.3538111891569917,
-        "y": 9.241851851851852
+        "x": 1.6872624094484368,
+        "y": 3.9034906258682343
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "MidClimb"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.6367637232730262,
-      "rotationDegrees": 0.0
-    },
-    {
-      "waypointRelativePos": 0.9625472219366776,
-      "rotationDegrees": 0.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -54,10 +45,10 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Top",
+  "folder": "BlueL",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -71.22836617317027
   },
   "useDefaultConstraints": true
 }
