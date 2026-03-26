@@ -85,7 +85,7 @@ Robot::Robot() {
 
         if (m_findRot) {
           appliedRot  = units::degrees_per_second_t{
-              rot_pid.calculate(0, relRotWrapped)}.convert<units::radians_per_second>();
+              rot_pid.calculate(0, -relRotWrapped)}.convert<units::radians_per_second>();
         } else {
           appliedRot = -units::radians_per_second_t{
               frc::ApplyDeadband(std::pow(m_driveController.GetZ(), 3)/2,

@@ -64,7 +64,7 @@ class Robot {
   std::vector<std::string> auto_names{"Nothing", "RedLShoot", "RedRShoot", "RedMidShoot", "RedMidShootClimb", "RedRShootClimb", "RedLShootClimb", "BlueLShoot", "BlueRShoot", "BlueMidShoot", "BlueMidShootClimb", "BlueRShootClimb", "BlueLShootClimb"};
   frc::SendableChooser<std::string> m_chooser;
 
-  PID rot_pid = PID(1.0/50.0, 10, -10, 0.5, 0, 0);
+  PID rot_pid = PID(1.0/50.0, 10, -10, 0.1, 0, 0);
 
   void ConfigureButtonBindings();
 };
