@@ -19,6 +19,18 @@
         {
           "type": "named",
           "data": {
+            "name": "agitateToggle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shooterIntakeOn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "shooterOn"
           }
         },
@@ -32,6 +44,18 @@
           "type": "named",
           "data": {
             "name": "shooterOff"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shooterIntakeOff"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "agitateToggle"
           }
         },
         {
