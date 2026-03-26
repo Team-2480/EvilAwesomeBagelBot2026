@@ -18,6 +18,8 @@ class ClimbSubsystem : public frc2::SubsystemBase {
     cfg.MotorOutput.Inverted =
         ctre::phoenix6::signals::InvertedValue::CounterClockwise_Positive;
 
+    cfg.WithVoltage(ctre::phoenix6::configs::VoltageConfigs().WithPeakForwardVoltage(8_V).WithPeakReverseVoltage(-8_V));
+
     climb_spool.GetConfigurator().Apply(cfg);
 
     climb_spool.SetNeutralMode(
@@ -40,5 +42,5 @@ class ClimbSubsystem : public frc2::SubsystemBase {
       ctre::phoenix6::controls::PositionVoltage{0_tr}.WithSlot(0);
 
   ctre::phoenix6::controls::PositionVoltage down_pos =
-      ctre::phoenix6::controls::PositionVoltage{36_tr * 2}.WithSlot(0);
+      ctre::phoenix6::controls::PositionVoltage{36_tr * 2 + 20_tr}.WithSlot(0);
 };

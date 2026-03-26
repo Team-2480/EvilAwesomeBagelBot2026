@@ -47,7 +47,7 @@ class IntakeSubsystem : public frc2::SubsystemBase {
                                     rev::PersistMode::kPersistParameters);
 
     up_down_regulator.Zero();
-    up_down_regulator.SetTargets(0, -24.5);
+    up_down_regulator.SetTargets(0, -25);
   }
   void Periodic() override;
 
