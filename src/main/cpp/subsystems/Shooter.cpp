@@ -22,7 +22,8 @@ void ShooterSubsystem::Periodic() {
   frc::SmartDashboard::PutNumber("Shooter Pitch", traj.get_pitch());
   frc::SmartDashboard::PutBoolean("Shooter On", shooter_on);
   frc::SmartDashboard::PutBoolean("Shooter Index On", shooter_intake_on);
-  frc::SmartDashboard::PutString("Manual Shooter Speed", std::to_string(shooter_manual_speed) + " tps");
+  frc::SmartDashboard::PutString("Manual Shooter Speed",
+                                 std::to_string(shooter_manual_speed) + " tps");
 
   // ME: so this will get the wheel spinning at the target velocity off the ball
   // there will be a conversion loss so this needs to be tweaked
@@ -47,8 +48,15 @@ void ShooterSubsystem::Periodic() {
         0, rev::spark::SparkLowLevel::ControlType::kDutyCycle);
   }
 
-  double servo_location = std::clamp((units::radian_t(traj.get_pitch()).convert<units::degree>().value() - 45.0)/(78.0-45.0), 0.0, 1.0);
-  
+  double servo_location =
+      std::clamp(
+          (units::radian_t(traj.get_pitch()).convert<units::degree>().value() -
+           45.0) /
+              (78.0 - 45.0),
+          0.0, 1.0) *
+          (0.7887755209 - 0.23484) +
+      0.23484;
+
   frc::SmartDashboard::PutNumber("Shooter Servo Pitch", servo_location);
   servo_left.Set(servo_location);
   servo_right.Set(servo_location);

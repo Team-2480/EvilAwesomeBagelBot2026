@@ -8,7 +8,7 @@ void IntakeSubsystem::Periodic() {
   // send motor info to intake motor
   if (intake_on) {
     intake_driver_controller.SetSetpoint(
-        (intake_dir == INTAKE_SUCK ? -1 : 1) * 0.9,
+        (intake_dir == INTAKE_SUCK ? -1 : 1) * 0.7,
         rev::spark::SparkLowLevel::ControlType::kDutyCycle);
   } else {
     intake_driver_controller.SetSetpoint(

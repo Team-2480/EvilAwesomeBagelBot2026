@@ -27,7 +27,7 @@
 using namespace DriveConstants;
 using namespace pathplanner;
 
-DriveSubsystem::DriveSubsystem()
+DriveSubsystem::DriveSubsystem(ShooterSubsystem * shooter, bool *m_setDist, float *dist )
     : m_frontLeft{kFrontLeftDrivingCanId, kFrontLeftTurningCanId,
                   kFrontLeftChassisAngularOffset},
       m_rearLeft{kRearLeftDrivingCanId, kRearLeftTurningCanId,
@@ -40,7 +40,7 @@ DriveSubsystem::DriveSubsystem()
                  m_pigeon.GetRotation2d(),
                  {m_frontLeft.GetPosition(), m_frontRight.GetPosition(),
                   m_rearLeft.GetPosition(), m_rearRight.GetPosition()},
-                 frc::Pose2d{}} {
+                 frc::Pose2d{}}, m_shooter(shooter), m_setDist(m_setDist), dist(dist){
   RobotConfig config = RobotConfig::fromGUISettings();
   AutoBuilder::configure(
       [this]() { return GetPose(); },  // Robot pose supplier
@@ -61,8 +61,8 @@ DriveSubsystem::DriveSubsystem()
                                                      // following controller
                                                      // for holonomic drive
                                                      // trains
-          PIDConstants(0.1, 0.0, 0.2),  // Translation PID constants
-          PIDConstants(0.1, 0.0, 0.2)   // Rotation PID constants
+          PIDConstants(5.0, 0.0, 0.0),  // Translation PID constants
+          PIDConstants(5.0, 0.0, 0.0)   // Rotation PID constants
           ),
       config,  // The robot configuration
       []() {
@@ -108,11 +108,19 @@ DriveSubsystem::DriveSubsystem()
   wpi::PortForwarder::GetInstance().Add(5819,"172.29.1.1",5809);
 
   ctre::phoenix6::configs::Pigeon2Configuration pigeon_config;
-  pigeon_config.WithMountPose(ctre::phoenix6::configs::MountPoseConfigs().WithMountPoseYaw(180_deg));
+  pigeon_config.WithMountPose(ctre::phoenix6::configs::MountPoseConfigs().WithMountPoseYaw(0_deg));
   m_pigeon.GetConfigurator().Apply(pigeon_config);
 }
 
 void DriveSubsystem::Periodic() {
+  if (*m_setDist) {
+    m_shooter->SetHubDistance(*dist * 1_ft, 6);
+  } else {
+    m_shooter->SetHubDistance(
+        units::length::meter_t{MyHomiePythagoras()},
+        GetHubDistance().second);
+  }
+
   frc::SmartDashboard::PutNumber("Hub Relative Rotation Away", GetHubRelRot());
   frc::SmartDashboard::PutNumber("Hub Relative Dist Away", MyHomiePythagoras());
 

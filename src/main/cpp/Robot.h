@@ -47,12 +47,13 @@ class Robot {
   // The robot's subsystems and commands are defined here...
 
   // The robot's subsystems
-  DriveSubsystem m_drive;
   bool m_slowMode = false;
-  bool m_globalLocal = false;
+  bool m_globalLocal = true;
   bool m_findRot = false;
   bool m_setDist = false;
   float dist = 5.0;
+
+  DriveSubsystem m_drive = DriveSubsystem(&m_shooter, &m_setDist, &dist);
 
   // IntakeSubsystem m_intake;
   ClimbSubsystem m_climb;
