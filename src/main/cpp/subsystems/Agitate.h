@@ -35,7 +35,7 @@ class AgitateSubsystem : public frc2::SubsystemBase {
 
   void SetAgitate(uint16_t agitate_set);
   uint16_t agitate_on = 0;
-  bool agitate_up = false;
+  bool agitate_up = true;
 
   // JULIA (NEW!) functions to change turn speed on off
 
