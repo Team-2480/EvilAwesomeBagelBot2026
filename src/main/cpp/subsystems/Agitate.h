@@ -33,8 +33,9 @@ class AgitateSubsystem : public frc2::SubsystemBase {
 
   void Periodic() override;
 
-  void SetAgitate(bool agitate_set);
-  bool agitate_on = false;
+  void SetAgitate(uint16_t agitate_set);
+  uint16_t agitate_on = 0;
+  bool agitate_up = false;
 
   // JULIA (NEW!) functions to change turn speed on off
 

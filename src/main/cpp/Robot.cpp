@@ -60,23 +60,17 @@ Robot::Robot() {
         units::radians_per_second_t appliedRot = units::radians_per_second_t{0};
         auto relDist = m_drive.GetHubRelDist();
         auto hubRot = frc::Rotation2d{relDist.first, relDist.second};
-        auto myRot =m_drive.m_pigeon.GetRotation2d();
+        auto myRot = m_drive.m_pigeon.GetRotation2d();
         auto relRot = hubRot - myRot;
-        auto relRotWrapped = std::remainder((hubRot - myRot).Degrees().value(), 360.0);
+        auto relRotWrapped =
+            std::remainder((hubRot - myRot).Degrees().value(), 360.0);
 
-
-        frc::SmartDashboard::PutNumber("Raw Auto Rot", hubRot.Degrees().value());
+        frc::SmartDashboard::PutNumber("Raw Auto Rot",
+                                       hubRot.Degrees().value());
         frc::SmartDashboard::PutNumber("My rot", myRot.Degrees().value());
         frc::SmartDashboard::PutNumber("Rel rot", relRot.Degrees().value());
         frc::SmartDashboard::PutNumber("Rel rot wrapped", relRotWrapped);
 
-        if (m_setDist) {
-          m_shooter.SetHubDistance(dist * 1_ft, 6);
-        } else {
-          m_shooter.SetHubDistance(
-              units::length::meter_t{m_drive.MyHomiePythagoras()},
-              m_drive.GetHubDistance().second);
-        }
 
         frc::SmartDashboard::PutNumber("Manual Distance", dist);
         frc::SmartDashboard::PutBoolean("Is Manual Distance", m_setDist);
@@ -84,31 +78,36 @@ Robot::Robot() {
         frc::SmartDashboard::PutBoolean("Auto find rot", m_findRot);
 
         if (m_findRot) {
-          appliedRot  = units::degrees_per_second_t{
-              rot_pid.calculate(0, -relRotWrapped)}.convert<units::radians_per_second>();
+          appliedRot =
+              units::degrees_per_second_t{rot_pid.calculate(0, -relRotWrapped)}
+                  .convert<units::radians_per_second>();
         } else {
           appliedRot = -units::radians_per_second_t{
-              frc::ApplyDeadband(std::pow(m_driveController.GetZ(), 3)/2,
+              frc::ApplyDeadband(std::pow(m_driveController.GetZ(), 3) / 2,
                                  OIConstants::kDriveDeadband)};
         }
 
         frc::SmartDashboard::PutNumber("Applied Rot", appliedRot.value());
 
         m_drive.Drive(units::meters_per_second_t{frc::ApplyDeadband(
-                          std::pow(m_driveController.GetY(), 3),
+                          std::pow(-m_driveController.GetY(), 3),
                           OIConstants::kDriveDeadband)},
                       units::meters_per_second_t{frc::ApplyDeadband(
-                          std::pow(m_driveController.GetX(), 3),
+                          std::pow(-m_driveController.GetX(), 3),
                           OIConstants::kDriveDeadband)},
                       appliedRot, m_globalLocal, m_slowMode);
       },
       {&m_drive}));
+
 }
 
 void Robot::ConfigureButtonBindings() {
   // button to stop being pushed
   frc2::JoystickButton(&m_driveController, 6)  // button 6 on joystick?
       .WhileTrue(new frc2::RunCommand([this] { m_drive.SetX(); }, {&m_drive}));
+
+  frc2::JoystickButton(&m_driveController, 12)
+      .WhileTrue(new frc2::RunCommand([this] { m_drive.m_pigeon.Reset(); }, {&m_drive}));
 
   frc2::JoystickButton(&m_driveController, 5)  // button 6 on joystick?
       .ToggleOnTrue(new frc2::InstantCommand(
@@ -176,14 +175,13 @@ void Robot::ConfigureButtonBindings() {
   frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kA)
       .ToggleOnFalse(off_sequence);
 
-
   frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kY)
       .ToggleOnTrue(
           new frc2::InstantCommand([this] { m_setDist = !m_setDist; }));
 
   frc2::POVButton(&m_actionController, 0, 0)
       .ToggleOnTrue(new frc2::InstantCommand([this] {
-        if (dist < 10) {
+        if (dist < 100) {
           dist += 0.25;
         }
       }));
@@ -225,7 +223,6 @@ void Robot::ConfigureButtonBindings() {
       .ToggleOnTrue(new frc2::InstantCommand(
           [this] { m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_DOWN); }));
 
-
   // intake
   frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kX)
       .ToggleOnTrue(new frc2::InstantCommand(
@@ -233,7 +230,6 @@ void Robot::ConfigureButtonBindings() {
   frc2::JoystickButton(&m_actionController, frc::XboxController::Button::kX)
       .ToggleOnFalse(new frc2::InstantCommand(
           [this] { m_intake.SetIntake(false); }, {&m_intake}));
-
 
   frc2::JoystickButton(&m_actionController,
                        frc::XboxController::Button::kLeftBumper)
@@ -248,16 +244,20 @@ void Robot::ConfigureButtonBindings() {
           [this] { m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_SUCK); },
           {&m_intake}));
 
-
   frc2::JoystickButton(&m_actionController,
                        frc::XboxController::Button::kLeftStick)
       .ToggleOnTrue(new frc2::InstantCommand(
-          [this] { m_agitate.SetAgitate(!m_agitate.agitate_on); },
+          [this] { m_agitate.SetAgitate(!m_agitate.agitate_on ); },
           {&m_agitate}));
 
+  frc2::JoystickButton(&m_actionController,
+                       frc::XboxController::Button::kRightStick)
+      .ToggleOnTrue(new frc2::InstantCommand(
+          [this] { m_agitate.agitate_up = !m_agitate.agitate_up; },
+          {&m_agitate}));
 }
 
-pathplanner::PathPlannerAuto *Robot::GetAutonomousCommand() {
+pathplanner::PathPlannerAuto* Robot::GetAutonomousCommand() {
   auto shooter_on = new frc2::InstantCommand(
       [this] { m_shooter.SetShooter(true); }, {&m_shooter});
   auto shared_shooter_on = std::shared_ptr<frc2::Command>(shooter_on);
@@ -272,11 +272,10 @@ pathplanner::PathPlannerAuto *Robot::GetAutonomousCommand() {
 
   auto agitate_toggle = new frc2::InstantCommand(
       [this] { m_agitate.SetAgitate(!m_agitate.agitate_on); }, {&m_agitate});
-  auto shared_agitate_toggle =
-      std::shared_ptr<frc2::Command>(agitate_toggle );
+  auto shared_agitate_toggle = std::shared_ptr<frc2::Command>(agitate_toggle);
   pathplanner::NamedCommands::registerCommand("agitateToggle",
                                               std::move(shared_agitate_toggle));
-    auto intake_suck = new frc2::InstantCommand(
+  auto intake_suck = new frc2::InstantCommand(
       [this] { m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_SUCK); },
       {&m_intake});
   auto shared_intake_suck = std::shared_ptr<frc2::Command>(intake_suck);
@@ -302,7 +301,7 @@ pathplanner::PathPlannerAuto *Robot::GetAutonomousCommand() {
   pathplanner::NamedCommands::registerCommand("intakeOff",
                                               std::move(shared_intake_disable));
 
-    auto intake_up = new frc2::InstantCommand(
+  auto intake_up = new frc2::InstantCommand(
       [this] { m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_UP); },
       {&m_intake});
   auto shared_intake_up = std::shared_ptr<frc2::Command>(intake_up);
@@ -317,33 +316,34 @@ pathplanner::PathPlannerAuto *Robot::GetAutonomousCommand() {
                                               std::move(shared_intake_down));
 
   auto climb_true =
-      new frc2::InstantCommand([this] { m_climb.SetClimb(true); }, {&m_climb});
+      new frc2::InstantCommand([this] { m_climb.SetClimb(false); }, {&m_climb});
   auto shared_climb_true = std::shared_ptr<frc2::Command>(climb_true);
   pathplanner::NamedCommands::registerCommand("climbTrue",
                                               std::move(shared_climb_true));
 
   auto climb_false =
-      new frc2::InstantCommand([this] { m_climb.SetClimb(false); }, {&m_climb});
+      new frc2::InstantCommand([this] { m_climb.SetClimb(true); }, {&m_climb});
   auto shared_climb_false = std::shared_ptr<frc2::Command>(climb_false);
   pathplanner::NamedCommands::registerCommand("climbFalse",
                                               std::move(shared_climb_false));
 
-    auto shooter_intake_on = new frc2::InstantCommand(
+  auto shooter_intake_on = new frc2::InstantCommand(
       [this] { m_shooter.SetShooterIntake(true); }, {&m_shooter});
-  auto shared_shooter_intake_on = std::shared_ptr<frc2::Command>(shooter_intake_on );
-  pathplanner::NamedCommands::registerCommand("shooterIntakeOn",
-                                              std::move(shared_shooter_intake_on ));
+  auto shared_shooter_intake_on =
+      std::shared_ptr<frc2::Command>(shooter_intake_on);
+  pathplanner::NamedCommands::registerCommand(
+      "shooterIntakeOn", std::move(shared_shooter_intake_on));
 
   auto shooter_intake_off = new frc2::InstantCommand(
       [this] { m_shooter.SetShooterIntake(false); }, {&m_shooter});
-  auto shared_shooter_intake_off = std::shared_ptr<frc2::Command>(shooter_intake_off );
-  pathplanner::NamedCommands::registerCommand("shooterIntakeOff",
-                                              std::move(shared_shooter_intake_off ));
+  auto shared_shooter_intake_off =
+      std::shared_ptr<frc2::Command>(shooter_intake_off);
+  pathplanner::NamedCommands::registerCommand(
+      "shooterIntakeOff", std::move(shared_shooter_intake_off));
 
-  pathplanner::PathPlannerAuto *path = new PathPlannerAuto(m_chooser.GetSelected());
-
+  pathplanner::PathPlannerAuto* path =
+      new PathPlannerAuto(m_chooser.GetSelected());
 
   m_drive.ResetOdometry(path->getStartingPose());
   return path;
-
 }

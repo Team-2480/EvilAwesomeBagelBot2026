@@ -19,10 +19,15 @@
 
 #include "../Constants.h"
 #include "MAXSwerveModule.h"
+#include "Shooter.h"
 
 class DriveSubsystem : public frc2::SubsystemBase {
  public:
-  DriveSubsystem();
+  DriveSubsystem(ShooterSubsystem * shooter, bool *m_setDist, float *dist ) ;
+
+  ShooterSubsystem * m_shooter;
+  bool *m_setDist ;
+  float *dist ;
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
