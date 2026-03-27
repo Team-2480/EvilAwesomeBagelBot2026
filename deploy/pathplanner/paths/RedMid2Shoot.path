@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 14.412113900140266,
-        "y": 4.710627047083503
+        "x": 14.614372049670173,
+        "y": 3.9785876292694846
       },
       "prevControl": {
-        "x": 13.326445859477634,
-        "y": 4.702306957413934
+        "x": 13.528704009007537,
+        "y": 3.9702675395999156
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "RedRMidShoot"
+      "linkedName": "RedMidShoot"
     }
   ],
   "rotationTargets": [],
@@ -33,16 +33,16 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3,
-    "maxAcceleration": 3,
-    "maxAngularVelocity": 540,
-    "maxAngularAcceleration": 720,
-    "nominalVoltage": 12,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -164.67319982329923
+    "rotation": 179.2423732114038
   },
   "reversed": false,
   "folder": "RedMid",

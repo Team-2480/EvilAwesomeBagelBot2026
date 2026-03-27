@@ -67,13 +67,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RedMidRClimb2End"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.5
+            "pathName": "RedMidClimb2End"
           }
         },
         {
