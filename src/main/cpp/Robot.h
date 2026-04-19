@@ -53,16 +53,16 @@ class Robot {
   bool m_setDist = false;
   float dist = 5.0;
 
-  DriveSubsystem m_drive = DriveSubsystem(&m_shooter, &m_setDist, &dist);
+  DriveSubsystem m_drive = DriveSubsystem( &m_setDist, &dist);
 
-  // IntakeSubsystem m_intake;
-  ClimbSubsystem m_climb;
-  ShooterSubsystem m_shooter;
   IntakeSubsystem m_intake;
+  ClimbSubsystem m_climb;
+  // ShooterSubsystem m_shooter;
+  // IntakeSubsystem m_intake;
   AgitateSubsystem m_agitate;
 
   // The chooser for the autonomous routines
-  std::vector<std::string> auto_names{"Nothing", "StraightClimb", "RedRPlow", "RedLPlow", "RedLShoot", "RedRShoot", "RedMidShoot", "RedMidShootClimb", "RedRShootClimb", "RedLShootClimb", "BlueLPlow", "BlueRPlow", "BlueLShoot", "BlueRShoot", "BlueMidShoot", "BlueMidShootClimb", "BlueRShootClimb", "BlueLShootClimb"};
+  std::vector<std::string> auto_names{"Nothing", "StraightClimb", "RedRPlow", "RedLPlow", "RedLShoot", "RedRShoot", "RedMidShoot", "RedMidShootClimb", "RedRShootClimb", "RedLShootClimb", "BlueLPlow", "BlueRPlow", "BlueLShoot", "BlueRShoot", "BlueMidShoot", "BlueMidShootClimb", "BlueRShootClimb", "BlueLShootClimb", "Something"};
   frc::SendableChooser<std::string> m_chooser;
 
   PID rot_pid = PID(1.0/50.0, 10, -10, 0.1, 0, 0);

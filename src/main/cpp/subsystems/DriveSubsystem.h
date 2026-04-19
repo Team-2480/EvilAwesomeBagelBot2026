@@ -23,9 +23,8 @@
 
 class DriveSubsystem : public frc2::SubsystemBase {
  public:
-  DriveSubsystem(ShooterSubsystem * shooter, bool *m_setDist, float *dist ) ;
+  DriveSubsystem( bool *m_setDist, float *dist ) ;
 
-  ShooterSubsystem * m_shooter;
   bool *m_setDist ;
   float *dist ;
 
