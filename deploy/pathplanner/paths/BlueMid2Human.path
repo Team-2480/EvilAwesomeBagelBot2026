@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.5359592200644343,
-        "y": 0.8772964758698516
+        "x": 3.4934258118352166,
+        "y": 4.0339513081948715
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.904845924774609,
-        "y": 0.7655207102950109
+        "x": 1.8623125165453913,
+        "y": 3.92217554262003
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.49079526880923663,
-        "y": 0.6564510381643072
+        "x": 0.7754779461091132,
+        "y": 0.6624486650465098
       },
       "prevControl": {
-        "x": 2.0486235041433125,
-        "y": 0.7572867973012023
+        "x": 2.3333061814431892,
+        "y": 0.7632844241834049
       },
       "nextControl": null,
       "isLocked": false,
@@ -35,7 +35,7 @@
     },
     {
       "waypointRelativePos": 0.7067222193667761,
-      "rotationDegrees": 180.0
+      "rotationDegrees": 90.0
     }
   ],
   "constraintZones": [],
@@ -51,7 +51,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 90.0
   },
   "reversed": false,
   "folder": "BlueR",
