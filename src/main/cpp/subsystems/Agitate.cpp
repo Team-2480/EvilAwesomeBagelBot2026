@@ -5,12 +5,12 @@ void AgitateSubsystem::Periodic() {
   if (agitate_on == 1) {
     if (agitate_up) {
       agitate_driver_controller.SetSetpoint(
-          0.4, 
+          0.8, 
           rev::spark::SparkLowLevel::ControlType::kDutyCycle);
     }else{
 
       agitate_driver_controller.SetSetpoint(
-          -0.4, 
+          -0.8, 
           rev::spark::SparkLowLevel::ControlType::kDutyCycle);
     }
   } else if (agitate_on == 0){

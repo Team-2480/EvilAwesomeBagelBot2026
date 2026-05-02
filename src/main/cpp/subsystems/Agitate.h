@@ -41,7 +41,7 @@ class AgitateSubsystem : public frc2::SubsystemBase {
 
  private:
   rev::spark::SparkMax agitate_driver =
-      rev::spark::SparkMax(50, rev::spark::SparkMax::MotorType::kBrushed);
+      rev::spark::SparkMax(50, rev::spark::SparkMax::MotorType::kBrushless);
   // Header issue!
   rev::spark::SparkClosedLoopController agitate_driver_controller =
       agitate_driver.GetClosedLoopController();
