@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "intakeDown"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "BlueMid2Human"
@@ -14,6 +20,18 @@
           "type": "named",
           "data": {
             "name": "intakeOn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "agitateToggle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "agitateOut"
           }
         },
         {
@@ -32,6 +50,12 @@
           "type": "named",
           "data": {
             "name": "intakeOff"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "agitateToggle"
           }
         }
       ]
