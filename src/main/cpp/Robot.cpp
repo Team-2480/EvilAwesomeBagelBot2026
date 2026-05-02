@@ -261,6 +261,18 @@ pathplanner::PathPlannerAuto* Robot::GetAutonomousCommand() {
   pathplanner::NamedCommands::registerCommand("agitateToggle",
                                               std::move(shared_agitate_toggle));
 
+  auto agitate_out = new frc2::InstantCommand(
+      [this] {m_agitate.agitate_up = false; }, {&m_agitate});
+  auto shared_agitate_out = std::shared_ptr<frc2::Command>(agitate_out);
+  pathplanner::NamedCommands::registerCommand("agitateOut",
+                                              std::move(shared_agitate_out));
+
+  auto agitate_in = new frc2::InstantCommand(
+      [this] {m_agitate.agitate_up = true; }, {&m_agitate});
+  auto shared_agitate_in = std::shared_ptr<frc2::Command>(agitate_in);
+  pathplanner::NamedCommands::registerCommand("agitateIn",
+                                              std::move(shared_agitate_in));
+
   /*
   auto shooter_on = new frc2::InstantCommand(
       [this] { m_shooter.SetShooter(true); }, {&m_shooter});
@@ -281,40 +293,39 @@ pathplanner::PathPlannerAuto* Robot::GetAutonomousCommand() {
   auto shared_intake_suck = std::shared_ptr<frc2::Command>(intake_suck);
   pathplanner::NamedCommands::registerCommand("intakeSuck",
                                               std::move(shared_intake_suck));
-  
+
   auto intake_repel = new frc2::InstantCommand(
       [this] { m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_REPEL); },
       {&m_intake});
   auto shared_intake_repel = std::shared_ptr<frc2::Command>(intake_repel);
   pathplanner::NamedCommands::registerCommand("intakeRepel",
                                               std::move(shared_intake_repel));
-                                              
+
   auto intake_enable = new frc2::InstantCommand(
       [this] { m_intake.SetIntake(true); }, {&m_intake});
   auto shared_intake_enable = std::shared_ptr<frc2::Command>(intake_enable);
   pathplanner::NamedCommands::registerCommand("intakeOn",
                                               std::move(shared_intake_enable));
-  
+
   auto intake_disable = new frc2::InstantCommand(
       [this] { m_intake.SetIntake(false); }, {&m_intake});
-  auto shared_intake_disable =
-  std::shared_ptr<frc2::Command>(intake_disable);
+  auto shared_intake_disable = std::shared_ptr<frc2::Command>(intake_disable);
   pathplanner::NamedCommands::registerCommand("intakeOff",
                                               std::move(shared_intake_disable));
-  //
-  // auto intake_up = new frc2::InstantCommand(
-  //     [this] { m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_UP); },
-  //     {&m_intake});
-  // auto shared_intake_up = std::shared_ptr<frc2::Command>(intake_up);
-  // pathplanner::NamedCommands::registerCommand("intakeUp",
-  //                                             std::move(shared_intake_up));
-  //
-  // auto intake_down = new frc2::InstantCommand(
-  //     [this] { m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_DOWN); },
-  //     {&m_intake});
-  // auto shared_intake_down = std::shared_ptr<frc2::Command>(intake_down);
-  // pathplanner::NamedCommands::registerCommand("intakeDown",
-  //                                             std::move(shared_intake_down));
+
+  auto intake_up = new frc2::InstantCommand(
+      [this] { m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_UP); },
+      {&m_intake});
+  auto shared_intake_up = std::shared_ptr<frc2::Command>(intake_up);
+  pathplanner::NamedCommands::registerCommand("intakeUp",
+                                              std::move(shared_intake_up));
+
+  auto intake_down = new frc2::InstantCommand(
+      [this] { m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_DOWN); },
+      {&m_intake});
+  auto shared_intake_down = std::shared_ptr<frc2::Command>(intake_down);
+  pathplanner::NamedCommands::registerCommand("intakeDown",
+                                              std::move(shared_intake_down));
 
   auto climb_true =
       new frc2::InstantCommand([this] { m_climb.SetClimb(false); }, {&m_climb});
