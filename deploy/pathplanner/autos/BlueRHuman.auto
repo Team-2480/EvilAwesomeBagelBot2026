@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "BlueR2Human"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeOn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeRepel"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 10.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeOff"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Blue",
+  "choreoAuto": false
+}
