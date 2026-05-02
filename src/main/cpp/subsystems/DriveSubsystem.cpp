@@ -27,7 +27,7 @@
 using namespace DriveConstants;
 using namespace pathplanner;
 
-DriveSubsystem::DriveSubsystem(ShooterSubsystem * shooter, bool *m_setDist, float *dist )
+DriveSubsystem::DriveSubsystem(bool *m_setDist, float *dist )
     : m_frontLeft{kFrontLeftDrivingCanId, kFrontLeftTurningCanId,
                   kFrontLeftChassisAngularOffset},
       m_rearLeft{kRearLeftDrivingCanId, kRearLeftTurningCanId,
@@ -40,7 +40,7 @@ DriveSubsystem::DriveSubsystem(ShooterSubsystem * shooter, bool *m_setDist, floa
                  m_pigeon.GetRotation2d(),
                  {m_frontLeft.GetPosition(), m_frontRight.GetPosition(),
                   m_rearLeft.GetPosition(), m_rearRight.GetPosition()},
-                 frc::Pose2d{}}, m_shooter(shooter), m_setDist(m_setDist), dist(dist){
+                 frc::Pose2d{}}, m_setDist(m_setDist), dist(dist){
   RobotConfig config = RobotConfig::fromGUISettings();
   AutoBuilder::configure(
       [this]() { return GetPose(); },  // Robot pose supplier
@@ -52,7 +52,7 @@ DriveSubsystem::DriveSubsystem(ShooterSubsystem * shooter, bool *m_setDist, floa
         return getChassisSpeeds();
       },  // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
       [this](frc::ChassisSpeeds speeds, auto feedforwards) {
-        driveRobotRelative(speeds);
+        driveRobotRelative({speeds.vx*0.8, speeds.vy*0.8, speeds.omega});
       },  // Method that will drive the robot given ROBOT RELATIVE
           // ChassisSpeeds. Also optionally outputs individual module
           // feedforwards
@@ -61,8 +61,8 @@ DriveSubsystem::DriveSubsystem(ShooterSubsystem * shooter, bool *m_setDist, floa
                                                      // following controller
                                                      // for holonomic drive
                                                      // trains
-          PIDConstants(5.0, 0.0, 0.0),  // Translation PID constants
-          PIDConstants(5.0, 0.0, 0.0)   // Rotation PID constants
+          PIDConstants(6.0, 0.0, 0.0),  // Translation PID constants
+          PIDConstants(6.0, 0.0, 0.0)   // Rotation PID constants
           ),
       config,  // The robot configuration
       []() {
@@ -113,6 +113,7 @@ DriveSubsystem::DriveSubsystem(ShooterSubsystem * shooter, bool *m_setDist, floa
 }
 
 void DriveSubsystem::Periodic() {
+  /*
   if (*m_setDist) {
     m_shooter->SetHubDistance(*dist * 1_ft, 6);
   } else {
@@ -120,6 +121,7 @@ void DriveSubsystem::Periodic() {
         units::length::meter_t{MyHomiePythagoras()},
         GetHubDistance().second);
   }
+  */
 
   frc::SmartDashboard::PutNumber("Hub Relative Rotation Away", GetHubRelRot());
   frc::SmartDashboard::PutNumber("Hub Relative Dist Away", MyHomiePythagoras());

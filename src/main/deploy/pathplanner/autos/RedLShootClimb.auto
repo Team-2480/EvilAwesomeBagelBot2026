@@ -1,0 +1,91 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "climbTrue"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RedL2Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "agitateToggle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shooterIntakeOn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shooterOn"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 9.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shooterOff"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shooterIntakeOff"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "agitateToggle"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RedLShoot2Climb"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RedMidClimb2End"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "climbFalse"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Red",
+  "choreoAuto": false
+}

@@ -17,7 +17,7 @@ class MAXSwerveModule {
     constexpr double drivingFactor = ModuleConstants::kWheelDiameter.value() *
                                      std::numbers::pi /
                                      ModuleConstants::kDrivingMotorReduction;
-    constexpr double nominalVoltage = 12.0;
+    constexpr double nominalVoltage = 6.0;
     constexpr double drivingVelocityFeedForward =
         nominalVoltage / ModuleConstants::kDriveWheelFreeSpeedRps;
 

@@ -57,7 +57,9 @@ void ShooterSubsystem::Periodic() {
           (0.7887755209 - 0.23484) +
       0.23484;
 
+
   frc::SmartDashboard::PutNumber("Shooter Servo Pitch", servo_location);
+  // broken servos :(
   servo_left.Set(servo_location);
   servo_right.Set(servo_location);
 }

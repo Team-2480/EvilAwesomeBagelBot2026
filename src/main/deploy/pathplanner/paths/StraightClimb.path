@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.5288235317381984,
+        "y": 4.104681375538232
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.9094124465539437,
+        "y": 4.105788731632938
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.4828030561729495,
+        "y": 4.104681375538232
+      },
+      "prevControl": {
+        "x": 1.2328414726464159,
+        "y": 4.109063927409884
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "BlueLSClimb"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 0.5,
+    "maxAcceleration": 0.1,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": false
+}

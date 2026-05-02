@@ -97,7 +97,7 @@ class ShooterSubsystem : public frc2::SubsystemBase {
                                     rev::PersistMode::kPersistParameters);
 
     // traj.set_fixed(
-    //     units::angle::degree_t{65}.convert<units::angle::radian>().value());
+    //     units::angle::degree_t{61.5}.convert<units::angle::radian>().value());
   }
   void Periodic() override;
 
@@ -166,6 +166,7 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   rev::spark::SparkClosedLoopController shooter_intake_driver_controller =
       shooter_intake_driver.GetClosedLoopController();
 
+  // no servo :(
   frc::Servo servo_left{0};
   frc::Servo servo_right{1};
 
