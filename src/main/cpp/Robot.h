@@ -43,6 +43,8 @@ class Robot {
   // The driver's controller
   frc::Joystick m_driveController{0};
   frc::XboxController m_actionController{1};
+  frc::EventLoop *m_loop = new frc::EventLoop();
+
 
   // The robot's subsystems and commands are defined here...
 

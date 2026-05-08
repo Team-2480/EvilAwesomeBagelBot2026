@@ -57,6 +57,7 @@ Robot::Robot() {
   // Turning is controlled by the X axis of the right stick.
   m_drive.SetDefaultCommand(frc2::RunCommand(
       [this] {
+        m_loop->Poll();
         units::radians_per_second_t appliedRot = units::radians_per_second_t{0};
         auto relDist = m_drive.GetHubRelDist();
         auto hubRot = frc::Rotation2d{relDist.first, relDist.second};
@@ -235,6 +236,35 @@ void Robot::ConfigureButtonBindings() {
             m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_REPEL);
           },
           {&m_intake}));
+
+  m_actionController.LeftTrigger(0.5, m_loop).Rising().IfHigh([this]() {
+    m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_DOWN);
+    m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_REPEL);
+    m_intake.SetIntake(true);
+    m_agitate.SetAgitate(true);
+    m_agitate.agitate_up = true;  // repl
+  });
+
+  m_actionController.RightTrigger(0.5, m_loop).Rising().IfHigh([this]() {
+    m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_DOWN);
+    m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_SUCK);
+    m_intake.SetIntake(true);
+    m_agitate.SetAgitate(true);
+    m_agitate.agitate_up = false;  // in
+  });
+
+  m_actionController.LeftTrigger(0.5, m_loop).Falling().IfHigh([this]() {
+    m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_UP);
+    m_intake.SetIntake(false);
+    m_agitate.SetAgitate(false);
+  });
+
+  m_actionController.RightTrigger(0.5, m_loop).Falling().IfHigh([this]() {
+    m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_UP);
+    m_intake.SetIntake(false);
+    m_agitate.SetAgitate(false);
+  });
+
   frc2::JoystickButton(&m_actionController,
                        frc::XboxController::Button::kLeftBumper)
       .ToggleOnFalse(new frc2::InstantCommand(
@@ -262,13 +292,13 @@ pathplanner::PathPlannerAuto* Robot::GetAutonomousCommand() {
                                               std::move(shared_agitate_toggle));
 
   auto agitate_out = new frc2::InstantCommand(
-      [this] {m_agitate.agitate_up = false; }, {&m_agitate});
+      [this] { m_agitate.agitate_up = false; }, {&m_agitate});
   auto shared_agitate_out = std::shared_ptr<frc2::Command>(agitate_out);
   pathplanner::NamedCommands::registerCommand("agitateOut",
                                               std::move(shared_agitate_out));
 
   auto agitate_in = new frc2::InstantCommand(
-      [this] {m_agitate.agitate_up = true; }, {&m_agitate});
+      [this] { m_agitate.agitate_up = true; }, {&m_agitate});
   auto shared_agitate_in = std::shared_ptr<frc2::Command>(agitate_in);
   pathplanner::NamedCommands::registerCommand("agitateIn",
                                               std::move(shared_agitate_in));
