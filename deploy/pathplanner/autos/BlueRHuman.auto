@@ -13,13 +13,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BlueMid2RHuman"
+            "pathName": "BlueR2Human"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "intakeOn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeRepel"
           }
         },
         {
@@ -32,12 +38,6 @@
           "type": "named",
           "data": {
             "name": "agitateIn"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "intakeRepel"
           }
         },
         {

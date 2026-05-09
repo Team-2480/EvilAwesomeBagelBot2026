@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BlueMid2RHuman"
+            "pathName": "BlueMid2Human"
           }
         },
         {
@@ -79,7 +79,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BlueMidRHuman2Climb"
+            "pathName": "BlueMidHuman2Climb"
           }
         },
         {
