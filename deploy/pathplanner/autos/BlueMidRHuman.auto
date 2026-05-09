@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BlueMid2Human"
+            "pathName": "BlueMid2RHuman"
           }
         },
         {
@@ -43,19 +43,25 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 10.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "intakeOff"
+            "waitTime": 7.0
           }
         },
         {
           "type": "named",
           "data": {
             "name": "agitateToggle"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeOff"
           }
         },
         {
