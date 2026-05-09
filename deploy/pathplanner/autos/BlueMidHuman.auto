@@ -57,6 +57,12 @@
           "data": {
             "name": "agitateToggle"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeSuck"
+          }
         }
       ]
     }
