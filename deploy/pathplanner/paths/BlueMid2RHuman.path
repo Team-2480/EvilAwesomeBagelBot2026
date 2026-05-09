@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 0.7754779461091132,
-        "y": 0.6624486650465098
+        "x": 0.5719890304605071,
+        "y": 0.6400144465002859
       },
       "prevControl": {
-        "x": 2.3333061814431892,
-        "y": 0.7632844241834049
+        "x": 2.129817265794583,
+        "y": 0.7408502056371811
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "BlueMidLHuman"
     }
   ],
   "rotationTargets": [
