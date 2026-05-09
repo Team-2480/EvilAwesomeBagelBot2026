@@ -14,7 +14,9 @@
 #include <frc/smartdashboard/Field2d.h>
 #include <frc2/command/SubsystemBase.h>
 
+#include <algorithm>
 #include <cmath>
+#include <cstdio>
 #include <ctre/phoenix6/Pigeon2.hpp>
 
 #include "../Constants.h"
@@ -54,6 +56,9 @@ class DriveSubsystem : public frc2::SubsystemBase {
   frc::ChassisSpeeds m_chassisSpeeds;
 
   void driveRobotRelative(frc::ChassisSpeeds speeds) {
+    printf("%f, %f\n", speeds.vx.value(), speeds.vy.value());
+    speeds.vx = std::clamp(speeds.vx.value(), -2.0, 2.0) * 1_mps;
+
     m_chassisSpeeds = speeds;
     auto states = kDriveKinematics.ToSwerveModuleStates(speeds);
 

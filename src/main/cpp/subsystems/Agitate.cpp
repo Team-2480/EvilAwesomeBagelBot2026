@@ -1,7 +1,11 @@
 #include "Agitate.h"
+#include "frc/smartdashboard/SmartDashboard.h"
 
 void AgitateSubsystem::Periodic() {
   // JULIA: Perodic function
+  frc::SmartDashboard::PutBoolean("Agitate in", agitate_up);
+  frc::SmartDashboard::PutBoolean("Agitate on", agitate_on);
+
   if (agitate_on == 1) {
     if (agitate_up) {
       agitate_driver_controller.SetSetpoint(

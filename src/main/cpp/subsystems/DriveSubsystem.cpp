@@ -52,7 +52,7 @@ DriveSubsystem::DriveSubsystem(bool *m_setDist, float *dist )
         return getChassisSpeeds();
       },  // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
       [this](frc::ChassisSpeeds speeds, auto feedforwards) {
-        driveRobotRelative({speeds.vx*0.8, speeds.vy*0.8, speeds.omega});
+        driveRobotRelative(speeds);
       },  // Method that will drive the robot given ROBOT RELATIVE
           // ChassisSpeeds. Also optionally outputs individual module
           // feedforwards
