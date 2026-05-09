@@ -106,7 +106,7 @@ void Robot::ConfigureButtonBindings() {
       .WhileTrue(new frc2::RunCommand([this] { m_drive.SetX(); }, {&m_drive}));
 
   frc2::JoystickButton(&m_driveController, 12)
-      .WhileTrue(new frc2::RunCommand([this] { m_drive.m_pigeon.Reset(); },
+      .WhileTrue(new frc2::RunCommand([this] { m_drive.m_pigeon.SetYaw(0_rad); },
                                       {&m_drive}));
 
   frc2::JoystickButton(&m_driveController, 5)  // button 6 on joystick?
