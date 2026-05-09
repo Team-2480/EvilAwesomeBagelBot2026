@@ -64,7 +64,7 @@ class Robot {
   AgitateSubsystem m_agitate;
 
   // The chooser for the autonomous routines
-  std::vector<std::string> auto_names{"Nothing", "StraightClimb", "BlueMidHuman", "BlueMidHumanClimb", "BlueRHuman", "BlueRHumanClimb", "RedRPlow", "RedLPlow","RedRShootClimb", "BlueLPlow", "BlueRPlow", "Something"};
+  std::vector<std::string> auto_names{"Nothing", "StraightClimb", "BlueMidHuman", "BlueMidHumanClimb", "BlueRHuman", "BlueRHumanClimb", "RedRPlow", "RedLPlow","RedRShootClimb", "BlueLPlow", "BlueRPlowIntake", "Something"};
   frc::SendableChooser<std::string> m_chooser;
 
   PID rot_pid = PID(1.0/50.0, 10, -10, 0.1, 0, 0);
