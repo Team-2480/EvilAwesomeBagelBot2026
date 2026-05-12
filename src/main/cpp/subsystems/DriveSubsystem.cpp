@@ -61,8 +61,8 @@ DriveSubsystem::DriveSubsystem(bool *m_setDist, float *dist )
                                                      // following controller
                                                      // for holonomic drive
                                                      // trains
-          PIDConstants(6.0, 0.0, 0.0),  // Translation PID constants
-          PIDConstants(6.0, 0.0, 0.0)   // Rotation PID constants
+          PIDConstants(4.0, 0.0, 0.0),  // Translation PID constants
+          PIDConstants(4.0, 0.0, 0.0)   // Rotation PID constants
           ),
       config,  // The robot configuration
       []() {
@@ -145,6 +145,7 @@ void DriveSubsystem::Periodic() {
   //                                   limelightMeasurement.timestampSeconds);
   // }
 
+  /*
   LimelightHelpers::PoseEstimate limelightFancyMeasurement =
       LimelightHelpers::getBotPoseEstimate_wpiBlue("limelight-fancy");
 
@@ -152,6 +153,7 @@ void DriveSubsystem::Periodic() {
     m_odometry.AddVisionMeasurement(limelightFancyMeasurement.pose,
                                     limelightFancyMeasurement.timestampSeconds);
   }
+  */
 
   m_odometry.Update(frc::Rotation2d(robotYaw),
                     {m_frontLeft.GetPosition(), m_rearLeft.GetPosition(),
