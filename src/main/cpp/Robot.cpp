@@ -244,15 +244,15 @@ void Robot::ConfigureButtonBindings() {
       ->OnTrue(new frc2::SequentialCommandGroup(
           frc2::InstantCommand([this]() {
             m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_DOWN);
-            m_agitate.SetAgitate(true);
-            m_agitate.agitate_up = true;  // repl
           }),
           frc2::WaitCommand(0.4_s), frc2::InstantCommand([this]() {
-            m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_DOWN);
-            m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_REPEL);
-            m_intake.SetIntake(true);
-            m_agitate.SetAgitate(true);
-            m_agitate.agitate_up = true;  // repl
+            if (m_intake.intake_up_down == IntakeSubsystem::INTAKE_DOWN) {
+              m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_DOWN);
+              m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_REPEL);
+              m_intake.SetIntake(true);
+              m_agitate.SetAgitate(true);
+              m_agitate.agitate_up = true;  // repl
+            }
           })));
 
   m_actionController.RightTrigger(0.5, m_loop).Rising().IfHigh([this]() {
