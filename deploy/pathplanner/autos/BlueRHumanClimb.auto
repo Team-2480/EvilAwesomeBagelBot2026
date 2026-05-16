@@ -105,6 +105,12 @@
           "data": {
             "name": "climbFalse"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "BlueEndForward"
+          }
         }
       ]
     }
