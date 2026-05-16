@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.6075179284005527,
-        "y": 0.8327708056610175
+        "x": 1.4792094701774703,
+        "y": 3.254927509459258
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6075179284005527,
-        "y": 0.8327708056610175
+        "x": 0.6260592403646666,
+        "y": 3.243686244284865
       },
       "isLocked": false,
-      "linkedName": "BlueMidLHuman"
+      "linkedName": "ClimbBlueR"
     },
     {
       "anchor": {
-        "x": 1.864641190886092,
+        "x": 0.4663778118263161,
         "y": 3.254927509459258
       },
       "prevControl": {
-        "x": 2.866479552092376,
-        "y": 3.2792368904396345
+        "x": 1.1656591006658883,
+        "y": 3.2745586061529357
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "BlueRMidClimb"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.0,
+    "maxVelocity": 0.5,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -48,7 +48,7 @@
   "folder": "BlueMid",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": false
 }
