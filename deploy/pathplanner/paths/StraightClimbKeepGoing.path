@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.5218287399939907,
+        "x": 1.5002871284204886,
         "y": 4.2269040475213515
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.902417654809736,
-        "y": 4.2280114036160565
+        "x": 0.45411559097363474,
+        "y": 4.228293392742502
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "BlueLSClimb"
     },
     {
       "anchor": {
-        "x": 1.5002871284204886,
+        "x": 0.5418824988471143,
         "y": 4.2269040475213515
       },
       "prevControl": {
-        "x": 1.250325544893955,
-        "y": 4.2312865993930036
+        "x": 2.148811946567597,
+        "y": 4.225901473421616
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "BlueLSClimb"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 0.5,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -50,5 +50,5 @@
     "velocity": 0,
     "rotation": 180.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
