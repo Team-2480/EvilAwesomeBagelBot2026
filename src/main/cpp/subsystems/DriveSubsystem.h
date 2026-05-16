@@ -57,8 +57,8 @@ class DriveSubsystem : public frc2::SubsystemBase {
 
   void driveRobotRelative(frc::ChassisSpeeds speeds) {
     printf("%f, %f, %f\n", speeds.vx.value(), speeds.vy.value(), speeds.omega.value());
-    speeds.vx = std::clamp(speeds.vx.value(), -2.0, 2.0) * 1_mps;
-    speeds.vy = std::clamp(speeds.vy.value(), -2.0, 2.0) * 1_mps;
+    speeds.vx = std::clamp(speeds.vx.value(), -4.0, 4.0) * 1_mps;
+    speeds.vy = std::clamp(speeds.vy.value(), -4.0, 4.0) * 1_mps;
     speeds.omega = std::clamp(speeds.omega.value(), -2.0, 2.0) * 1_rad_per_s;
 
     m_chassisSpeeds = speeds;

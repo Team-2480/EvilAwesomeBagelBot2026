@@ -26,10 +26,12 @@
 #include <utility>
 
 #include "Constants.h"
+#include "frc/XboxController.h"
 #include "frc/geometry/Rotation2d.h"
 #include "frc/smartdashboard/SmartDashboard.h"
 #include "frc2/command/RunCommand.h"
 #include "frc2/command/button/POVButton.h"
+#include "frc2/command/button/Trigger.h"
 #include "pid.h"
 #include "subsystems/DriveSubsystem.h"
 #include "subsystems/Intake.h"
@@ -106,8 +108,8 @@ void Robot::ConfigureButtonBindings() {
       .WhileTrue(new frc2::RunCommand([this] { m_drive.SetX(); }, {&m_drive}));
 
   frc2::JoystickButton(&m_driveController, 12)
-      .WhileTrue(new frc2::RunCommand([this] { m_drive.m_pigeon.SetYaw(0_rad); },
-                                      {&m_drive}));
+      .WhileTrue(new frc2::RunCommand(
+          [this] { m_drive.m_pigeon.SetYaw(0_rad); }, {&m_drive}));
 
   frc2::JoystickButton(&m_driveController, 5)  // button 6 on joystick?
       .ToggleOnTrue(new frc2::InstantCommand(
@@ -237,13 +239,21 @@ void Robot::ConfigureButtonBindings() {
           },
           {&m_intake}));
 
-  m_actionController.LeftTrigger(0.5, m_loop).Rising().IfHigh([this]() {
-    m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_DOWN);
-    m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_REPEL);
-    m_intake.SetIntake(true);
-    m_agitate.SetAgitate(true);
-    m_agitate.agitate_up = true;  // repl
-  });
+  (new frc2::Trigger(
+       [this]() { return m_actionController.GetLeftTriggerAxis() > 0.5; }))
+      ->OnTrue(new frc2::SequentialCommandGroup(
+          frc2::InstantCommand([this]() {
+            m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_DOWN);
+          }),
+          frc2::WaitCommand(0.4_s), frc2::InstantCommand([this]() {
+            if (m_intake.intake_up_down == IntakeSubsystem::INTAKE_DOWN) {
+              m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_DOWN);
+              m_intake.SetIntakeDirection(IntakeSubsystem::INTAKE_REPEL);
+              m_intake.SetIntake(true);
+              m_agitate.SetAgitate(true);
+              m_agitate.agitate_up = true;  // repl
+            }
+          })));
 
   m_actionController.RightTrigger(0.5, m_loop).Rising().IfHigh([this]() {
     m_intake.SetIntakeUpDown(IntakeSubsystem::INTAKE_DOWN);

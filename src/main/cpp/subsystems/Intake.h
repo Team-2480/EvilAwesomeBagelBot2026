@@ -30,7 +30,6 @@ class IntakeSubsystem : public frc2::SubsystemBase {
     intake_driver.Configure(intake_config, rev::ResetMode::kResetSafeParameters,
                             rev::PersistMode::kPersistParameters);
 
-
     intake_up_down_config.encoder.PositionConversionFactor(1)
         .VelocityConversionFactor(1);
     intake_up_down_config.closedLoop
@@ -38,8 +37,9 @@ class IntakeSubsystem : public frc2::SubsystemBase {
         .Pid(0.1, 0, 0)
         .OutputRange(-0.3, 0.3);
 
-    intake_up_down_config.closedLoop.maxMotion.CruiseVelocity(1).MaxAcceleration(0.1);
-  
+    intake_up_down_config.closedLoop.maxMotion.CruiseVelocity(1)
+        .MaxAcceleration(0.1);
+
     intake_up_down_config.SetIdleMode(rev::spark::SparkBaseConfig::kCoast);
 
     intake_up_down_driver.Configure(intake_up_down_config,
@@ -53,17 +53,17 @@ class IntakeSubsystem : public frc2::SubsystemBase {
 
   void SetIntake(bool intake_set);
 
-  enum IntakeUpDown { INTAKE_UP, INTAKE_DOWN, INTAKE_NONE};
+  enum IntakeUpDown { INTAKE_UP, INTAKE_DOWN, INTAKE_NONE };
   enum IntakeDischarge { INTAKE_SUCK, INTAKE_REPEL };
   void SetIntakeUpDown(IntakeUpDown c_intake_up_down);
   void SetIntakeDirection(IntakeDischarge intake_set);
+  IntakeUpDown intake_up_down = INTAKE_NONE;
 
  private:
-    rev::spark::SparkBaseConfig intake_up_down_config{};
+  rev::spark::SparkBaseConfig intake_up_down_config{};
   // motors here
   bool intake_on = false;
   IntakeDischarge intake_dir = INTAKE_SUCK;
-  IntakeUpDown intake_up_down = INTAKE_NONE;
 
   rev::spark::SparkMax intake_driver =
       rev::spark::SparkMax(40, rev::spark::SparkMax::MotorType::kBrushed);
