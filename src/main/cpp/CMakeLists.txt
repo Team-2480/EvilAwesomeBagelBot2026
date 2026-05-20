@@ -12,20 +12,22 @@ add_executable(robotmain
 
 add_compile_options(-Wno-array-bounds)
 
-set(FETCHCONTENT_QUIET FALSE)
 set(WITH_GUI OFF)
 set(WITH_TESTS OFF)
 set(WITH_WPILIB ON)
-include(FetchContent)
-FetchContent_Declare(wpilib
-  URL https://github.com/wpilibsuite/allwpilib/archive/refs/tags/v2026.2.1.tar.gz
-)
-FetchContent_Declare(pathplanner
-  GIT_REPOSITORY https://github.com/Team-2480/pathplanner-cmake
-  GIT_PROGRESS On
-  GIT_TAG cmake
-)
-FetchContent_MakeAvailable(wpilib pathplanner)
+set(WITH_JAVA OFF)
+
+# TODO: Fetch existing WPILib install
+AddPackage(
+  NAME wpilib
+  REPO wpilibsuite/allwpilib
+  TAG v2026.2.1
+  VERSION 2026.2.1)
+
+AddPackage(
+  NAME pathplanner
+  REPO Team-2480/pathplanner-cmake
+  COMMIT 19fb0f3fac)
 
 target_link_libraries(robotmain wpilibc wpilibNewCommands REVLib-cpp wpiapi-cpp pathplanner ctretools REVLib-driver RevLibBackendDriver)
 target_include_directories(robotmain PUBLIC ./)

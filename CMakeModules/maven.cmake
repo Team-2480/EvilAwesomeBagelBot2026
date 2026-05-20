@@ -1,31 +1,24 @@
-include(ExternalProject)
+set(CPM_USE_LOCAL_PACKAGES OFF)
+set(CPM_SOURCE_CACHE "${CMAKE_SOURCE_DIR}/.cache/cpm")
+include(CPM)
+
 function(add_maven NAME URL_PREFIX LIBTARGET LIBNAME LIBPATH HEADERS)
-  ExternalProject_Add(
-    ${NAME}-lib
-    PREFIX ${NAME}
-    URL ${URL_PREFIX}-${LIBTARGET}.zip
-    CONFIGURE_COMMAND ""
-    BUILD_COMMAND ""
-    INSTALL_COMMAND ""
-  )
+  CPMAddPackage(
+    NAME ${NAME}-lib
+    URL ${URL_PREFIX}-${LIBTARGET}.zip)
+
   if(${HEADERS})
-    ExternalProject_Add(
-      ${NAME}-headers
-      PREFIX ${NAME}
-      URL ${URL_PREFIX}-headers.zip
-      CONFIGURE_COMMAND ""
-      BUILD_COMMAND ""
-      INSTALL_COMMAND ""
-    )
+    CPMAddPackage(
+      NAME ${NAME}-headers
+      URL ${URL_PREFIX}-headers.zip)
   endif()
 
   add_library(${NAME} INTERFACE)
-  if(${HEADERS})
-    ExternalProject_Get_Property(${NAME}-headers SOURCE_DIR)
-    target_include_directories(${NAME} INTERFACE ${SOURCE_DIR})
+  if (${HEADERS})
+    target_include_directories(${NAME} INTERFACE ${${NAME}-headers_SOURCE_DIR})
   endif()
-  ExternalProject_Get_Property(${NAME}-lib SOURCE_DIR)
-  target_link_libraries(${NAME} INTERFACE ${SOURCE_DIR}${LIBPATH}/${LIBNAME})
+
+  target_link_libraries(${NAME} INTERFACE ${${NAME}-lib_SOURCE_DIR}${LIBPATH}/${LIBNAME})
 endfunction()
 
 add_maven(REVLib-cpp https://maven.revrobotics.com/com/revrobotics/frc/REVLib-cpp/2026.0.5/REVLib-cpp-2026.0.5 linuxx86-64 libREVLib.so /linux/x86-64/shared ON)
