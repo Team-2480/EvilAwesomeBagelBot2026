@@ -21,15 +21,15 @@ set(WITH_JAVA OFF)
 AddPackage(
   NAME wpilib
   REPO wpilibsuite/allwpilib
-  TAG v2026.2.1
-  VERSION 2026.2.1)
+  VERSION v2026.2.1)
 
 AddPackage(
   NAME pathplanner
   REPO Team-2480/pathplanner-cmake
   COMMIT 19fb0f3fac)
 
-target_link_libraries(robotmain wpilibc wpilibNewCommands REVLib-cpp wpiapi-cpp pathplanner ctretools REVLib-driver RevLibBackendDriver)
+target_link_libraries(robotmain wpilibc wpilibNewCommands REVLib-cpp
+  wpiapi-cpp pathplanner ctretools REVLib-driver RevLibBackendDriver)
 target_include_directories(robotmain PUBLIC ./)
 
 add_custom_command(TARGET robotmain POST_BUILD
