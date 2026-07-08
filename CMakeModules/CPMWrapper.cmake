@@ -2,12 +2,15 @@
 
 #[[
     This is a thin wrapper around CPM to reduce boilerplate.
-    The primary purpose of this is to work with source archives rather than full Git clones,
-    which are significantly faster to fetch and take up less overall space.
+    The primary purpose of this is to work with source archives
+    rather than full Git clones, which are significantly faster
+    to fetch and take up less overall space.
 
-    This module is loosely based on CPMUtil, which can be found at https://git.crueter.xyz/CMake/CPMUtil.
-    This project and its derivatives are granted an exclusive exception to the terms of the LGPLv3,
-    and may use, reference, and adapt any code from CPMUtil for the purposes of this module at will.
+    This module is loosely based on CPMUtil, which can be found at
+    https://git.crueter.xyz/CMake/CPMUtil. This project and its derivatives are
+    granted an exclusive exception to the terms of the LGPLv3, and may use,
+    reference, and adapt any code from CPMUtil for the purposes of this module at
+    will.
 ]]
 
 set(CPM_SOURCE_CACHE ${PROJECT_SOURCE_DIR}/.cache/cpm)
@@ -18,14 +21,13 @@ macro(Propagate var)
     set(${var} ${${var}} PARENT_SCOPE)
 endmacro()
 
+# TODO: Handle system packages
 function(AddPackage)
     set(oneValueArgs
         NAME
         HASH
         REPO
         VERSION
-        COMMIT
-        TAG
         SOURCE_SUBDIR)
 
     set(multiValueArgs OPTIONS)
@@ -43,26 +45,15 @@ function(AddPackage)
         message(FATAL_ERROR "[AddPackage] REPO is required")
     endif()
 
-    if (DEFINED PKG_VERSION)
-        set(_version ${PKG_VERSION})
-    else()
-        set(_version 0)
+    if (NOT DEFINED PKG_REPO)
+        message(FATAL_ERROR "[AddPackage] VERSION is required")
     endif()
+
 
     # TODO(crueter): forgejo
     set(git_url https://github.com/${PKG_REPO})
 
-    if (DEFINED PKG_TAG)
-        set(key ${PKG_TAG})
-        set(pkg_url
-            ${git_url}/archive/refs/tags/${PKG_TAG}.tar.gz)
-    elseif (DEFINED PKG_COMMIT)
-        string(SUBSTRING ${PKG_COMMIT} 0 4 key)
-        set(pkg_url
-            ${git_url}/archive/${PKG_COMMIT}.tar.gz)
-    else()
-        message(FATAL_ERROR "[AddPackage] One of TAG or COMMIT is required")
-    endif()
+    set(pkg_url ${git_url}/archive/${PKG_VERSION}.tar.gz)
 
     set(CPM_USE_LOCAL_PACKAGES OFF)
 
